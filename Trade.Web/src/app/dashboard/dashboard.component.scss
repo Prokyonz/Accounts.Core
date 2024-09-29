@@ -1,0 +1,27 @@
+.panel {
+    height: calc(100vh - 200px);
+    padding: 8px;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+.custom-design {
+    width: 100%;
+    border-color: rgb(100, 181, 246);
+    border-left-width: 4px;
+    border-left-style: solid;
+    box-shadow: 3px 5px #00000005,0 0 2px #0000000d,0 1px 4px #00000014 !important;
+}
+
+.amount {
+    font-size: 40px;
+}
+
+.header {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.custom-amount {
+    font-size: 35px;
+}

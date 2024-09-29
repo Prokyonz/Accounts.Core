@@ -1,0 +1,49 @@
+<app-header [showSideBar]="true" title="Dashboard" iconName="pi-align-justify" leftIconName=""></app-header>
+<app-filterbar (onClickSearchButton)="onSeach($event)"></app-filterbar>
+
+<div class="panel">
+    <div class="card flex justify-content-center">
+        <p-card subheader="Card Subheader" class="custom-design">
+            <ng-template pTemplate="header">
+                <b class="p-card-body header">Purchase</b>
+            </ng-template>
+            <i class="pi pi-dollar custom-amount"></i>
+            <span class="amount">13,950,990.10</span>
+        </p-card>
+    </div>
+    <br/>
+
+    <div class="card flex justify-content-center">
+        <p-card subheader="Card Subheader" class="custom-design">
+            <ng-template pTemplate="header">
+                <b class="p-card-body header">Sales</b>
+            </ng-template>
+            <i class="pi pi-dollar custom-amount"></i>
+            <span class="amount">53,490,900.45</span>
+        </p-card>
+    </div>
+
+    <br/>
+
+    <div class="card flex justify-content-center">
+        <p-card subheader="Card Subheader" class="custom-design">
+            <ng-template pTemplate="header">
+                <b class="p-card-body header">Payment</b>
+            </ng-template>
+            <i class="pi pi-dollar custom-amount"></i>
+            <span class="amount">13,450,000.80</span>
+        </p-card>
+    </div>
+
+    <br/>
+
+    <div class="card flex justify-content-center">
+        <p-card subheader="Card Subheader" class="custom-design">
+            <ng-template pTemplate="header">
+                <b class="p-card-body header">Receipt</b>
+            </ng-template>
+            <i class="pi pi-dollar custom-amount"></i>
+            <span class="amount">23,450,000.57</span>
+        </p-card>
+    </div>
+</div>

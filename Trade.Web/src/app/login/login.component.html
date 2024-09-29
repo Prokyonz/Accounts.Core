@@ -1,0 +1,88 @@
+<!-- <div style="height: calc(100vh); background: #1c80cf;">
+  <div class="center">
+    <table style="width: 100%;">
+      <tr>
+        <td>          
+          <div>
+              <table style="width: 100%;">               
+                <tr>
+                  <td style="padding-top:10px;">   
+                      <span style="bottom: 5px; position: relative;">Username</span><br/>                                                       
+                      <input pInputText formControlName="username" required style="width: 100%;"/>                            
+                  </td>
+                </tr> 
+                <tr>
+                  <td style="padding-top:10px;">   
+                      <span style="bottom: 5px; position: relative;">Password</span><br/>                                                       
+                      <input pInputText formControlName="password" required style="width: 100%;"/>                            
+                  </td>
+                </tr> 
+                <tr>
+                  <td style="padding-top:10px;">   
+                    <div class="flex align-items-center">
+                      <p-radioButton name="pizza" value="Cheese" formControlName="rememberme" inputId="ingredient1"></p-radioButton>
+                      <label for="ingredient1" class="ml-2">Cheese</label>
+                  </div>
+                  </td>
+                </tr> 
+                <tr>
+                  <td style="vertical-align: bottom;">                                                     
+                      <p-button label="Add Item" (onClick)="onLogin()"></p-button>                         
+                  </td>
+              </tr>
+            </table>
+          </div>          
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>  -->
+
+
+<div *ngIf="!showCompanySelection" style="height: calc(100vh); background: #1c80cf;">
+  <div class="center">
+    <div class="card justify-content-center">
+      <p-card header="Login">      
+          <ng-template pTemplate="content">   
+                <form [formGroup]="loginForm">
+            <table style="width: 100%;" [cellPadding]="5">
+              <tr>
+                <td>
+                  <span style="bottom: 5px; position: relative;">Username</span><br/>                                                       
+                  <input pInputText pKeyFilter="int" style="width: 100%;" formControlName="username" required/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <span style="bottom: 5px; position: relative;">Password</span><br/>                                                                         
+                  <input type="password" pPassword [feedback]="false" formControlName="password" style="width: 100%;" required />
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p-checkbox value="Remember password" inputId="rem" [(ngModel)]="rememberMe" [binary]="true" formControlName="rememberMe"></p-checkbox>
+                  <label for="rem" class="ml-2">Remember password</label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p-button label="Login" (onClick)="onLogin();" icon="pi pi-check"></p-button>
+                </td>
+              </tr>
+            </table>  
+                    </form>
+          </ng-template>
+      </p-card>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showCompanySelection" style="height: calc(100vh); background: #1c80cf;">
+  <div class="center" style="overflow-y: scroll;">
+    <app-companyselection></app-companyselection>
+  </div>
+</div>
+
+<div class="progress-spinner" *ngIf="loading">
+  <p-progressSpinner strokeWidth="4" styleClass="w-3rem h-3rem"></p-progressSpinner>
+</div>
