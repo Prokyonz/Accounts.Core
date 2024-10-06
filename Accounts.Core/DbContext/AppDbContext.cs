@@ -1,4 +1,5 @@
-﻿using BaseClassLibrary;
+﻿using Accounts.Core.Models;
+using BaseClassLibrary;
 using Microsoft.EntityFrameworkCore;
 
 namespace Accounts.Core.DbContext
@@ -10,7 +11,17 @@ namespace Accounts.Core.DbContext
         }
 
         // Add DbSet properties for your entities
-        //public DbSet<CompanyMaster> CompanyMaster { get; set; }
+        public DbSet<Customer> CustomerMaster { get; set; }
+        public DbSet<PurchaseMaster> PurchaseMaster { get; set; }
+        public DbSet<PurchaseDetails> PurchaseDetails { get; set; }
+        public DbSet<SalesMaster>  SalesMasters { get; set; }
+        public DbSet<SalesDetails> SalesDetails { get; set; }
+        public DbSet<AmountReceived> AmountReceived { get; set; }
+        public DbSet<Stock> Stock { get; set; }
+        public DbSet<UserMaster> UserMaster { get; set; }
+        public DbSet<AgentMaster> AgentMaster { get; set; }
+        public DbSet<BrokerMaster> BrokerMaster { get; set; }
+
 
         // You can override OnModelCreating if you need additional configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
