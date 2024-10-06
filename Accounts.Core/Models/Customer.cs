@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Accounts.Core.Models
 {
@@ -16,12 +15,12 @@ namespace Accounts.Core.Models
         public string EmailId { get; set; }
         public string AadharNo { get; set; }
         public string PanNo { get; set; }
-        public byte[] AadharImageFrontData { get; set; }
-        public byte[] AadhbarImageBackData { get; set; }
-        public string AadharImageFileName { get; set; }
-        public string PanImageFileName { get; set; }
-        public byte[] PanImageData { get; set; }
-        public string SignatureFileName { get; set; }
-        public byte[] SignatureImageData { get; set; }
+        public byte[]? AadharImageFrontData { get; set; }
+        public byte[]? AadhbarImageBackData { get; set; }
+        public string? AadharImageFileName { get; set; }
+        public string? PanImageFileName { get; set; }
+        public byte[]? PanImageData { get; set; }
+        public string? SignatureFileName { get; set; }
+        public byte[]? SignatureImageData { get; set; }
     }
 }

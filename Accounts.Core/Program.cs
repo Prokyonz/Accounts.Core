@@ -1,4 +1,5 @@
 using Accounts.Core.DbContext;
+using Accounts.Core.Repositories;
 using BaseClassLibrary;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddBaseLibraryServices();
+
+builder.Services.AddScoped<ICustomerMasterRepository, CustomerMasterRepository>();
 
 builder.Services.AddDbContext<AppDbContext>(options => 
     options.UseSqlServer(@"Data Source=103.83.81.7;Initial Catalog=karmajew_SSD;Persist Security Info=True;User ID=karmajew_SSD;Password=Mle^B3n!F1sh$"));
