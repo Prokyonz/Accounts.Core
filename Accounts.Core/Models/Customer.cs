@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Accounts.Core.Models
 {
-    public class Customer : BaseClassLibrary.BaseModel
+    public class Customer : BaseClassLibrary.Models.BaseModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
