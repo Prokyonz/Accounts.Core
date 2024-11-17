@@ -9,6 +9,8 @@ namespace Accounts.Core.Repositories
     {
         Task<List<Stock>> GetAllStock();
         Task<Stock> AddStockAsync(Stock customer);
+        Task<Stock> UpdateStockAsync(Stock stock);
+        Task<bool> DeleteStockAsync(long stockId);
         Task<List<Stock>> GetQuery(int pageIndex, int pageSize);
         Task<Stock> GetQuery(long stockId, int pageIndex, int pageSize);
     }
@@ -64,6 +66,18 @@ namespace Accounts.Core.Repositories
                 pageIndex, pageSize);
 
             return result?.FirstOrDefault();
+        }
+
+        public async Task<Stock> UpdateStockAsync(Stock stock)
+        {
+            await _stockRepo.UpdateAsync(stock);
+            return stock;
+        }
+
+        public async Task<bool> DeleteStockAsync(long stockId)
+        {
+            await _stockRepo.DeleteAsync(stockId);
+            return true;
         }
     }
 }

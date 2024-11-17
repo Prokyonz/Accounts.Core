@@ -51,5 +51,31 @@ namespace Accounts.Core.Controllers
                 throw;
             }
         }
+
+        [HttpPut]
+        public async Task<Stock> Put(Stock stock)
+        {
+            try
+            {
+                return await _stockRepository.UpdateStockAsync(stock);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpDelete]
+        public async Task<bool> Delete(long stockId)
+        {
+            try
+            {
+                return await _stockRepository.DeleteStockAsync(stockId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

@@ -9,6 +9,8 @@ namespace Accounts.Core.Repositories
     {
         Task<List<Customer>> GetAllCustomers();
         Task<Customer> AddCustomerAsync(Customer customer);
+        Task<Customer> UpdateCustomerAsync(Customer customer);
+        Task<bool> DeleteCustomerAsync(long customerId);
         Task<List<Customer>> GetQuery(int pageIndex, int pageSize);
         Task<Customer> GetQuery(long customerId, int pageIndex, int pageSize);
 
@@ -63,6 +65,18 @@ namespace Accounts.Core.Repositories
             Expression<Func<Customer, bool>> predicate = c => c.Id > 0;
 
             return await _customerMasterRepo.GetAllAsync(predicate);
+        }
+
+        public async Task<Customer> UpdateCustomerAsync(Customer customer)
+        {
+            await _customerMasterRepo.UpdateAsync(customer);
+            return customer;
+        }
+
+        public async Task<bool> DeleteCustomerAsync(long customerId)
+        {
+            await _customerMasterRepo.DeleteAsync(customerId);
+            return true;
         }
     }
 }
