@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Accounts.Core.Migrations
 {
-    public partial class Inittables : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,9 +22,9 @@ namespace Accounts.Core.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MobileNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -44,9 +44,9 @@ namespace Accounts.Core.Migrations
                     CardAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CashAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -64,9 +64,9 @@ namespace Accounts.Core.Migrations
                     EmailId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MobileNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -86,17 +86,17 @@ namespace Accounts.Core.Migrations
                     EmailId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AadharNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PanNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AadharImageFrontData = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    AadhbarImageBackData = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    AadharImageFileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PanImageFileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PanImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
-                    SignatureFileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SignatureImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    AadharImageFrontData = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    AadhbarImageBackData = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    AadharImageFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PanImageFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PanImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    SignatureFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SignatureImageData = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -112,9 +112,9 @@ namespace Accounts.Core.Migrations
                     StockId = table.Column<long>(type: "bigint", nullable: false),
                     PurchaseMasterId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -135,9 +135,9 @@ namespace Accounts.Core.Migrations
                     BrokerId = table.Column<long>(type: "bigint", nullable: false),
                     DiscountAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -155,9 +155,9 @@ namespace Accounts.Core.Migrations
                     EntryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DiscountAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -177,9 +177,9 @@ namespace Accounts.Core.Migrations
                     SGSTRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IGSTRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -197,9 +197,9 @@ namespace Accounts.Core.Migrations
                     MobileNo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -218,9 +218,9 @@ namespace Accounts.Core.Migrations
                     GstAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     AmountReceivedId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    ModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ModifiedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {

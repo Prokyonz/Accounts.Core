@@ -51,5 +51,31 @@ namespace Accounts.Core.Controllers
                 throw;
             }
         }
+
+        [HttpPut]
+        public async Task<Customer> Put(Customer customer)
+        {
+            try
+            {
+                return await _customerMasterRepository.UpdateCustomerAsync(customer);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpDelete]
+        public async Task<bool> Delete(long customerId)
+        {
+            try
+            {
+                return await _customerMasterRepository.DeleteCustomerAsync(customerId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
