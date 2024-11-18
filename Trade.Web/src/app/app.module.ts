@@ -37,6 +37,11 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { CompanyselectionComponent } from './shared/component/companyselection/companyselection.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageService } from 'primeng/api';
+import { UploadComponent } from './shared/component/upload/upload.component';
+import { DialogModule } from 'primeng/dialog';
+import { ViewcustomerComponent } from './customer/viewcustomer/viewcustomer.component';
+import { AddcustomerComponent } from './customer/addcustomer/addcustomer.component';
+import { SaleComponent } from './sale/sale.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +55,10 @@ import { MessageService } from 'primeng/api';
     ReportComponent,
     FilterbarComponent,
     CompanyselectionComponent,
+    UploadComponent,
+    ViewcustomerComponent,
+    AddcustomerComponent,
+    SaleComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,7 +85,8 @@ import { MessageService } from 'primeng/api';
     CommonModule,
     RadioButtonModule,
     CheckboxModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    DialogModule
   ],
   providers: [SharedService, AuthService, MessageService],
   bootstrap: [AppComponent]
