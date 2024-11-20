@@ -43,15 +43,15 @@ export class HeaderComponent implements OnInit {
         this.sidebarVisible = false;
       }
     },
-    {
-        label: 'Calculator',
-        icon: 'pi pi-fw pi-calculator',
-        routerLink: "/viewcts",
-        expanded: false,
-        command: () => {
-          this.sidebarVisible = false;
-        }
-    },
+    // {
+    //     label: 'Calculator',
+    //     icon: 'pi pi-fw pi-calculator',
+    //     routerLink: "/viewcts",
+    //     expanded: false,
+    //     command: () => {
+    //       this.sidebarVisible = false;
+    //     }
+    // },
     {
         label: 'Reports',        
         expanded: true,
@@ -73,7 +73,7 @@ export class HeaderComponent implements OnInit {
                 }
             },
             {
-                label: 'Payment',
+                label: 'Bank',
                 icon: 'pi pi-fw pi-users',
                 routerLink: "/report/3",
                 command: () => {
@@ -81,7 +81,7 @@ export class HeaderComponent implements OnInit {
                 }
             },
             {
-                label: 'Receipt',
+                label: 'Cash',
                 icon: 'pi pi-fw pi-users',
                 routerLink: "/report/4",
                 command: () => {

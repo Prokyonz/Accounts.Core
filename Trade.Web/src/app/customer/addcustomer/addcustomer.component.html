@@ -1,129 +1,120 @@
-<!-- <app-header (onClickMainIcon) = "myfunction()" iconName="pi-arrow-left" leftIconName="{{!isSaveButton ? '' : 'pi-plus'}}" title="{{ PageTitle }}"></app-header> -->
 <app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName=""></app-header>
 <p-toast [breakpoints]="{'920px': { right: '0', left: '50'}}"></p-toast>
+
 <div class="container">
-    <div class="panel">    
-        <div class="card flex justify-content-center customClass">
-            <div style="margin: 8px; width: 100%;">
-                <p-card>
-                    <ng-template pTemplate="header">
-                        <table style="width: 100%;">
+    <!-- Basic Details Card -->
+    <div class="panel">
+        <div class="card custom-card">
+            <p-card>
+                <ng-template pTemplate="header">
+                    <table class="table-header">
+                        <tr>
+                            <td>
+                                <b class="section-title">Basic Details</b>
+                            </td>
+                        </tr>
+                    </table>
+                </ng-template>
+                <div class="form-content">
+                    <form>
+                        <table class="form-table" [cellSpacing]="5">
                             <tr>
-                                <td>
-                                    <b style="font-size: 20px; padding-left: 1rem;">Basic Details</b>
+                                <td colspan="2" class="input-field">
+                                    <label for="name">Name</label>
+                                    <input id="name" pInputText type="text" class="form-control" name="CustomerName" [(ngModel)]="customerDetails.name"/>
                                 </td>
-                                <!-- <td style="text-align: end; padding-right: 1rem">
-                                    <span>SrNo:</span><b> &nbsp;<span>10</span></b>
-                                </td> -->
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="input-field">
+                                    <label for="address">Address</label>
+                                    <textarea id="address" pInputTextarea rows="5" cols="30"
+                                        class="form-control" name="CustomerAddress" [(ngModel)]="customerDetails.address"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="half-width">
+                                    <label for="mobile">Mobile</label>
+                                    <input id="mobile" pInputText type="text" class="form-control"
+                                    name="CustomerMobile" [(ngModel)]="customerDetails.mobile" />
+                                </td>
+                                <td class="half-width">
+                                    <label for="email">Email</label>
+                                    <input id="email" pInputText type="text" class="form-control" 
+                                    name="CustomerEmail" [(ngModel)]="customerDetails.email"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="half-width">
+                                    <label for="aadhar">Aadharcard No</label>
+                                    <input id="aadhar" pInputText pKeyFilter="int" type="number" class="form-control" 
+                                    name="CustomerAadharCardNo" [(ngModel)]="customerDetails.aadharcardNo"/>
+                                </td>
+                                <td class="half-width">
+                                    <label for="pancard">Pancard No</label>
+                                    <input id="pancard" pInputText type="text" class="form-control" 
+                                    name="CustomerPancardNo" [(ngModel)]="customerDetails.pancardNo"/>
+                                </td>
                             </tr>
                         </table>
-                    </ng-template>
-                    <div>
-                        <table style="width: 100%;" [cellSpacing]="5">
-                            <tr>
-                                <td colspan="2" style="padding-top:10px;">   
-                                    <span style="bottom: 5px; position: relative;">Name</span><br/>                                                       
-                                    <input pInputText type="text" style="width: 100%;" /> 
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2" style="padding-top:10px;">   
-                                    <span style="bottom: 5px; position: relative;">Address</span><br/>                                                       
-                                    <textarea rows="5" cols="30" pInputTextarea style="width: 100%;" ></textarea>
-                                </td>
-                            </tr>
-                            <tr>                        
-                                <td style="width: 50%;">   
-                                    <span style="bottom: 5px; position: relative;">Mobile</span><br/>                         
-                                    <input pInputText type="text" style="width: 100%;"/>
-                                </td>    
-                                <td>   
-                                    <span style="bottom: 5px; position: relative;">Email</span><br/>                                                       
-                                    <input pInputText type="text" style="width: 100%;"/>
-                                </td>                    
-                            </tr>
-                            <tr>                        
-                                <td style="width: 50%;">   
-                                    <span style="bottom: 5px; position: relative;">Aadharcard No</span><br/>                         
-                                    <input pInputText pKeyFilter="int" type="number" style="width: 100%;"/>
-                                </td>    
-                                <td>   
-                                    <span style="bottom: 5px; position: relative;">Pancard No</span><br/>                                                       
-                                    <input pInputText type="text" style="width: 100%;"/>
-                                </td>                    
-                            </tr>
-                        </table>
-                        
-                    </div>
-                </p-card>
-            </div>
+                    </form>
+                </div>
+            </p-card>
         </div>
-        
-        <p-card class="customClass">
-            <ng-template pTemplate="header">
-                <table style="width: 100%;">
-                    <tr>
-                        <td>
-                            <b style="font-size: 20px; padding-left: 1rem;">Documents</b>
-                        </td>
-                    </tr>
-                </table>
-            </ng-template>
-            <!-- <div>
-                <table style="width: 100%;" [cellSpacing]="5">
-                    <tr style="border-bottom: 1px groove red;">
-                        <td style="width: 33%;">   
-                            <span style="bottom: 5px; position: relative;">Aadharcard Front</span><br/>                                                       
-                            <p-button label="Upload" (onClick)="addItems()"></p-button>                          
-                        </td>
-                        <td style="width:34%;">   
-                            <span style="bottom: 5px; position: relative;">Aadharcard Back</span><br/>                                                       
-                            <p-button label="Upload" (onClick)="addItems()"></p-button>
-                        </td>
-                        <td style="width:33%;">   
-                            <span style="bottom: 5px; position: relative;">Pancard</span><br/>                                                       
-                            <p-button label="Upload" (onClick)="addItems()"></p-button>
-                        </td>                        
-                    </tr>
-                    <tr style="border-bottom: 1px groove red;">
-                        <td style="width:100%;">   
-                            <span style="bottom: 5px; position: relative;">Signature</span><br/>                                                       
-                            <p-button label="Upload" (onClick)="addItems()"></p-button>
-                        </td> 
-                    </tr>
-                </table>
-            </div> -->
-            <div>
-                <table style="width: 100%;" [cellSpacing]="5">
-                    <tr class="document-row">
-                        <td class="document-field" >
-                            <label style="margin-bottom: 10px; position: relative;">Aadharcard Front</label><br/>
-                            <p-button label="Upload" (onClick)="showUploadComponent()"></p-button>
-                        </td>
-                        <td class="document-field">
-                            <label style="margin-bottom: 10px; position: relative;">Aadharcard Back</label><br/>
-                            <p-button label="Upload" (onClick)="showUploadComponent()"></p-button>
-                        </td>
-                        <td class="document-field">
-                            <label style="margin-bottom: 10px; position: relative;">Pancard &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br/>
-                            <p-button label="Upload" (onClick)="showUploadComponent()"></p-button>
-                        </td>
-                    </tr>
-                    <tr class="document-row">
-                        <td class="document-field">
-                            <label>Signature</label><br/>
-                            <p-button label="Upload" (onClick)="showUploadComponent()"></p-button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <!-- <div *ngIf="isUploadVisible">
-                <app-upload></app-upload>
-            </div> -->
-            <p-dialog header="Upload Image" [(visible)]="isUploadVisible" [modal]="true" [responsive]="true">
-                <app-upload></app-upload>
-            </p-dialog>
-        </p-card>     
+
+        <!-- Documents Card -->
+        <div class="card custom-card">
+            <p-card>
+                <ng-template pTemplate="header">
+                    <table class="table-header">
+                        <tr>
+                            <td>
+                                <b class="section-title">Documents</b>
+                            </td>
+                        </tr>
+                    </table>
+                </ng-template>
+                <div class="form-content">
+                    <table class="form-table" [cellSpacing]="5">
+                        <tr class="document-row">
+                            <td class="document-field">
+                                <label>Aadharcard Front</label><br />
+                                <p-button [label]="customerDetails.imageAadharcardFront === undefined ? 'Upload' : 'View'" (onClick)="triggerFileInput('AadharcardFront')"></p-button>
+                            </td>
+                            <td class="document-field">
+                                <label>Aadharcard Back</label><br />
+                                <p-button [label]="customerDetails.imageAadharcardBack === undefined ? 'Upload' : 'View'" (onClick)="triggerFileInput('AadharcardBack')"></p-button>
+                            </td>
+                        </tr>
+                        <tr class="document-row">
+                            <td class="document-field">
+                                <label>Pancard</label><br />
+                                <p-button [label]="customerDetails.imagePancard === undefined ? 'Upload' : 'View'" (onClick)="triggerFileInput('Pancard')"></p-button>
+                            </td>
+                            <td class="document-field">
+                                <label>Signature</label><br />
+                                <p-button [label]="customerDetails.imageSignature === undefined ? 'Upload' : 'View'" (onClick)="triggerFileInput('Signature')"></p-button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <p-dialog header="Upload Image" [(visible)]="isUploadVisible" [modal]="true" [responsive]="true"
+                    (onHide)="onDialogClose()">
+                    <!-- <app-upload></app-upload> -->
+                    <div class="upload-container">
+                        <div>
+                            <img *ngIf="imageUrl"
+                                [src]="imageUrl" alt="Uploaded Image"
+                                style="max-width: 300px; max-height: 300px;" />
+                        </div>
+                        <p-button label="Upload" (onClick)="onUpload(true)"></p-button>
+                    </div>
+                </p-dialog>
+            </p-card>
+        </div>
     </div>
-    <p-button label="View Details" (onClick)="showDetails()" icon="pi pi-search" ></p-button>    
+
+    <!-- Submit Button -->
+    <p-button label="View Details" (onClick)="showDetails()" icon="pi pi-search"></p-button>
 </div>
+
+<input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;" />
