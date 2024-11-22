@@ -1,0 +1,31 @@
+.container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 15px;
+    height: 85vh; /* Full page height */
+    overflow-y: auto; /* Allow page-level scrolling */
+    margin: 20px auto;
+  }
+  
+  .add-item-container h3 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+  }
+  

@@ -42,6 +42,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ViewcustomerComponent } from './customer/viewcustomer/viewcustomer.component';
 import { AddcustomerComponent } from './customer/addcustomer/addcustomer.component';
 import { SaleComponent } from './sale/sale.component';
+import { AdditemComponent } from './master/item/additem/additem.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { SaleComponent } from './sale/sale.component';
     ViewcustomerComponent,
     AddcustomerComponent,
     SaleComponent,
+    AdditemComponent,
   ],
   imports: [
     BrowserModule,

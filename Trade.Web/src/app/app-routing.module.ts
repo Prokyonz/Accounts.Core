@@ -9,12 +9,14 @@ import { ReportComponent } from './report/report.component';
 import { CompanyselectionComponent } from './shared/component/companyselection/companyselection.component';
 import { AddcustomerComponent } from './customer/addcustomer/addcustomer.component';
 import { SaleComponent } from './sale/sale.component';
+import { AdditemComponent } from './master/item/additem/additem.component';
 
 const routes: Routes = [
   {path:'',component:LoginComponent},
   {path:'login',component:LoginComponent},
   {path:'dashboard', component:DashboardComponent},
   {path:'addcustomer', component:AddcustomerComponent},
+  {path:'additem', component:AdditemComponent},
   {path:'sale', component:SaleComponent},
   {path:'addcts', component:AddctsComponent},
   {path:'viewcts', component:ViewctsComponent},

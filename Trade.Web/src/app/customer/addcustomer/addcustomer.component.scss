@@ -1,9 +1,12 @@
 /* SCSS for layout and styling */
 
 .container {
+    width: 100%;
+    max-width: 1200px;
     padding: 15px;
     height: 85vh; /* Full page height */
     overflow-y: auto; /* Allow page-level scrolling */
+    margin: 20px auto;
   }
   
   .custom-card {

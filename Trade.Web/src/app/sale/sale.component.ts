@@ -16,7 +16,7 @@ export class SaleComponent implements OnInit{
     date: '',
     party: '',
     billAmount: '',
-    paymentMode: '',
+    paymentMode: 'Cash',
     creditCardNo: '',
     creditCardPaidAmount: '',
     cashAmount: '',
@@ -76,6 +76,20 @@ export class SaleComponent implements OnInit{
     item.cgst = item.total * 0.09; // Example CGST at 9%
     item.igst = item.total * 0.18; // If SGST and CGST are applied, IGST is 0
     item.grandTotal = item.total + item.sgst + item.cgst; // + item.igst;
+    this.saleData.billAmount = this.getBillAmount();
+    this.calculateCashAmount();
+  }
+
+  getBillAmount(): number {
+    return this.saleData.items.reduce((sum: any, item: { grandTotal: any; }) => sum + item.grandTotal, 0);
+  }
+
+  calculateCashAmount(): void {
+    if(this.saleData.paymentMode == undefined){
+      this.saleData.paymentMode = 'Cash';
+    }
+
+    this.saleData.cashAmount = this.saleData.billAmount - this.saleData.creditCardPaidAmount;
   }
 
   // Check if the form is valid
@@ -104,5 +118,14 @@ export class SaleComponent implements OnInit{
   // Delete item method
   deleteItem(index: number): void {
     this.saleData.items.splice(index, 1);
+  }
+
+  showDetails() {
+    var a = this.saleData.item;
+    this.showMessage('success','Sales details added successfully');
+  }
+
+  showMessage(type: string, message: string){
+    this.messageService.add({severity: type, summary:message});
   }
 }
