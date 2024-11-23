@@ -28,6 +28,12 @@ namespace Accounts.Core.Controllers
             return await _userMasterRepository.GetAllUserMasters();
         }
 
+        [HttpGet("Login")]
+        public async Task<UserMaster> Login(string mobileNo, string password, string emailId)
+        {
+            return await _userMasterRepository.Login(mobileNo, password, emailId);
+        }
+
         /// <summary>
         /// Read UserMaster from table.
         /// </summary>
