@@ -1,0 +1,120 @@
+<app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName=""></app-header>
+<p-toast [breakpoints]="{'920px': { right: '0', left: '50'}}"></p-toast>
+
+<div class="container">
+    <!-- Basic Details Card -->
+    <div class="panel">
+        <div class="card custom-card">
+            <p-card>
+                <ng-template pTemplate="header">
+                    <table class="table-header">
+                        <tr>
+                            <td>
+                                <b class="section-title">Basic Details</b>
+                            </td>
+                        </tr>
+                    </table>
+                </ng-template>
+                <div class="form-content">
+                    <form>
+                        <table class="form-table" [cellSpacing]="5">
+                            <tr>
+                                <td colspan="2" class="input-field">
+                                    <label for="name">Name</label>
+                                    <input id="name" pInputText type="text" class="form-control" name="CustomerName" [(ngModel)]="customerDetails.name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="input-field">
+                                    <label for="address">Address</label>
+                                    <textarea id="address" pInputTextarea rows="5" cols="30"
+                                        class="form-control" name="CustomerAddress" [(ngModel)]="customerDetails.address"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="half-width">
+                                    <label for="mobile">Mobile</label>
+                                    <input id="mobile" pInputText type="text" class="form-control"
+                                    name="CustomerMobile" [(ngModel)]="customerDetails.mobile" />
+                                </td>
+                                <td class="half-width">
+                                    <label for="email">Email</label>
+                                    <input id="email" pInputText type="text" class="form-control" 
+                                    name="CustomerEmail" [(ngModel)]="customerDetails.email"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="half-width">
+                                    <label for="aadhar">Aadharcard No</label>
+                                    <input id="aadhar" pInputText pKeyFilter="int" type="number" class="form-control" 
+                                    name="CustomerAadharCardNo" [(ngModel)]="customerDetails.aadharcardNo"/>
+                                </td>
+                                <td class="half-width">
+                                    <label for="pancard">Pancard No</label>
+                                    <input id="pancard" pInputText type="text" class="form-control" 
+                                    name="CustomerPancardNo" [(ngModel)]="customerDetails.pancardNo"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </p-card>
+        </div>
+
+        <!-- Documents Card -->
+        <div class="card custom-card">
+            <p-card>
+                <ng-template pTemplate="header">
+                    <table class="table-header">
+                        <tr>
+                            <td>
+                                <b class="section-title">Documents</b>
+                            </td>
+                        </tr>
+                    </table>
+                </ng-template>
+                <div class="form-content">
+                    <table class="form-table" [cellSpacing]="5">
+                        <tr class="document-row">
+                            <td class="document-field">
+                                <label>Aadharcard Front</label><br />
+                                <p-button [label]="customerDetails.imageAadharcardFront === undefined ? 'Upload' : 'View'" (onClick)="triggerFileInput('AadharcardFront')"></p-button>
+                            </td>
+                            <td class="document-field">
+                                <label>Aadharcard Back</label><br />
+                                <p-button [label]="customerDetails.imageAadharcardBack === undefined ? 'Upload' : 'View'" (onClick)="triggerFileInput('AadharcardBack')"></p-button>
+                            </td>
+                        </tr>
+                        <tr class="document-row">
+                            <td class="document-field">
+                                <label>Pancard</label><br />
+                                <p-button [label]="customerDetails.imagePancard === undefined ? 'Upload' : 'View'" (onClick)="triggerFileInput('Pancard')"></p-button>
+                            </td>
+                            <td class="document-field">
+                                <label>Signature</label><br />
+                                <p-button [label]="customerDetails.imageSignature === undefined ? 'Upload' : 'View'" (onClick)="triggerFileInput('Signature')"></p-button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <p-dialog header="Upload Image" [(visible)]="isUploadVisible" [modal]="true" [responsive]="true"
+                    (onHide)="onDialogClose()">
+                    <!-- <app-upload></app-upload> -->
+                    <div class="upload-container">
+                        <div>
+                            <img *ngIf="imageUrl"
+                                [src]="imageUrl" alt="Uploaded Image"
+                                style="max-width: 300px; max-height: 300px;" />
+                        </div>
+                        <p-button label="Upload" (onClick)="onUpload(true)"></p-button>
+                    </div>
+                </p-dialog>
+            </p-card>
+        </div>
+    </div>
+
+    <!-- Submit Button -->
+    <p-button label="View Details" (onClick)="showDetails()" icon="pi pi-search"></p-button>
+</div>
+
+<input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;" />

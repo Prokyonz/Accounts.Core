@@ -1,0 +1,35 @@
+<app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName=""></app-header>
+<p-toast [breakpoints]="{'920px': { right: '0', left: '50'}}"></p-toast>
+
+<div class="container">
+    <form #addItemForm="ngForm">
+      <!-- Item Name Input -->
+      <div class="form-group">
+        <label for="itemName">Item Name</label>
+        <input
+          type="text"
+          id="itemName"
+          class="form-control"
+          [(ngModel)]="item.itemName"
+          name="itemName"
+          required
+        />
+      </div>
+  
+      <!-- Item Description Input -->
+      <div class="form-group">
+        <label for="itemDescription">Item Description</label>
+        <input
+          type="text"
+          id="itemDescription"
+          class="form-control"
+          [(ngModel)]="item.itemDescription"
+          name="itemDescription"
+        />
+      </div>
+  
+    </form>
+
+    <p-button label="View Details" (onClick)="showDetails()" icon="pi pi-search"></p-button>
+  </div>
+  
