@@ -10,6 +10,7 @@ import { CompanyselectionComponent } from './shared/component/companyselection/c
 import { AddcustomerComponent } from './customer/addcustomer/addcustomer.component';
 import { SaleComponent } from './sale/sale.component';
 import { AdditemComponent } from './master/item/additem/additem.component';
+import { PurchaseComponent } from './purchase/purchase.component';
 
 const routes: Routes = [
   {path:'',component:LoginComponent},
@@ -18,6 +19,7 @@ const routes: Routes = [
   {path:'addcustomer', component:AddcustomerComponent},
   {path:'additem', component:AdditemComponent},
   {path:'sale', component:SaleComponent},
+  {path:'purchase', component:PurchaseComponent},
   {path:'addcts', component:AddctsComponent},
   {path:'viewcts', component:ViewctsComponent},
   {path: 'calculator', component: CalculatorComponent},
