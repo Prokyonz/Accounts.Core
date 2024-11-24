@@ -19,7 +19,6 @@ namespace Accounts.Core.DbContext
         public DbSet<AmountReceived> AmountReceived { get; set; }
         public DbSet<Stock> Stock { get; set; }
         public DbSet<UserMaster> UserMaster { get; set; }
-        public DbSet<AgentMaster> AgentMaster { get; set; }
         public DbSet<BrokerMaster> BrokerMaster { get; set; }
 
 
