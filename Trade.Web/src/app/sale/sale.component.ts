@@ -122,7 +122,8 @@ export class SaleComponent implements OnInit{
 
   showDetails() {
     var a = this.saleData.item;
-    this.showMessage('success','Sales details added successfully');
+    //this.showMessage('success','Sales details added successfully');
+    this.router.navigate(['salebill']);
   }
 
   showMessage(type: string, message: string){

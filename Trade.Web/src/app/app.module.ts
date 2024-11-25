@@ -44,6 +44,8 @@ import { AddcustomerComponent } from './customer/addcustomer/addcustomer.compone
 import { SaleComponent } from './sale/sale.component';
 import { AdditemComponent } from './master/item/additem/additem.component';
 import { PurchaseComponent } from './purchase/purchase.component';
+import { UserComponent } from './user/user.component';
+import { SaleBillComponent } from './sale/sale-bill/sale-bill.component';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,8 @@ import { PurchaseComponent } from './purchase/purchase.component';
     SaleComponent,
     AdditemComponent,
     PurchaseComponent,
+    UserComponent,
+    SaleBillComponent,
   ],
   imports: [
     BrowserModule,

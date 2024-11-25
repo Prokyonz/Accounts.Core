@@ -52,44 +52,44 @@ export class HeaderComponent implements OnInit {
     //       this.sidebarVisible = false;
     //     }
     // },
-    {
-      label: 'Reports',
-      expanded: true,
-      items: [
-        {
-          label: 'Purchase',
-          icon: 'pi pi-fw pi-user-plus',
-          routerLink: "/report/1",
-          command: () => {
-            this.sidebarVisible = false;
-          }
-        },
-        {
-          label: 'Sales',
-          icon: 'pi pi-fw pi-user-minus',
-          routerLink: "/report/2",
-          command: () => {
-            this.sidebarVisible = false;
-          }
-        },
-        {
-          label: 'Bank',
-          icon: 'pi pi-fw pi-users',
-          routerLink: "/report/3",
-          command: () => {
-            this.sidebarVisible = false;
-          }
-        },
-        {
-          label: 'Cash',
-          icon: 'pi pi-fw pi-users',
-          routerLink: "/report/4",
-          command: () => {
-            this.sidebarVisible = false;
-          }
-        }
-      ]
-    },
+    // {
+    //   label: 'Reports',
+    //   expanded: true,
+    //   items: [
+    //     {
+    //       label: 'Purchase',
+    //       icon: 'pi pi-fw pi-user-plus',
+    //       routerLink: "/report/1",
+    //       command: () => {
+    //         this.sidebarVisible = false;
+    //       }
+    //     },
+    //     {
+    //       label: 'Sales',
+    //       icon: 'pi pi-fw pi-user-minus',
+    //       routerLink: "/report/2",
+    //       command: () => {
+    //         this.sidebarVisible = false;
+    //       }
+    //     },
+    //     {
+    //       label: 'Bank',
+    //       icon: 'pi pi-fw pi-users',
+    //       routerLink: "/report/3",
+    //       command: () => {
+    //         this.sidebarVisible = false;
+    //       }
+    //     },
+    //     {
+    //       label: 'Cash',
+    //       icon: 'pi pi-fw pi-users',
+    //       routerLink: "/report/4",
+    //       command: () => {
+    //         this.sidebarVisible = false;
+    //       }
+    //     }
+    //   ]
+    // },
     {
       label: 'Settings',
       icon: 'pi pi-spin pi-cog',
@@ -110,9 +110,9 @@ export class HeaderComponent implements OnInit {
       expanded: true,
       items: [
         {
-          label: 'Item',
+          label: 'User',
           icon: 'pi pi-fw pi-user-plus',
-          routerLink: "/additem",
+          routerLink: "/user",
           command: () => {
             this.sidebarVisible = false;
           }
@@ -121,6 +121,14 @@ export class HeaderComponent implements OnInit {
           label: 'Purchase',
           icon: 'pi pi-fw pi-user-plus',
           routerLink: "/purchase",
+          command: () => {
+            this.sidebarVisible = false;
+          }
+        },
+        {
+          label: 'Item',
+          icon: 'pi pi-fw pi-user-plus',
+          routerLink: "/additem",
           command: () => {
             this.sidebarVisible = false;
           }

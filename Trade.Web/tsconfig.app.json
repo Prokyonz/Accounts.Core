@@ -4,7 +4,10 @@
   "compilerOptions": {
     "outDir": "./out-tsc/app",
     "importHelpers": false,
-    "types": []
+    "types": [],
+    "module": "ESNext", // or "commonjs"
+    "esModuleInterop": true,
+    "moduleResolution": "node"
   },
   "files": [
     "src/main.ts"

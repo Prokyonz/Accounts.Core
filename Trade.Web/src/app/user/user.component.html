@@ -1,0 +1,64 @@
+<app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName=""></app-header>
+<p-toast [breakpoints]="{'920px': { right: '0', left: '50'}}"></p-toast>
+
+<div class="container">
+    <!-- Basic Details Card -->
+    <div class="panel">
+        <div class="card custom-card">
+            <p-card>
+                <div class="form-content">
+                    <form>
+                        <table class="form-table" [cellSpacing]="5">
+                            <tr>
+                                <td colspan="2" class="input-field">
+                                    <label for="name">Parent User</label>
+                                    <p-dropdown id="party" [(ngModel)]="user.parentUserId" name="user" [options]="userList" optionLabel="name"
+                                        optionValue="id" placeholder="Search and select a user" [filter]="true" [showClear]="true" filterBy="name">
+                                    </p-dropdown>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="half-width">
+                                    <label for="firstName">First Name</label>
+                                    <input id="firstName" pInputText pKeyFilter="int" type="text" class="form-control" 
+                                    name="firstName" [(ngModel)]="user.firstName"/>
+                                </td>
+                                <td class="half-width">
+                                    <label for="lastName">Last Name</label>
+                                    <input id="lastName" pInputText type="text" class="form-control" 
+                                    name="lastName" [(ngModel)]="user.lastName"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="half-width">
+                                    <label for="mobile">Mobile</label>
+                                    <input id="mobile" pInputText pKeyFilter="int" type="number" class="form-control" 
+                                    name="mobile" [(ngModel)]="user.mobileNo"/>
+                                </td>
+                                <td class="half-width">
+                                    <label for="email">Email</label>
+                                    <input id="email" pInputText type="text" class="form-control" 
+                                    name="email" [(ngModel)]="user.emailId"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="input-field">
+                                    <label for="password">Password</label>
+                                    <input id="password" pInputText type="password" class="form-control" 
+                                    name="password" [(ngModel)]="user.password"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="input-field">
+                                    <p-checkbox id="isAgent" [(ngModel)]="user.isAgent" name="isAgent" label="Agent" [binary]="true"></p-checkbox>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </p-card>
+        </div>
+    </div>
+
+    <p-button label="View Details" (onClick)="showDetails()" icon="pi pi-search"></p-button>
+</div>

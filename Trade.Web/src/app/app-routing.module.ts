@@ -11,6 +11,8 @@ import { AddcustomerComponent } from './customer/addcustomer/addcustomer.compone
 import { SaleComponent } from './sale/sale.component';
 import { AdditemComponent } from './master/item/additem/additem.component';
 import { PurchaseComponent } from './purchase/purchase.component';
+import { UserComponent } from './user/user.component';
+import { SaleBillComponent } from './sale/sale-bill/sale-bill.component';
 
 const routes: Routes = [
   {path:'',component:LoginComponent},
@@ -19,7 +21,9 @@ const routes: Routes = [
   {path:'addcustomer', component:AddcustomerComponent},
   {path:'additem', component:AdditemComponent},
   {path:'sale', component:SaleComponent},
+  {path:'salebill', component:SaleBillComponent},
   {path:'purchase', component:PurchaseComponent},
+  {path:'user', component:UserComponent},
   {path:'addcts', component:AddctsComponent},
   {path:'viewcts', component:ViewctsComponent},
   {path: 'calculator', component: CalculatorComponent},

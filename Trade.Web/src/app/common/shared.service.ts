@@ -18,7 +18,6 @@ export class SharedService {
         return this.httpClient.get<any>(apiUrl + api).pipe(map(t => t), catchError(err => throwError(err)));
     }
 
-
     customPostApi(api: string, data: any): Observable<ApiResponse> {
         return this.httpClient.post<any>(apiUrl + api, data).pipe(map(t => t),catchError(err => throwError(err)));
     }

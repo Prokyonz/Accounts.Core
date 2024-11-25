@@ -29,7 +29,7 @@ namespace Accounts.Core.Controllers
         }
 
         [HttpGet("Login")]
-        public async Task<UserMaster> Login(string mobileNo, string password, string emailId)
+        public async Task<UserMaster> Login(string? mobileNo, string password, string? emailId)
         {
             return await _userMasterRepository.Login(mobileNo, password, emailId);
         }

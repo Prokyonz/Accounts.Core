@@ -13,7 +13,7 @@ namespace Accounts.Core.Repositories
         Task<bool> DeleteUserMasterAsync(long userMasterId);
         Task<List<UserMaster>> GetQuery(int pageIndex, int pageSize);
         Task<UserMaster> GetQuery(long userMasterId, int pageIndex, int pageSize);
-        Task<UserMaster> Login(string mobileNo, string password, string emailId);
+        Task<UserMaster> Login(string? mobileNo, string password, string? emailId);
     }
 }
 
@@ -78,7 +78,7 @@ namespace Accounts.Core.Repositories
             return result?.FirstOrDefault();
         }
 
-        public async Task<UserMaster> Login(string mobileNo, string password, string emailId)
+        public async Task<UserMaster> Login(string? mobileNo, string password, string? emailId)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace Accounts.Core.Repositories
                                orderBy: c => c.CreatedDate,
                                0, 10);
 
-                if(users?.Any() == true && users.Count > 1)
+                if(users?.Any() == true && users.Count > 0)
                 {
                     return users[0];
                 }
