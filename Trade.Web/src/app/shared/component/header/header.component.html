@@ -5,7 +5,7 @@
                 <p-button (click)="iconClick();" icon="pi {{iconName}}"></p-button>
             </td>
             <td class="title">
-                <div>                    
+                <div>
                     <b>{{ title }}</b>
                 </div>
             </td>
@@ -14,7 +14,7 @@
             </td>
         </tr>
     </table>
-    
+
 </div>
 
 <div class="card flex justify-content-center">
@@ -26,13 +26,14 @@
 
         </ng-template>
         <div style="padding: 0 1rem 1rem 1rem;">
-            <span>Welcome, <span>demo user</span></span>
-        </div>    
+            <span>Welcome, <span>{{username}}</span></span>
+        </div>
         <ng-template pTemplate="content">
-            <div class="card flex justify-content-center">          
-                <p-panelMenu [transitionOptions]="'0ms'" class="panelMenu" [model]="items" [multiple]="false"></p-panelMenu>
+            <div class="card flex justify-content-center">
+                <p-panelMenu [transitionOptions]="'0ms'" class="panelMenu" [model]="items"
+                    [multiple]="false"></p-panelMenu>
             </div>
         </ng-template>
-        
-    </p-sidebar>    
+
+    </p-sidebar>
 </div>

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { user } from 'src/app/Model/models';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +15,7 @@ export class HeaderComponent implements OnInit {
   @Input() showSideBar: boolean = false;
   @Output() onClickMainIcon = new EventEmitter();
   @Output() onClickLeftIcon = new EventEmitter();
-
+  username: string = 'Demo User';
   sidebarVisible!: boolean;
   items: MenuItem[] = [
     {
@@ -146,7 +147,11 @@ export class HeaderComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-
+    var userDetail = localStorage.getItem('AuthorizeData');
+    if (userDetail) {
+      var user: user = JSON.parse(userDetail);
+      this.username = user.firstName + ' ' + user.lastName; 
+    }
   }
 
   iconClick() {

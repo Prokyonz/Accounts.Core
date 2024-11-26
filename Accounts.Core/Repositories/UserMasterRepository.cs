@@ -83,7 +83,7 @@ namespace Accounts.Core.Repositories
             try
             {
                 var users = await _userMasterRepo.QueryAsync(
-                               query => (query.MobileNo == mobileNo && query.Password == password) || (query.EmailId == emailId && query.Password == password),
+                               query => (mobileNo != null && query.MobileNo == mobileNo && query.Password == password) || (emailId != null && query.EmailId == emailId && query.Password == password),
                                orderBy: c => c.CreatedDate,
                                0, 10);
 

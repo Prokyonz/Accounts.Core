@@ -62,6 +62,7 @@ namespace Accounts.Core.Controllers
         [HttpPost]
         public async Task<UserMaster> Post(UserMaster userMaster)
         {
+            userMaster.Id = null;
             return await _userMasterRepository.AddUserMasterAsync(userMaster);
         }
 

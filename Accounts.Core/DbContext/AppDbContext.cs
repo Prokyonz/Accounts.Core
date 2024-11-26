@@ -20,6 +20,7 @@ namespace Accounts.Core.DbContext
         public DbSet<Stock> Stock { get; set; }
         public DbSet<UserMaster> UserMaster { get; set; }
         public DbSet<BrokerMaster> BrokerMaster { get; set; }
+        public DbSet<ItemMaster> ItemMaster { get; set; }
 
 
         // You can override OnModelCreating if you need additional configurations

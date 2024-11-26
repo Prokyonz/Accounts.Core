@@ -29,11 +29,11 @@ export class purchaseItems {
 }
 
 export class user {
-    id: number;
+    id: number = 0;
     parentUserId: number = 0;
     firstName: string = '';
     lastName: string = '';
-    mobileNo: number = 0;
+    mobileNo: string = '';
     emailId: string = '';
     password: string = '';
     isAgent: boolean = false;
@@ -63,4 +63,13 @@ export class saleItems {
     cgst: number = 0;
     igst: number = 0;
     grandTotal: number = 0;
+}
+
+export class item {
+    name: string = '';
+    description: string = '';
+    createdDate: Date = new Date();
+    createdBy: number = 0;
+    updatedDate: Date = new Date();
+    updatedBy: number = 0;
 }

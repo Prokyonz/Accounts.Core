@@ -14,11 +14,12 @@ export class UserComponent {
   PageTitle: string = "Add User";
   loading: boolean = false;
   user: user;
-  userList = [
-    { id: 1, name: 'Dhanani Anand' },
-    { id: 2, name: 'Dhanani Monika' },
-    { id: 3, name: 'Sharma Mayur' },
-  ];
+  // userList = [
+  //   { id: 1, name: 'Dhanani Anand' },
+  //   { id: 2, name: 'Dhanani Monika' },
+  //   { id: 3, name: 'Sharma Mayur' },
+  // ];
+  userList: user[];
 
   constructor(private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.user = new user();
@@ -29,45 +30,46 @@ export class UserComponent {
     
   }
 
-  // getUsers(){
-  //   this.sharedService.customGetApi("UserMaster").subscribe((t) => {
-  //     if (t.success == true){
-  //       if (t.data != null && t.data.length > 0){
-  //         t.data = [
-  //           { name: '-Select-', id: '' },
-  //           ...t.data
-  //         ];
-  //         this.userList = t.data;
-  //       }
-  //     }
-  //   }); 
-  // }
-
   getUsers() {
-    this.sharedService.customGetApi("UserMaster").subscribe({
-      next: (response) => {
-        if (response.success) {
-          if (response.data && response.data.length > 0) {
-            // Add a default item to the list (without mutating the original data)
-            this.userList = [
-              { name: '-Select-', id: '' },
-              ...response.data
-            ];
-          }
-        }
+    this.sharedService.customGetApi1<user[]>('UserMaster').subscribe(
+      (data: user[]) => {
+        this.userList = data; // Data is directly returned here as an array of User objects
+        this.userList = this.userList.map(user => ({
+          ...user,
+          fullName: `${user.firstName} ${user.lastName}` // Concatenate first and last name
+        }));
       },
-      error: (err) => {
-        console.error('Error fetching users', err);
-        // Handle error appropriately
+      (error) => {
+        console.error('Error fetching users:', error);
       }
-    });
+    );
   }
 
+  // getUsers() {
+  //   this.sharedService.customGetApi("UserMaster").subscribe({
+  //     next: (response) => {
+  //       if (response != undefined && response != null) {
+  //         if (response.length > 0) {
+  //           // Add a default item to the list (without mutating the original data)
+  //           this.userList = [
+  //             { name: '-Select-', id: '' },
+  //             ...response.data
+  //           ];
+  //         }
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching users', err);
+  //       // Handle error appropriately
+  //     }
+  //   });
+  // }
+
   showDetails() {
-    var a = this.user;
+    this.user.mobileNo = this.user.mobileNo.toString();
     this.sharedService.customPostApi("UserMaster",this.user)
           .subscribe((data: any) => {
-                if (data.success == true){                  
+                if (data != null){                  
                   this.showMessage('success',data.message);
                   this.clearForm();
                 }
@@ -80,7 +82,7 @@ export class UserComponent {
                 this.showMessage('error',ex);
             });
 
-    this.showMessage('success','User details added successfully');
+    //this.showMessage('success','User details added successfully');
   }
 
   showMessage(type: string, message: string){

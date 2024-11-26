@@ -2,6 +2,7 @@ using Accounts.Core.DbContext;
 using Accounts.Core.Repositories;
 using BaseClassLibrary;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,13 +20,35 @@ builder.Services.AddScoped<IStockRepository, StockRepository>();
 builder.Services.AddScoped<ISalesMasterRepository, SalesMasterRepository>();
 builder.Services.AddScoped<ISalesDetailsRepository, SalesDetailsRepository>();
 builder.Services.AddScoped<IUserMasterRepository, UserMasterRepository>();
+builder.Services.AddScoped<IItemMasterRepository, ItemMasterRepository>();
 
 builder.Services.AddDbContext<AppDbContext>(options => 
     //options.UseSqlServer(@"Data Source=103.83.81.7;Initial Catalog=karmajew_SSD;Persist Security Info=True;User ID=karmajew_SSD;Password=Mle^B3n!F1sh$"));
     options.UseSqlServer(@"Data Source=103.83.81.7;Initial Catalog=karmajew_SSD;Persist Security Info=True;User ID=karmajew_SSD;Password=Mle^B3n!F1sh$"));
 
-var app = builder.Build();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.IgnoreNullValues = true;
+    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+    options.JsonSerializerOptions.MaxDepth = 10485760; // add your desired limit here
+}); ;
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyHeader()
+                   .AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
+var app = builder.Build();
+app.UseCors("AllowAllOrigins");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

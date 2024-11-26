@@ -8,7 +8,7 @@ import jsPDF from 'jspdf';
   styleUrls: ['./sale-bill.component.scss']
 })
 export class SaleBillComponent {
-
+  PageTitle: string = "Sale Bill";
   exportToPDF() {
     // const element = document.getElementById('content-to-export');
 

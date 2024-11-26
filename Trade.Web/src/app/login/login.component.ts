@@ -53,13 +53,13 @@ export class LoginComponent implements OnInit {
   onLogin(){
       if (this.loginForm.valid) { 
         this.loading = true;
-        this.router.navigate(['/dashboard']);
-      /*this.authService.login(this.loginForm.get("username")?.value, this.loginForm.get("password")?.value)
+      this.authService.login(this.loginForm.get("username")?.value, this.loginForm.get("password")?.value)
         .subscribe((response: any) => {          
         debugger;
-          if (response.success == true){
-            if (response.data != null){
-              localStorage.setItem("userid", response.data.id);
+          // if (response.success == true){
+          if (response != null){
+              localStorage.setItem('AuthorizeData', JSON.stringify(response));
+              localStorage.setItem("userid", response.id);
                 if (this.rememberMe){      
                   this.RememberLogin.username = this.loginForm.get("username")?.value;
                   this.RememberLogin.password = this.loginForm.get("password")?.value;
@@ -72,13 +72,16 @@ export class LoginComponent implements OnInit {
                 this.loading = false;
                 this.showCompanySelection = true;
                 this.router.navigate(['/dashboard']);
-            }
+          //   }
           }
           else{
             localStorage.removeItem("userid");
           }
       }, (ex: any) => {
-      });*/
+        this.loading = false;
+        localStorage.removeItem("loginremember")    
+        alert('Invalid Username/Password.');
+      });
     }
   }
 }
