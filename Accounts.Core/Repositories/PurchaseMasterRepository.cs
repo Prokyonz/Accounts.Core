@@ -81,7 +81,7 @@ namespace Accounts.Core.Repositories
 
         public async Task<List<PurchaseMaster>> PurchaseReport()
         {
-            object[] paramerers = new object[] { 1,"" };
+            object[] paramerers = new object[] { "Id",1, "Name", "Abhishek" };
 
             var result = await _purchaseMasterRepo.ExecuteStoredProcedureAsync("purchaseReport", paramerers);
             

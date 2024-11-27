@@ -23,7 +23,7 @@ namespace Accounts.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("PurchaseReport")]
-        public async Task<List<PurchaseMaster>> Get()
+        public async Task<List<PurchaseMaster>> GetPurchaseReport()
         {
             return await _purchaseMasterRepository.PurchaseReport();
         }
