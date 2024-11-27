@@ -1,4 +1,5 @@
-﻿using BaseClassLibrary.Models;
+﻿using AutoMapper.Configuration.Annotations;
+using BaseClassLibrary.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,6 +14,10 @@ namespace Accounts.Core.Models
         public DateTime InvoiceDate { get; set; }
         public DateTime EntryDate { get; set; }        
         public decimal DiscountAmount { get; set; }
+        public decimal Amount { get; set; }
+
+        [Ignore]
+        public virtual List<SalesDetails> SalesDetails { get; set; }
     }
 
     public class SalesDetails : BaseModel
@@ -20,11 +25,14 @@ namespace Accounts.Core.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public long StockId { get; set; }
+        public long ItemId { get; set; }
         public decimal CarratQty { get; set; }
         public decimal Rate { get; set; }
         public decimal GstAmount { get; set; }
-        public AmountReceived AmountReceived { get; set; }
+        public decimal TotalAmount { get; set; }
+
+        [Ignore]
+        public List<AmountReceived> AmountReceived { get; set; }
     }
 
     public class AmountReceived : BaseModel

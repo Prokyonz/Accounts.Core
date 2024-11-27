@@ -9,7 +9,6 @@ namespace Accounts.Core.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public long ItemId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Rate { get; set; }
