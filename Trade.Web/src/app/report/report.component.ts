@@ -4,14 +4,7 @@ import { Table } from 'primeng/table';
 import { SharedService } from '../common/shared.service';
 import { RememberCompany } from '../shared/component/companyselection/companyselection.component';
 import { Message, MessageService } from 'primeng/api';
-
-interface Customer {
-  name: string,
-  country: string,
-  date: string,
-  balance: number,
-  verified: boolean
-}
+import { Customer, user } from '../Model/models';
 
 @Component({
   selector: 'app-report',
@@ -20,76 +13,62 @@ interface Customer {
 })
 
 export class ReportComponent implements OnInit {
-
-  PageTitle: string = "Purchase Report";
+  PageTitle: string = "Report";
   reportIndex: number = 0;
-  RememberCompany: RememberCompany = new RememberCompany();
-  PurchaseReportList : any[];
-  //Table variables
-  customers: Customer[] = [
-    { name: 'Abhishek', country: 'India', date: '12/12/2014', balance: 25000, verified: true },
-    { name: 'Anand', country: 'India', date: '12/12/2014', balance: 28000, verified: false },
-    { name: 'Shaielsh', country: 'USA', date: '01/11/2015', balance: 45000, verified: false },
-    { name: 'Akshay', country: 'UK', date: '01/11/2017', balance: 145000, verified: false },
-    { name: 'Abhishek', country: 'India', date: '12/12/2014', balance: 25000, verified: true },
-    { name: 'Anand', country: 'India', date: '12/12/2014', balance: 28000, verified: false },
-    { name: 'Shaielsh', country: 'USA', date: '01/11/2015', balance: 45000, verified: false },
-    { name: 'Akshay', country: 'UK', date: '01/11/2017', balance: 145000, verified: false },
-    { name: 'Abhishek', country: 'India', date: '12/12/2014', balance: 25000, verified: true },
-    { name: 'Anand', country: 'India', date: '12/12/2014', balance: 28000, verified: false },
-    { name: 'Shaielsh', country: 'USA', date: '01/11/2015', balance: 45000, verified: false },
-    { name: 'Akshay', country: 'UK', date: '01/11/2017', balance: 145000, verified: false },
-  ];
+  customers: Customer[];
+  users: user[];
 
-  loading: boolean = true;
+  loading = false;
 
-  constructor(private rote: Router, private activateRoute: ActivatedRoute,private sharedService: SharedService, private messageService: MessageService) {
+  constructor(private rote: Router, private activateRoute: ActivatedRoute, private sharedService: SharedService, private messageService: MessageService) {
     this.reportIndex = activateRoute.snapshot.params['id'];
   }
 
   ngOnInit() {
     this.loading = false;
-    this.getCompanyData();
-    this.purchseReport();
+    if (this.reportIndex == 1) {
+      this.PageTitle = "Customer Report";
+      this.getCustomer();
+    }
+    else if (this.reportIndex == 2) {
+      this.PageTitle = "User Report";
+      this.getUser();
+    }
+  }
+
+  getCustomer() {
+    this.loading = true;
+    this.sharedService.customGetApi1<Customer[]>('Customer').subscribe(
+      (data: Customer[]) => {
+        this.customers = data; // Data is directly returned here as an array of User objects
+        this.loading = false;
+      },
+      (error) => {
+        this.loading = false;
+        this.showMessage('Error fetching customers:', error);
+      }
+    );
+  }
+
+  getUser() {
+    this.loading = true;
+    this.sharedService.customGetApi1<user[]>('UserMaster').subscribe(
+      (data: user[]) => {
+        this.users = data; // Data is directly returned here as an array of User objects
+        this.loading = false;
+      },
+      (error) => {
+        this.loading = false;
+        this.showMessage('Error fetching users:', error);
+      }
+    );
   }
 
   goBack() {
     this.rote.navigate(['/dashboard']);
   }
 
-  //Tabel functions
-  clear(table: Table) {
-      table.clear();
+  showMessage(type: string, message: string) {
+    this.messageService.add({ severity: type, summary: message });
   }
-
-  myfunc(event: any): string {
-    return event.target.value;
-  }
-
-  onSeach(event: any) {
-    console.log(event);
-  }
-
-  purchseReport(){
-    this.sharedService.customGetApi("Report/GetPurchaseReport?CompanyId=" + this.RememberCompany.company.id + "&FinancialYearId=" + this.RememberCompany.financialyear.id +"&FromDate=2022-05-01&ToDate=2023-05-20")
-    .subscribe((data: any) => {
-          this.PurchaseReportList = data.data;
-          console.log(this.PurchaseReportList);
-        }, (ex: any) => {
-          this.showMessage('error',ex);
-      });
-  }
-
-  showMessage(type: string, message: string){
-    this.messageService.add({severity: type, summary:message});
-  }
-
-  getCompanyData(){
-    debugger;
-    const data = localStorage.getItem("companyremember");
-    if (data != null){
-      this.RememberCompany = this.sharedService.JsonConvert<RememberCompany>(data)
-    }
-  }
-
 }

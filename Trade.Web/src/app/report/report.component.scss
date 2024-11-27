@@ -1,0 +1,84 @@
+/* Full-screen card container */
+.full-screen-card-container {
+  display: flex;
+  flex-direction: column;
+  height: 90vh; /* Take full viewport height */
+  overflow: auto; /* Allow scrolling if content exceeds the screen height */
+  padding: 10px;
+}
+
+/* Style for the individual customer card */
+.customer-card {
+  margin: 10px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.card-body {
+  font-size: 1em;
+  color: #333;
+}
+
+.card-body div {
+  margin-bottom: 8px;
+}
+
+.no-data {
+  text-align: center;
+  color: #999;
+  margin-top: 20px;
+}
+
+/* Contact Section to align mobile and email icon + text */
+.contact-section {
+  display: flex;
+  align-items: center;  /* Align items horizontally */
+  width: 100%;          /* Ensure they take full available width */
+  height: 20px;         /* Set fixed height to ensure same height for both mobile and email sections */
+  //margin-bottom: 8px;   /* Space between sections */
+}
+
+.icon {
+  font-size: 24px;      /* Icon size */
+  margin-right: 10px;   /* Space between icon and text */
+  color: #007bff;       /* Icon color */
+  width: 25px;          /* Fixed width for icons to align them */
+  height: 25px;         /* Fixed height to align with text */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contact-section span {
+  font-size: 1em;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .customer-card {
+    padding: 15px;
+  }
+
+  .card-header {
+    font-size: 1.1em;
+  }
+
+  .card-body div {
+    font-size: 0.9em;
+  }
+
+  /* Reduce the icon size on mobile */
+  .icon {
+    font-size: 18px;
+  }
+}

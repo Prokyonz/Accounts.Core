@@ -53,59 +53,59 @@ export class HeaderComponent implements OnInit {
     //       this.sidebarVisible = false;
     //     }
     // },
-    // {
-    //   label: 'Reports',
-    //   expanded: true,
-    //   items: [
-    //     {
-    //       label: 'Purchase',
-    //       icon: 'pi pi-fw pi-user-plus',
-    //       routerLink: "/report/1",
-    //       command: () => {
-    //         this.sidebarVisible = false;
-    //       }
-    //     },
-    //     {
-    //       label: 'Sales',
-    //       icon: 'pi pi-fw pi-user-minus',
-    //       routerLink: "/report/2",
-    //       command: () => {
-    //         this.sidebarVisible = false;
-    //       }
-    //     },
-    //     {
-    //       label: 'Bank',
-    //       icon: 'pi pi-fw pi-users',
-    //       routerLink: "/report/3",
-    //       command: () => {
-    //         this.sidebarVisible = false;
-    //       }
-    //     },
-    //     {
-    //       label: 'Cash',
-    //       icon: 'pi pi-fw pi-users',
-    //       routerLink: "/report/4",
-    //       command: () => {
-    //         this.sidebarVisible = false;
-    //       }
-    //     }
-    //   ]
-    // },
     {
-      label: 'Settings',
-      icon: 'pi pi-spin pi-cog',
+      label: 'Reports',
       expanded: true,
       items: [
         {
-          label: 'Change Company',
+          label: 'Customer',
           icon: 'pi pi-fw pi-user-plus',
-          routerLink: "/companyselection/header",
+          routerLink: "/report/1",
           command: () => {
             this.sidebarVisible = false;
           }
         },
+        {
+          label: 'User',
+          icon: 'pi pi-fw pi-user-minus',
+          routerLink: "/report/2",
+          command: () => {
+            this.sidebarVisible = false;
+          }
+        },
+        // {
+        //   label: 'Bank',
+        //   icon: 'pi pi-fw pi-users',
+        //   routerLink: "/report/3",
+        //   command: () => {
+        //     this.sidebarVisible = false;
+        //   }
+        // },
+        // {
+        //   label: 'Cash',
+        //   icon: 'pi pi-fw pi-users',
+        //   routerLink: "/report/4",
+        //   command: () => {
+        //     this.sidebarVisible = false;
+        //   }
+        // }
       ]
     },
+    // {
+    //   label: 'Settings',
+    //   icon: 'pi pi-spin pi-cog',
+    //   expanded: true,
+    //   items: [
+    //     {
+    //       label: 'Change Company',
+    //       icon: 'pi pi-fw pi-user-plus',
+    //       routerLink: "/companyselection/header",
+    //       command: () => {
+    //         this.sidebarVisible = false;
+    //       }
+    //     },
+    //   ]
+    // },
     {
       label: 'Master',
       expanded: true,

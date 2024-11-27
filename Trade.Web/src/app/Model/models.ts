@@ -1,14 +1,23 @@
 export class Customer {
-    name: string;
-    address: string;
-    mobile: string;
-    email: string;
-    aadharcardNo: string;
-    pancardNo: string;
-    imageAadharcardFront: string;
-    imageAadharcardBack: string;
-    imagePancard: string;
-    imageSignature: string;
+    id: number = 0;
+    firstName: string = '';
+    lastName: string= '';
+    address: string = '';
+    mobileNo: string = '';
+    emailId: string = '';
+    aadharNo: string = '';
+    panNo: string = '';
+    aadharImageFrontData: string = '';
+    aadhbarImageBackData: string = '';
+    aadharImageFileName: string = '';
+    panImageFileName: string = '';
+    panImageData: string = '';
+    signatureFileName: string = '';
+    signatureImageData: string = '';
+    createdDate: Date = new Date();
+    createdBy: number = 0;
+    updatedDate: Date = new Date();
+    updatedBy: number = 0;
 }
 
 export class purchase {

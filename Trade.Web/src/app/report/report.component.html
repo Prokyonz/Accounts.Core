@@ -1,97 +1,56 @@
-<app-header (onClickMainIcon) = "goBack()" iconName="pi-arrow-left" title="{{ PageTitle }}" leftIconName=""></app-header>
-<app-filterbar (onClickSearchButton)="onSeach($event)"></app-filterbar>
-<div class="card" style="height: calc(100vh - 200px); overflow:scroll;">
-    <p-table
-        #dt1
-        [value]="PurchaseReportList"
-        dataKey="id"
-        [rows]="50"
-        [showCurrentPageReport]="false"
-        [rowsPerPageOptions]="[5, 10, 25, 50]"
-        [loading]="loading"
-        [paginator]="true"
-        [scrollable]="true"
-        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-        [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-        >
-        <!-- <ng-template pTemplate="caption">
-            <div class="flex">
-                <span class="p-input-icon-left ml-auto">
-                    <i class="pi pi-search" style="padding-left: 10px;"></i>&nbsp;
-                    <input pInputText type="text" (input)="dt1.filterGlobal(myfunc($event), 'contains')" placeholder="Search keyword" />
-                </span>
-            </div>
-        </ng-template> -->
-        <ng-template pTemplate="header">
-            <tr>
-                <th style="min-width:15rem">
-                    <div class="flex align-items-center">
-                        Branch Name
-                        <p-columnFilter type="text" field="branchName" display="menu"></p-columnFilter>
-                    </div>
-                </th>
-                <th style="min-width:15rem">
-                    <div class="flex align-items-center">
-                        Party Name
-                        <p-columnFilter type="text" field="partyName" display="menu"></p-columnFilter>
-                    </div>
-                </th>
-                <th style="min-width:15rem">
-                    <div class="flex align-items-center">
-                        Broker Name
-                        <p-columnFilter type="text" field="brokerName" display="menu"></p-columnFilter>
-                    </div>
-                </th>
-                <!-- <th style="min-width:10rem">
-                    <div class="flex align-items-center">
-                        Date
-                        <p-columnFilter type="date" field="date" display="menu"></p-columnFilter>
-                    </div>
-                </th>
-                <th style="min-width:10rem">
-                    <div class="flex align-items-center">
-                        Balance
-                        <p-columnFilter type="numeric" field="balance" display="menu" currency="USD"></p-columnFilter>
-                    </div>
-                </th>
-                <th style="width: 3rem">
-                    <div class="flex align-items-center">
-                        Verified
-                        <p-columnFilter type="boolean" field="verified" display="menu"></p-columnFilter>
-                    </div>
-                </th> -->
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-purchase>
-            <tr>
-                <td>
-                    {{ purchase.branchName }}
-                </td>
-                <td>
-                    {{ purchase.partyName }}
-                </td>
-                <td>
-                    {{ purchase.brokerName }}
-                </td>
-                <!-- <td>
-                    <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + customer.country.code" style="width: 20px" />
-                    <span class="ml-1 vertical-align-middle">{{ customer.country }}</span>
-                </td> -->
-                <!-- <td>
-                    {{ customer.date | date: 'MM/dd/yyyy' }}
-                </td>
-                <td>
-                    {{ customer.balance | currency: 'USD':'symbol' }}
-                </td>
-                <td class="text-center">
-                    <i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': customer.verified, 'text-red-500 pi-times-circle': !customer.verified }"></i>
-                </td> -->
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="emptymessage">
-            <tr>
-                <td colspan="7">No customers found.</td>
-            </tr>
-        </ng-template>
-    </p-table>
+<app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName=""></app-header>
+<!-- <app-header (onClickMainIcon)="goBack()" iconName="pi-arrow-left" title="{{ PageTitle }}" leftIconName=""></app-header> -->
+
+<div class="full-screen-card-container" *ngIf="reportIndex == 1">
+  <div *ngIf="customers.length === 0" class="no-data">
+    No customers found.
+  </div>
+  
+  <div *ngFor="let customer of customers" class="customer-card">
+    <div class="card-header">
+      <strong>Customer ID: </strong>{{ customer.id }}
+    </div>
+    <div class="card-body">
+      <div><strong>{{ customer.firstName }} {{ customer.lastName }}</strong></div>
+
+      <!-- Mobile Section with Icon -->
+      <div class="contact-section">
+        <i class="fa fa-mobile-alt icon"></i>  <!-- Font Awesome Mobile Icon -->
+        <span>{{ customer.mobileNo }}</span>
+      </div>
+      
+      <!-- Email Section with Icon -->
+      <div class="contact-section">
+        <i class="fa fa-envelope icon"></i>  <!-- Font Awesome Email Icon -->
+        <span>{{ customer.emailId }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="full-screen-card-container" *ngIf="reportIndex == 2">
+  <div *ngIf="users.length === 0" class="no-data">
+    No users found.
+  </div>
+  
+  <div *ngFor="let user of users" class="customer-card">
+    <div class="card-header">
+      <strong>User ID: </strong>{{ user.id }}
+    </div>
+    <div class="card-body">
+      <div><strong>{{ user.firstName }} {{ user.lastName }}</strong></div>
+
+      <!-- Mobile Section with Icon -->
+      <div class="contact-section">
+        <i class="fa fa-mobile-alt icon"></i>  <!-- Font Awesome Mobile Icon -->
+        <span>{{ user.mobileNo }}</span>
+      </div>
+      
+      <!-- Email Section with Icon -->
+      <div class="contact-section">
+        <i class="fa fa-envelope icon"></i>  <!-- Font Awesome Email Icon -->
+        <span>{{ user.emailId }}</span>
+      </div>
+    </div>
+  </div>
 </div>

@@ -38,7 +38,7 @@ export class AddcustomerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
   }
 
   myfunction() {
@@ -59,38 +59,53 @@ export class AddcustomerComponent implements OnInit {
 
   // Show details method
   showDetails() {
-    var a = this.customerDetails;
-    this.showMessage('success','Customer details added successfully');
+    this.customerDetails.aadharNo = this.customerDetails.aadharNo.toString();
+    this.customerDetails.panNo = this.customerDetails.panNo.toString();
+    this.sharedService.customPostApi("Customer", this.customerDetails)
+      .subscribe((data: any) => {
+        if (data != null) {
+          this.showMessage('success', 'Customer details added successfully');
+          this.clearForm();
+        }
+        else {
+          this.loading = false;
+          this.showMessage('error', 'Something went wrong...');
+        }
+      }, (ex: any) => {
+        this.loading = false;
+        this.showMessage('error', ex);
+      });
   }
 
   isFormValid() {
-    return this.customerDetails.name && this.customerDetails.mobile && this.customerDetails.email;
+    return this.customerDetails.firstName && this.customerDetails.mobileNo;
   }
 
   clearForm() {
     this.loading = false;
+    this.customerDetails = new Customer();
   }
 
   triggerFileInput(documentType: string) {
     this.currentDocumentType = documentType;
     this.imageUrl = '';
-    if (this.currentDocumentType == 'AadharcardFront' && this.customerDetails.imageAadharcardFront != undefined) {
-      this.imageUrl = this.customerDetails.imageAadharcardFront;
+    if (this.currentDocumentType == 'AadharcardFront' && this.customerDetails.aadharImageFrontData != '') {
+      this.imageUrl = this.customerDetails.aadharImageFrontData;
       this.isUploadVisible = true;
       return;
     }
-    else if (this.currentDocumentType == 'AadharcardBack' && this.customerDetails.imageAadharcardBack != undefined) {
-      this.imageUrl = this.customerDetails.imageAadharcardBack;
+    else if (this.currentDocumentType == 'AadharcardBack' && this.customerDetails.aadhbarImageBackData != '') {
+      this.imageUrl = this.customerDetails.aadhbarImageBackData;
       this.isUploadVisible = true;
       return;
     }
-    else if (this.currentDocumentType == 'Pancard' && this.customerDetails.imagePancard != undefined) {
-      this.imageUrl = this.customerDetails.imagePancard;
+    else if (this.currentDocumentType == 'Pancard' && this.customerDetails.panImageData != '') {
+      this.imageUrl = this.customerDetails.panImageData;
       this.isUploadVisible = true;
       return;
     }
-    else if (this.currentDocumentType == 'Signature' && this.customerDetails.imageSignature != undefined) {
-      this.imageUrl = this.customerDetails.imageSignature;
+    else if (this.currentDocumentType == 'Signature' && this.customerDetails.signatureImageData != '') {
+      this.imageUrl = this.customerDetails.signatureImageData;
       this.isUploadVisible = true;
       return;
     }
@@ -118,16 +133,16 @@ export class AddcustomerComponent implements OnInit {
 
         if (isUpload) {
           if (this.currentDocumentType == 'AadharcardFront') {
-            this.customerDetails.imageAadharcardFront = this.imageUrl;
+            this.customerDetails.aadharImageFrontData = this.imageUrl;
           }
           else if (this.currentDocumentType == 'AadharcardBack') {
-            this.customerDetails.imageAadharcardBack = this.imageUrl;
+            this.customerDetails.aadhbarImageBackData = this.imageUrl;
           }
           else if (this.currentDocumentType == 'Pancard') {
-            this.customerDetails.imagePancard = this.imageUrl;
+            this.customerDetails.panImageData = this.imageUrl;
           }
           else if (this.currentDocumentType == 'Signature') {
-            this.customerDetails.imageSignature = this.imageUrl;
+            this.customerDetails.signatureImageData = this.imageUrl;
           }
           this.isUploadVisible = false;
         }
@@ -149,7 +164,7 @@ export class AddcustomerComponent implements OnInit {
     this.isUploadVisible = false;
   }
 
-  showMessage(type: string, message: string){
-    this.messageService.add({severity: type, summary:message});
+  showMessage(type: string, message: string) {
+    this.messageService.add({ severity: type, summary: message });
   }
 }
