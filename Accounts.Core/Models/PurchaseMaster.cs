@@ -29,6 +29,8 @@ namespace Accounts.Core.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public long StockId { get; set; }
+
+        [ForeignKey("PurchaseMasterId")]
         public long PurchaseMasterId { get; set; }
         public string? ItemDescription { get; set; }
         public long Quantity { get; set; }
