@@ -4,6 +4,7 @@ using Accounts.Core.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Accounts.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241127162557_salescolsupdate")]
+    partial class salescolsupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,9 +59,6 @@ namespace Accounts.Core.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long?>("SalesDetailsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("SalesMasterId")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("UpdatedBy")
@@ -259,9 +258,6 @@ namespace Accounts.Core.Migrations
                     b.Property<string>("ItemDescription")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("ItemId")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("PurchaseMasterId")
                         .HasColumnType("bigint");
 
@@ -270,6 +266,9 @@ namespace Accounts.Core.Migrations
 
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("StockId")
+                        .HasColumnType("bigint");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
@@ -362,7 +361,7 @@ namespace Accounts.Core.Migrations
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<long>("SalesMasterId")
+                    b.Property<long?>("SalesMasterId")
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("TotalAmount")
@@ -532,9 +531,7 @@ namespace Accounts.Core.Migrations
                 {
                     b.HasOne("Accounts.Core.Models.SalesMaster", null)
                         .WithMany("SalesDetails")
-                        .HasForeignKey("SalesMasterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SalesMasterId");
                 });
 
             modelBuilder.Entity("Accounts.Core.Models.PurchaseMaster", b =>

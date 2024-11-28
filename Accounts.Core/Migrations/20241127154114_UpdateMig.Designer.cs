@@ -4,6 +4,7 @@ using Accounts.Core.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Accounts.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241127154114_UpdateMig")]
+    partial class UpdateMig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,12 +58,6 @@ namespace Accounts.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("SalesDetailsId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("SalesMasterId")
-                        .HasColumnType("bigint");
-
                     b.Property<long?>("UpdatedBy")
                         .HasColumnType("bigint");
 
@@ -69,8 +65,6 @@ namespace Accounts.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SalesDetailsId");
 
                     b.ToTable("AmountReceived");
                 });
@@ -218,6 +212,9 @@ namespace Accounts.Core.Migrations
                     b.Property<decimal>("IGSTRate")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<long>("ItemId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -259,9 +256,6 @@ namespace Accounts.Core.Migrations
                     b.Property<string>("ItemDescription")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("ItemId")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("PurchaseMasterId")
                         .HasColumnType("bigint");
 
@@ -270,6 +264,9 @@ namespace Accounts.Core.Migrations
 
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("StockId")
+                        .HasColumnType("bigint");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
@@ -344,6 +341,9 @@ namespace Accounts.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
+                    b.Property<long>("AmountReceivedId")
+                        .HasColumnType("bigint");
+
                     b.Property<decimal>("CarratQty")
                         .HasColumnType("decimal(18,2)");
 
@@ -356,17 +356,11 @@ namespace Accounts.Core.Migrations
                     b.Property<decimal>("GstAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<long>("ItemId")
-                        .HasColumnType("bigint");
-
                     b.Property<decimal>("Rate")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<long>("SalesMasterId")
+                    b.Property<long>("StockId")
                         .HasColumnType("bigint");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<long?>("UpdatedBy")
                         .HasColumnType("bigint");
@@ -376,7 +370,7 @@ namespace Accounts.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SalesMasterId");
+                    b.HasIndex("AmountReceivedId");
 
                     b.ToTable("SalesDetails");
                 });
@@ -388,9 +382,6 @@ namespace Accounts.Core.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
@@ -512,44 +503,31 @@ namespace Accounts.Core.Migrations
                     b.ToTable("UserMaster");
                 });
 
-            modelBuilder.Entity("Accounts.Core.Models.AmountReceived", b =>
-                {
-                    b.HasOne("Accounts.Core.Models.SalesDetails", null)
-                        .WithMany("AmountReceived")
-                        .HasForeignKey("SalesDetailsId");
-                });
-
             modelBuilder.Entity("Accounts.Core.Models.PurchaseDetails", b =>
                 {
-                    b.HasOne("Accounts.Core.Models.PurchaseMaster", null)
+                    b.HasOne("Accounts.Core.Models.PurchaseMaster", "PurchaseMaster")
                         .WithMany("PurchaseDetails")
                         .HasForeignKey("PurchaseMasterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("PurchaseMaster");
                 });
 
             modelBuilder.Entity("Accounts.Core.Models.SalesDetails", b =>
                 {
-                    b.HasOne("Accounts.Core.Models.SalesMaster", null)
-                        .WithMany("SalesDetails")
-                        .HasForeignKey("SalesMasterId")
+                    b.HasOne("Accounts.Core.Models.AmountReceived", "AmountReceived")
+                        .WithMany()
+                        .HasForeignKey("AmountReceivedId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AmountReceived");
                 });
 
             modelBuilder.Entity("Accounts.Core.Models.PurchaseMaster", b =>
                 {
                     b.Navigation("PurchaseDetails");
-                });
-
-            modelBuilder.Entity("Accounts.Core.Models.SalesDetails", b =>
-                {
-                    b.Navigation("AmountReceived");
-                });
-
-            modelBuilder.Entity("Accounts.Core.Models.SalesMaster", b =>
-                {
-                    b.Navigation("SalesDetails");
                 });
 #pragma warning restore 612, 618
         }

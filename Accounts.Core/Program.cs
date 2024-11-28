@@ -26,6 +26,7 @@ builder.Services.AddScoped<ISalesMasterRepository, SalesMasterRepository>();
 builder.Services.AddScoped<ISalesDetailsRepository, SalesDetailsRepository>();
 builder.Services.AddScoped<IUserMasterRepository, UserMasterRepository>();
 builder.Services.AddScoped<IItemMasterRepository, ItemMasterRepository>();
+builder.Services.AddScoped<IPurchaseMasterRepository, PurchaseMasterRepository>();
 
 builder.Services.AddDbContext<AppDbContext>(options => 
     //options.UseSqlServer(@"Data Source=103.83.81.7;Initial Catalog=karmajew_SSD;Persist Security Info=True;User ID=karmajew_SSD;Password=Mle^B3n!F1sh$"));
