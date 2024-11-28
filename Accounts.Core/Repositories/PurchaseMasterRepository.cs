@@ -7,7 +7,7 @@ namespace Accounts.Core.Repositories
 {
     public interface IPurchaseMasterRepository
     {
-        Task<List<PurchaseMaster>> GetAllPurchaseMasters();
+        Task<List<PurchaseMaster>> GetAllPurchaseMasters(bool includeDetails);
         Task<PurchaseMaster> AddPurchaseMasterAsync(PurchaseMaster purchaseMaster);
         Task<PurchaseMaster> UpdatePurchaseMasterAsync(PurchaseMaster purchaseMaster);
         Task<bool> DeletePurchaseMasterAsync(long purchaseMasterId);
@@ -53,10 +53,9 @@ namespace Accounts.Core.Repositories
             return true;
         }
 
-        public async Task<List<PurchaseMaster>> GetAllPurchaseMasters()
+        public async Task<List<PurchaseMaster>> GetAllPurchaseMasters(bool includeDetails)
         {
             Expression<Func<PurchaseMaster, bool>> predicate = c => c.Id > 0;
-
 
             return await _purchaseMasterRepo.GetAllAsync(predicate);
         }

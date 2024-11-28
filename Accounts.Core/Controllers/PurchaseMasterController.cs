@@ -33,9 +33,9 @@ namespace Accounts.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<List<PurchaseMaster>> Get()
+        public async Task<List<PurchaseMaster>> Get(bool includeDetails)
         {
-            return await _purchaseMasterRepository.GetAllPurchaseMasters();
+            return await _purchaseMasterRepository.GetAllPurchaseMasters(includeDetails);
         }
 
         /// <summary>

@@ -25,6 +25,9 @@ namespace Accounts.Core.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
+
+        [ForeignKey("SalesMasterId")]
+        public long SalesMasterId { get; set; }
         public long ItemId { get; set; }
         public decimal CarratQty { get; set; }
         public decimal Rate { get; set; }
@@ -32,7 +35,7 @@ namespace Accounts.Core.Models
         public decimal TotalAmount { get; set; }
 
         [Ignore]
-        public List<AmountReceived> AmountReceived { get; set; }
+        public virtual List<AmountReceived> AmountReceived { get; set; }
     }
 
     public class AmountReceived : BaseModel
@@ -40,6 +43,9 @@ namespace Accounts.Core.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
+
+        [ForeignKey("SalesMasterId")]
+        public long SalesMasterId { get; set; }
         public bool FromDebitCard { get; set; }
         public bool FromCreditCard { get; set; }
         public string CardNo { get; set; }
