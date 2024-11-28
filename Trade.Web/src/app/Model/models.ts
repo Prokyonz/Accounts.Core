@@ -75,6 +75,7 @@ export class saleItems {
 }
 
 export class item {
+    id: number = 0;
     name: string = '';
     description: string = '';
     createdDate: Date = new Date();

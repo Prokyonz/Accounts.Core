@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { SharedService } from '../common/shared.service';
-import { purchase, purchaseItems } from '../Model/models';
+import { Customer, item, purchase, purchaseItems } from '../Model/models';
 
 @Component({
   selector: 'app-purchase',
@@ -13,31 +13,53 @@ export class PurchaseComponent {
   PageTitle: string = "Purchase";
   loading: boolean = false;
   purchase: purchase;
-
-  parties = [
-    { id: 1, name: 'Dhanani Anand' },
-    { id: 2, name: 'Dhanani Monika' },
-    { id: 3, name: 'Sharma Mayur' },
-  ];
-
-  itemsList = [
-    { id: 1, name: 'Item 1', description: 'Item 1 desc' },
-    { id: 2, name: 'Item 2', description: 'Item 2 desc' },
-    { id: 3, name: 'Item 3', description: 'Item 3 desc' },
-    { id: 4, name: 'Item 4', description: 'Item 4 desc' },
-    { id: 5, name: 'Item 5', description: 'Item 5 desc' },
-    // Add more items here
-  ];
+  parties: Customer[];
+  itemsList: item[];
 
   constructor(private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.purchase = new purchase();
+    this.purchase.date = new Date();
     this.purchase.items = [];
+    this.getCustomer();
     this.addItem();
+    this.getItem();
   }
 
   ngOnInit(): void {
   }
 
+  getCustomer() {
+    this.loading = true;
+    this.sharedService.customGetApi1<Customer[]>('Customer').subscribe(
+      (data: Customer[]) => {
+        this.parties = data; // Data is directly returned here as an array of User objects
+        this.parties = this.parties.map(user => ({
+          ...user,
+          fullName: `${user.firstName} ${user.lastName}` // Concatenate first and last name
+        }));
+        this.loading = false;
+      },
+      (error) => {
+        this.loading = false;
+        this.showMessage('Error fetching customers:', error);
+      }
+    );
+  }
+
+  getItem() {
+    this.loading = true;
+    this.sharedService.customGetApi1<item[]>('ItemMaster').subscribe(
+      (data: item[]) => {
+        this.itemsList = data; // Data is directly returned here as an array of User objects
+        this.loading = false;
+      },
+      (error) => {
+        this.loading = false;
+        this.showMessage('Error fetching customers:', error);
+      }
+    );
+  }
+  
   addItem() {
     this.purchase.items.push(new purchaseItems());
   }

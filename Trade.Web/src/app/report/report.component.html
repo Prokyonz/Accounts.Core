@@ -1,5 +1,4 @@
-<app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName=""></app-header>
-<!-- <app-header (onClickMainIcon)="goBack()" iconName="pi-arrow-left" title="{{ PageTitle }}" leftIconName=""></app-header> -->
+<app-header (onClickMainIcon)="goBack()" iconName="pi-arrow-left" title="{{ PageTitle }}" leftIconName=""></app-header>
 
 <div class="full-screen-card-container" *ngIf="reportIndex == 1">
   <div *ngIf="customers.length === 0" class="no-data">
