@@ -15,6 +15,7 @@ namespace Accounts.Core.Repositories
         Task<bool> DeleteSalesAsync(long salesId);
         Task<List<SalesMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
         Task<SalesMaster> GetQuery(long stockId, int pageIndex, int pageSize, bool includeDetails);
+        Task<List<SalesMaster>> SalesReport();
     }
 
     public class SalesMasterRepository : ISalesMasterRepository
@@ -24,6 +25,15 @@ namespace Accounts.Core.Repositories
         public SalesMasterRepository(IBaseRepository<SalesMaster, AppDbContext> salesRepo)
         {
             _salesRepo = salesRepo;
+        }
+
+        public async Task<List<SalesMaster>> SalesReport()
+        {
+            object[] paramerers = new object[] { "Id", 1, "Name", "Abhishek" };
+
+            var result = await _salesRepo.ExecuteStoredProcedureAsync("salesReport", paramerers);
+
+            return result;
         }
 
         public async Task<SalesMaster> AddSalesAsync(SalesMaster salesMaster)
