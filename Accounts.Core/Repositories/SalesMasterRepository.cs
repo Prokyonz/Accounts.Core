@@ -11,7 +11,7 @@ namespace Accounts.Core.Repositories
     {
         Task<List<SalesMaster>> GetAllSales(bool includeDetails);
         Task<SalesMaster> AddSalesAsync(SalesMaster salesMaster);
-        Task<SalesMaster> UpdateSalesAsync(SalesMaster  salesMaster);
+        Task<SalesMaster> UpdateSalesAsync(SalesMaster salesMaster);
         Task<bool> DeleteSalesAsync(long salesId);
         Task<List<SalesMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
         Task<SalesMaster> GetQuery(long stockId, int pageIndex, int pageSize, bool includeDetails);
@@ -61,14 +61,19 @@ namespace Accounts.Core.Repositories
             return true;
         }
 
-        public async Task<List<SalesMaster>> GetAllSales(bool includeDetails=false)
+        public async Task<List<SalesMaster>> GetAllSales(bool includeDetails = false)
         {
             Expression<Func<SalesMaster, bool>> predicate = c => c.Id > 0;
+            Expression<Func<SalesMaster, object>> salesDetails = x => x.SalesDetails;
+            Expression<Func<SalesMaster, object>> amountReceived = m => m.AmountReceived;
 
-            return await _salesRepo.GetAllAsync(predicate);
+            if (includeDetails)
+                return await _salesRepo.GetAllAsync(predicate, salesDetails, amountReceived);
+            else
+                return await _salesRepo.GetAllAsync(predicate);
         }
 
-        public async Task<List<SalesMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails=false)
+        public async Task<List<SalesMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails = false)
         {
             return await _salesRepo.QueryAsync(
                 query => query.Id > 0,
@@ -76,7 +81,7 @@ namespace Accounts.Core.Repositories
                 pageIndex, pageSize);
         }
 
-        public async Task<SalesMaster> GetQuery(long salesId, int pageIndex, int pageSize, bool includeDetails=false)
+        public async Task<SalesMaster> GetQuery(long salesId, int pageIndex, int pageSize, bool includeDetails = false)
         {
             var result = await _salesRepo.QueryAsync(
                query => query.Id == salesId,
