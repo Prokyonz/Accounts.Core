@@ -53,3 +53,32 @@
     </div>
   </div>
 </div>
+
+<div class="full-screen-card-container" *ngIf="reportIndex == 3">  <!-- Adjust the condition as needed -->
+  <div *ngIf="purchaseData.length === 0" class="no-data">
+    No purchase data found.
+  </div>
+  
+  <div *ngFor="let purchase of purchaseData" class="customer-card">
+    <div class="card-header">
+      <strong>Purchase No: </strong>{{ purchase.purchaseSlipNo }}
+    </div>
+    <div class="card-body">
+      <div><strong>{{ purchase.partyName }}</strong></div>
+
+      <!-- Total Items Section -->
+      <div class="details-section">
+        <span>{{ purchase.totalItems }} Items</span>
+      </div>
+
+      <!-- Bill Amount Section -->
+      <div class="details-section">
+        <span>{{ purchase.billAmount | currency }}</span>  <!-- Currency pipe for formatting -->
+      </div>
+
+      <div class="details-section">
+        <span>{{ purchase.invoiceDate | date }}</span>  <!-- Currency pipe for formatting -->
+      </div>
+    </div>
+  </div>
+</div>

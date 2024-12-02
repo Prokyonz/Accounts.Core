@@ -73,6 +73,14 @@ export class HeaderComponent implements OnInit {
             this.sidebarVisible = false;
           }
         },
+        {
+          label: 'Purchase',
+          icon: 'pi pi-fw pi-user-minus',
+          routerLink: "/report/3",
+          command: () => {
+            this.sidebarVisible = false;
+          }
+        },
         // {
         //   label: 'Bank',
         //   icon: 'pi pi-fw pi-users',

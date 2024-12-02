@@ -4,7 +4,7 @@ import { Table } from 'primeng/table';
 import { SharedService } from '../common/shared.service';
 import { RememberCompany } from '../shared/component/companyselection/companyselection.component';
 import { Message, MessageService } from 'primeng/api';
-import { Customer, user } from '../Model/models';
+import { Customer, purchase, purchaseReport, user } from '../Model/models';
 
 @Component({
   selector: 'app-report',
@@ -17,6 +17,7 @@ export class ReportComponent implements OnInit {
   reportIndex: number = 0;
   customers: Customer[];
   users: user[];
+  purchaseData: purchaseReport[];
 
   loading = false;
 
@@ -33,6 +34,10 @@ export class ReportComponent implements OnInit {
     else if (this.reportIndex == 2) {
       this.PageTitle = "User Report";
       this.getUser();
+    }
+    else if (this.reportIndex == 3) {
+      this.PageTitle = "Purchase Report";
+      this.getPurchase();
     }
   }
 
@@ -60,6 +65,20 @@ export class ReportComponent implements OnInit {
       (error) => {
         this.loading = false;
         this.showMessage('Error fetching users:', error);
+      }
+    );
+  }
+
+  getPurchase() {
+    this.loading = true;
+    this.sharedService.customGetApi1<purchaseReport[]>('PurchaseMaster/PurchaseReport').subscribe(
+      (data: purchaseReport[]) => {
+        this.purchaseData = data; // Data is directly returned here as an array of User objects
+        this.loading = false;
+      },
+      (error) => {
+        this.loading = false;
+        this.showMessage('Error fetching purchas details:', error);
       }
     );
   }

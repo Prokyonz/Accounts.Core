@@ -1,6 +1,8 @@
 using Accounts.Core.DbContext;
 using Accounts.Core.Models;
+using Accounts.Core.Models.Response;
 using BaseClassLibrary.Interface;
+using BaseClassLibrary.Repository;
 using System.Linq.Expressions;
 
 namespace Accounts.Core.Repositories
@@ -13,7 +15,7 @@ namespace Accounts.Core.Repositories
         Task<bool> DeletePurchaseMasterAsync(long purchaseMasterId);
         Task<List<PurchaseMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
         Task<PurchaseMaster> GetQuery(long purchaseMasterId, int pageIndex, int pageSize, bool includeDetails);
-        Task<List<PurchaseMaster>> PurchaseReport();
+        Task<List<PurchaseReports>> PurchaseReport();
     }
 }
 
@@ -22,17 +24,19 @@ namespace Accounts.Core.Repositories
     public class PurchaseMasterRepository : IPurchaseMasterRepository
     {
         private readonly IBaseRepository<PurchaseMaster, AppDbContext> _purchaseMasterRepo;
+        private readonly IBaseRepository<PurchaseReports, AppDbContext> _purchaseReportRepo;
 
-        public PurchaseMasterRepository(IBaseRepository<PurchaseMaster, AppDbContext> purchaseMasterRepo)
+        public PurchaseMasterRepository(IBaseRepository<PurchaseMaster, AppDbContext> purchaseMasterRepo, IBaseRepository<PurchaseReports, AppDbContext> purchaseReportRepo)
         {
             _purchaseMasterRepo = purchaseMasterRepo;
+            _purchaseReportRepo = purchaseReportRepo;
         }
 
-        public async Task<List<PurchaseMaster>> PurchaseReport()
+        public async Task<List<PurchaseReports>> PurchaseReport()
         {
             object[] paramerers = new object[] { "Id", 1, "Name", "Abhishek" };
-
-            var result = await _purchaseMasterRepo.ExecuteStoredProcedureAsync("purchaseReport", paramerers);
+            ;
+            var result = await _purchaseReportRepo.ExecuteStoredProcedureAsync("purchaseReport", paramerers);
 
             return result;
         }

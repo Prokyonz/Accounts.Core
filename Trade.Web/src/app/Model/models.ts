@@ -112,3 +112,12 @@ export class item {
     updatedDate: Date = new Date();
     updatedBy: number = 0;
 }
+
+export class purchaseReport {
+    purchaseSlipNo: number = 0;
+    invoiceDate: Date = new Date();
+    customerId: number = 0;
+    partyName: string = '';
+    totalItems: number = 0;
+    billAmount: number = 0;
+}

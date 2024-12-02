@@ -1,4 +1,5 @@
 using Accounts.Core.Models;
+using Accounts.Core.Models.Response;
 using Accounts.Core.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +24,7 @@ namespace Accounts.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("PurchaseReport")]
-        public async Task<List<PurchaseMaster>> GetPurchaseReport()
+        public async Task<List<PurchaseReports>> GetPurchaseReport()
         {
             return await _purchaseMasterRepository.PurchaseReport();
         }
