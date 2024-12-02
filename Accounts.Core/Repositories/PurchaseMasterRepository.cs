@@ -11,8 +11,8 @@ namespace Accounts.Core.Repositories
         Task<PurchaseMaster> AddPurchaseMasterAsync(PurchaseMaster purchaseMaster);
         Task<PurchaseMaster> UpdatePurchaseMasterAsync(PurchaseMaster purchaseMaster);
         Task<bool> DeletePurchaseMasterAsync(long purchaseMasterId);
-        Task<List<PurchaseMaster>> GetQuery(int pageIndex, int pageSize);
-        Task<PurchaseMaster> GetQuery(long purchaseMasterId, int pageIndex, int pageSize);
+        Task<List<PurchaseMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
+        Task<PurchaseMaster> GetQuery(long purchaseMasterId, int pageIndex, int pageSize, bool includeDetails);
         Task<List<PurchaseMaster>> PurchaseReport();
     }
 }
@@ -26,6 +26,15 @@ namespace Accounts.Core.Repositories
         public PurchaseMasterRepository(IBaseRepository<PurchaseMaster, AppDbContext> purchaseMasterRepo)
         {
             _purchaseMasterRepo = purchaseMasterRepo;
+        }
+
+        public async Task<List<PurchaseMaster>> PurchaseReport()
+        {
+            object[] paramerers = new object[] { "Id", 1, "Name", "Abhishek" };
+
+            var result = await _purchaseMasterRepo.ExecuteStoredProcedureAsync("purchaseReport", paramerers);
+
+            return result;
         }
 
         public async Task<PurchaseMaster> AddPurchaseMasterAsync(PurchaseMaster purchaseMaster)
@@ -53,14 +62,16 @@ namespace Accounts.Core.Repositories
             return true;
         }
 
-        public async Task<List<PurchaseMaster>> GetAllPurchaseMasters(bool includeDetails)
+        public async Task<List<PurchaseMaster>> GetAllPurchaseMasters(bool includeDetails = false)
         {
             Expression<Func<PurchaseMaster, bool>> predicate = c => c.Id > 0;
-
-            return await _purchaseMasterRepo.GetAllAsync(predicate);
+            if (includeDetails)
+                return await _purchaseMasterRepo.GetAllAsync(predicate, x => x.PurchaseDetails);
+            else
+                return await _purchaseMasterRepo.GetAllAsync(predicate);
         }
 
-        public async Task<List<PurchaseMaster>> GetQuery(int pageIndex, int pageSize)
+        public async Task<List<PurchaseMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails = false)
         {
             return await _purchaseMasterRepo.QueryAsync(
                 query => query.Id > 0,
@@ -68,7 +79,7 @@ namespace Accounts.Core.Repositories
                 pageIndex, pageSize);
         }
 
-        public async Task<PurchaseMaster> GetQuery(long purchaseMasterId, int pageIndex, int pageSize)
+        public async Task<PurchaseMaster> GetQuery(long purchaseMasterId, int pageIndex, int pageSize, bool includeDetails = false)
         {
             var result = await _purchaseMasterRepo.QueryAsync(
                query => query.Id == purchaseMasterId,
@@ -76,16 +87,7 @@ namespace Accounts.Core.Repositories
                pageIndex, pageSize);
 
             return result?.FirstOrDefault();
-        }
-
-        public async Task<List<PurchaseMaster>> PurchaseReport()
-        {
-            object[] paramerers = new object[] { "Id",1, "Name", "Abhishek" };
-
-            var result = await _purchaseMasterRepo.ExecuteStoredProcedureAsync("purchaseReport", paramerers);
-            
-            return result;
-        }
+        }        
 
         public async Task<PurchaseMaster> UpdatePurchaseMasterAsync(PurchaseMaster purchaseMaster)
         {

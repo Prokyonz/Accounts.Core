@@ -43,9 +43,9 @@ namespace Accounts.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetPurchaseMaster")]
-        public async Task<PurchaseMaster> GetRow(long purchaseMasterId, int pageIndex, int pageSize)
+        public async Task<PurchaseMaster> GetRow(long purchaseMasterId, int pageIndex, int pageSize, bool includeDetails = false)
         {
-            return await _purchaseMasterRepository.GetQuery(purchaseMasterId, pageIndex, pageSize);
+            return await _purchaseMasterRepository.GetQuery(purchaseMasterId, pageIndex, pageSize, includeDetails);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Accounts.Core.Controllers
         [HttpGet("GetPurchaseMasterWithPagging")]
         public async Task<List<PurchaseMaster>> GetpurchaseMasterWithPagging(int pageIndex, int pageSize)
         {
-            var result = await _purchaseMasterRepository.GetQuery(pageIndex, pageSize);
+            var result = await _purchaseMasterRepository.GetQuery(pageIndex, pageSize, false);
             return result;
         }
 

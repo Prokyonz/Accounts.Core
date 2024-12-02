@@ -18,6 +18,9 @@ namespace Accounts.Core.Models
 
         [Ignore]
         public virtual List<SalesDetails> SalesDetails { get; set; }
+
+        [Ignore]
+        public virtual List<AmountReceived> AmountReceived { get; set; }
     }
 
     public class SalesDetails : BaseModel
@@ -33,9 +36,6 @@ namespace Accounts.Core.Models
         public decimal Rate { get; set; }
         public decimal GstAmount { get; set; }
         public decimal TotalAmount { get; set; }
-
-        [Ignore]
-        public virtual List<AmountReceived> AmountReceived { get; set; }
     }
 
     public class AmountReceived : BaseModel

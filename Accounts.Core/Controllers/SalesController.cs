@@ -19,23 +19,23 @@ namespace Accounts.Core.Controllers
         }
 
         [HttpGet]
-        public async Task<List<SalesMaster>> Get()
+        public async Task<List<SalesMaster>> Get(bool includeDetails = false)
         {
-            var result = await _salesMasterRepository.GetAllSales();
+            var result = await _salesMasterRepository.GetAllSales(includeDetails);
             return result;
         }
 
         [HttpGet("GetSale")]
-        public async Task<SalesMaster> GetRow(long salesId, int pageIndex, int pageSize)
+        public async Task<SalesMaster> GetRow(long salesId, int pageIndex, int pageSize, bool includeDetails = false)
         {
-            var result = await _salesMasterRepository.GetQuery(salesId, pageIndex, pageSize);
+            var result = await _salesMasterRepository.GetQuery(salesId, pageIndex, pageSize, includeDetails);
             return result;
         }
 
         [HttpGet("GetSalesWithPagging")]
-        public async Task<List<SalesMaster>> GetStocksWithPagging(int pageIndex, int pageSize)
+        public async Task<List<SalesMaster>> GetStocksWithPagging(int pageIndex, int pageSize, bool includeDetails = false)
         {
-            var result = await _salesMasterRepository.GetQuery(pageIndex, pageSize);
+            var result = await _salesMasterRepository.GetQuery(pageIndex, pageSize, includeDetails);
             return result;
         }
 
