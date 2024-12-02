@@ -21,19 +21,25 @@ export class Customer {
 }
 
 export class purchase {
-    date: Date;
-    party: string;
+    id: number = 0;
+    purchaseSlipNo: number = 0;
+    invoiceDate: Date = new Date();
+    EntryDate: Date = new Date();
+    customerId: string;
     description: string = '';
+    brokerId: number = 0;
+    discountAmount: number = 0;
     billAmount: number = 0;
-    items: purchaseItems[];
+    purchaseDetails: purchaseItems[];
 }
 
 export class purchaseItems {
-    itemName: string = '';
-    itemdescription: string = '';
-    qty: number = 1;
+    id: number = 0;
+    itemId: number = 0;
+    itemDescription: string = '';
+    quantity: number = 1;
     rate: number = 0;
-    gst: number = 0;
+    gSTAmount: number = 0;
     total: number = 0;
 }
 

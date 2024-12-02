@@ -18,8 +18,8 @@ export class PurchaseComponent {
 
   constructor(private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.purchase = new purchase();
-    this.purchase.date = new Date();
-    this.purchase.items = [];
+    this.purchase.invoiceDate = new Date();
+    this.purchase.purchaseDetails = [];
     this.getCustomer();
     this.addItem();
     this.getItem();
@@ -61,17 +61,17 @@ export class PurchaseComponent {
   }
   
   addItem() {
-    this.purchase.items.push(new purchaseItems());
+    this.purchase.purchaseDetails.push(new purchaseItems());
   }
 
   // Method to calculate totals
   calculateTotal(item: any): void {
-    item.total = (item.qty * item.rate) + item.gst;
+    item.total = (item.quantity * item.rate) + item.gSTAmount;
     this.purchase.billAmount = this.getBillAmount();
   }
 
   getBillAmount(): number {
-    return this.purchase.items.reduce((sum: any, item: { total: any; }) => sum + item.total, 0);
+    return this.purchase.purchaseDetails.reduce((sum: any, item: { total: any; }) => sum + item.total, 0);
   }
 
   // Check if the form is valid
@@ -95,29 +95,48 @@ export class PurchaseComponent {
 
   editItem(index: number): void {
     // You can add further functionality for editing an item if required
-    console.log('Editing item:', this.purchase.items[index]);
+    console.log('Editing item:', this.purchase.purchaseDetails[index]);
   }
 
   // Delete item method
   deleteItem(index: number): void {
-    this.purchase.items.splice(index, 1);
+    this.purchase.purchaseDetails.splice(index, 1);
   }
 
   showDetails() {
-    var a = this.purchase.items;
-    this.showMessage('success', 'Sales details added successfully');
+    this.sharedService.customPostApi("PurchaseMaster", this.purchase)
+      .subscribe((data: any) => {
+        if (data != null) {
+          this.showMessage('success', 'Purchase details added successfully');
+          this.clearForm();
+        }
+        else {
+          this.loading = false;
+          this.showMessage('error', 'Something went wrong...');
+        }
+      }, (ex: any) => {
+        this.loading = false;
+        this.showMessage('error', ex);
+      });
   }
 
   showMessage(type: string, message: string) {
     this.messageService.add({ severity: type, summary: message });
   }
 
-  onItemSelect(itemname: string) {
-    const selectedItem = this.itemsList.find(item => item.id === parseInt(itemname));
+  clearForm() {
+    this.purchase = new purchase();
+    this.purchase.invoiceDate = new Date();
+    this.purchase.purchaseDetails = [];
+    this.loading = false;
+  }
+
+  onItemSelect(itemname: number) {
+    const selectedItem = this.itemsList.find(item => item.id === parseInt(itemname.toString()));
     if (selectedItem) {
-      this.purchase.items.forEach(x => {
-        if (x.itemName.toString() === selectedItem.id.toString()) {
-          x.itemdescription = selectedItem.description;
+      this.purchase.purchaseDetails.forEach(x => {
+        if (x.itemId.toString() === selectedItem.id.toString()) {
+          x.itemDescription = selectedItem.description;
         }
       });
     }

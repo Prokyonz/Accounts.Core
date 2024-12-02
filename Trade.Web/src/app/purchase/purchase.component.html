@@ -3,12 +3,12 @@
 <div class="container">
   <!-- Form Section -->
   <div class="form-container">
-    <form (ngSubmit)="onSubmit()" style="height: calc(100vh - 150px); overflow:scroll;">
+    <form (ngSubmit)="onSubmit()" style="height: calc(82vh); overflow:scroll;">
       <!-- Sale Header Section -->
       <div class="form-group">
         <label for="date">Date</label>
         <!-- <input type="date" id="date" [(ngModel)]="saleData.date" name="date" class="form-control" required> -->
-        <p-calendar name="date" [(ngModel)]="purchase.date" [showIcon]="true" [touchUI]="true"
+        <p-calendar name="date" [(ngModel)]="purchase.invoiceDate" [showIcon]="true" [touchUI]="true"
           [readonlyInput]="true"></p-calendar>
       </div>
 
@@ -17,7 +17,7 @@
         <!-- <select id="party" [(ngModel)]="saleData.party" name="party" class="form-control" required>
             <option *ngFor="let party of parties" [value]="party.id">{{ party.name }}</option>
           </select> -->
-        <p-dropdown id="party" [(ngModel)]="purchase.party" name="party" [options]="parties" optionLabel="fullName"
+        <p-dropdown id="party" [(ngModel)]="purchase.customerId" name="party" [options]="parties" optionLabel="fullName"
           optionValue="id" placeholder="Search and select a party" [filter]="true" [showClear]="true" filterBy="fullName">
         </p-dropdown>
       </div>
@@ -30,29 +30,29 @@
 
       <!-- Items Section - Card View -->
       <div class="items-container">
-        <div *ngFor="let item of purchase.items; let i = index" class="item-card">
+        <div *ngFor="let item of purchase.purchaseDetails; let i = index" class="item-card">
           <p-card [header]="'Item ' + (i + 1)" class="mb-3">
             <div class="card-body">
               <div class="form-group">
                 <label for="itemName{{i}}">Item Name</label>
                 <!-- <input type="text" [(ngModel)]="item.itemName" name="itemName{{i}}" class="form-control" placeholder="Item Name" required> -->
-                <p-dropdown id="itemName{{i}}" [(ngModel)]="item.itemName" name="itemName{{i}}" [options]="itemsList"
+                <p-dropdown id="itemName{{i}}" [(ngModel)]="item.itemId" name="itemName{{i}}" [options]="itemsList"
                   optionLabel="name" optionValue="id" placeholder="Select Item" [filter]="true" [showClear]="true"
-                  filterBy="name" (onChange)="onItemSelect(item.itemName)">
+                  filterBy="name" (onChange)="onItemSelect(item.itemId)">
                 </p-dropdown>
               </div>
 
               <div class="form-group">
                 <label for="party">Item Description</label>
                 <textarea id="address" pInputTextarea rows="5" cols="30"
-                                                class="form-control" name="itemdescription{{i}}" [(ngModel)]="item.itemdescription"></textarea>
+                                                class="form-control" name="itemdescription{{i}}" [(ngModel)]="item.itemDescription"></textarea>
               </div>
 
               <!-- Flexbox for Qty and Rate on the same line -->
               <div class="form-row">
                 <div class="col-6">
                   <label for="qty{{i}}">Quantity</label><br />
-                  <input type="number" [(ngModel)]="item.qty" name="qty{{i}}" class="form-control" placeholder="Qty"
+                  <input type="number" [(ngModel)]="item.quantity" name="qty{{i}}" class="form-control" placeholder="Qty"
                     required (ngModelChange)="calculateTotal(item)">
                 </div>
                 <div class="col-6">
@@ -64,7 +64,7 @@
 
               <div class="form-group">
                 <label for="gst{{i}}">GST Rate</label>
-                <input type="number" [(ngModel)]="item.gst" name="gst{{i}}" class="form-control" placeholder="GST"
+                <input type="number" [(ngModel)]="item.gSTAmount" name="gst{{i}}" class="form-control" placeholder="GST"
                   required (ngModelChange)="calculateTotal(item)">
               </div>
 
