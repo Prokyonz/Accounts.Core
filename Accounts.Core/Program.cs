@@ -61,21 +61,14 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
+app.UseHttpsRedirection();
+
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("../swagger/v1/swagger.json", "DiamondTrade.API v1"));
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseCors("AllowAllOrigins");
 app.UseRouting();
-
-//app.UseHttpsRedirection();
-
+app.UseCors("AllowLocalhost");
 app.UseAuthorization();
-
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-});
+app.MapControllers();
 
 app.Run();
