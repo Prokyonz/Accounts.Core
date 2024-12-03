@@ -4,14 +4,12 @@ import { Observable, throwError } from "rxjs";
 import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
-const apiUrl: string = "https://localhost:7261/UserMaster/Login"; //"http://192.168.29.223/calculator/api/Auth/login";
-//const apiUrl: string = "http://3.108.219.234/SunSparkal/UserMaster/Login";
+//const apiUrl: string = "https://localhost:7261/UserMaster/Login"; //"http://192.168.29.223/calculator/api/Auth/login";
+const apiUrl: string = "http://13.232.187.168/SunSparkal/UserMaster/Login";
 
 @Injectable({
     providedIn: 'root' // or specify a module where it should be provided
 })
-
-
 
 export class AuthService {
     constructor(private http: HttpClient, private router: Router) {
@@ -20,10 +18,6 @@ export class AuthService {
     private isUserLoggedIn = this.hasToken();
 
     public login(user: string, password: string): Observable<any> {
-
-        const httpOptions = {
-            headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8' }),
-        };
 
         const reqParam = '?mobileNo=' + user
             + '&password=' + password;
