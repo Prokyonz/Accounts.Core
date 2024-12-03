@@ -82,3 +82,18 @@
     </div>
   </div>
 </div>
+
+<div class="full-screen-card-container" *ngIf="reportIndex == 4">  <!-- Adjust the condition as needed -->
+  <div *ngIf="itemData.length === 0" class="no-data">
+    No item data found.
+  </div>
+  
+  <div *ngFor="let item of itemData" class="customer-card">
+    <div class="card-header">
+      {{ item.name }}
+    </div>
+    <div class="card-body">
+      <div><strong>{{ item.description }}</strong></div>
+    </div>
+  </div>
+</div>

@@ -17,8 +17,8 @@
         <!-- <select id="party" [(ngModel)]="saleData.party" name="party" class="form-control" required>
             <option *ngFor="let party of parties" [value]="party.id">{{ party.name }}</option>
           </select> -->
-        <p-dropdown id="party" [(ngModel)]="saleData.customerId" name="party" [options]="parties" optionLabel="name"
-          optionValue="id" placeholder="Search and select a party" [filter]="true" [showClear]="true" filterBy="name">
+        <p-dropdown id="party" [(ngModel)]="saleData.customerId" name="party" [options]="parties" optionLabel="fullName"
+          optionValue="id" placeholder="Search and select a party" [filter]="true" [showClear]="true" filterBy="fullName">
         </p-dropdown>
       </div>
 
