@@ -70,7 +70,7 @@ export class UserComponent {
     this.sharedService.customPostApi("UserMaster",this.user)
           .subscribe((data: any) => {
                 if (data != null){                  
-                  this.showMessage('success',data.message);
+                  this.showMessage('success','User Save Successfully.');
                   this.clearForm();
                 }
                 else{

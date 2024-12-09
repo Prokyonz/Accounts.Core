@@ -31,6 +31,10 @@ export class purchase {
     discountAmount: number = 0;
     billAmount: number = 0;
     purchaseDetails: purchaseItems[];
+    createdDate: Date = new Date();
+    createdBy: number = 0;
+    updatedDate: Date = new Date();
+    updatedBy: number = 0;
 }
 
 export class purchaseItems {
@@ -41,6 +45,10 @@ export class purchaseItems {
     rate: number = 0;
     gSTAmount: number = 0;
     total: number = 0;
+    createdDate: Date = new Date();
+    createdBy: number = 0;
+    updatedDate: Date = new Date();
+    updatedBy: number = 0;
 }
 
 export class user {
@@ -107,6 +115,9 @@ export class item {
     id: number = 0;
     name: string = '';
     description: string = '';
+    hsnCode: string = '';
+    gstPercentage: number = 0;
+    isActive: boolean = true;
     createdDate: Date = new Date();
     createdBy: number = 0;
     updatedDate: Date = new Date();

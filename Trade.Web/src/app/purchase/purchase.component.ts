@@ -11,6 +11,7 @@ import { Customer, item, purchase, purchaseItems } from '../Model/models';
 })
 export class PurchaseComponent {
   PageTitle: string = "Purchase";
+  logInUserID: string;
   loading: boolean = false;
   purchase: purchase;
   parties: Customer[];
@@ -20,6 +21,7 @@ export class PurchaseComponent {
     this.purchase = new purchase();
     this.purchase.invoiceDate = new Date();
     this.purchase.purchaseDetails = [];
+    this.logInUserID = localStorage.getItem('userid') ?? '0';
     this.getCustomer();
     this.addItem();
     this.getItem();
@@ -66,7 +68,17 @@ export class PurchaseComponent {
 
   // Method to calculate totals
   calculateTotal(item: any): void {
-    item.total = (item.quantity * item.rate) + item.gSTAmount;
+    var total = (item.quantity * item.rate);
+    const selectedItem = this.itemsList.find(x => x.id === parseInt(item.itemId.toString()));
+    if (selectedItem) {
+      this.purchase.purchaseDetails.forEach(x => {
+        if (x.itemId.toString() === selectedItem.id.toString()) {
+          item.gSTAmount = (total * selectedItem.gstPercentage)/100;
+        }
+      });
+    }
+
+    item.total = total + item.gSTAmount;
     this.purchase.billAmount = this.getBillAmount();
   }
 
@@ -104,6 +116,10 @@ export class PurchaseComponent {
   }
 
   showDetails() {
+    this.purchase.createdBy = parseInt(this.logInUserID);
+    this.purchase.createdDate = new Date();
+    this.purchase.updatedBy = parseInt(this.logInUserID);
+    this.purchase.updatedDate = new Date();
     this.sharedService.customPostApi("PurchaseMaster", this.purchase)
       .subscribe((data: any) => {
         if (data != null) {
