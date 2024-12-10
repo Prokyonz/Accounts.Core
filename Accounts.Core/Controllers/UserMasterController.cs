@@ -60,7 +60,7 @@ namespace Accounts.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetPermissionMasters")]
-        public async Task<List<UserPermissionChild>> GetPermissionMasters()
+        public async Task<List<PermissionMaster>> GetPermissionMasters()
         {
             var result = await _userMasterRepository.GetMasterPermissions();
             return result;

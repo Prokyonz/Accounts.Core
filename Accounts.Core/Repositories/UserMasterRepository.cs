@@ -13,7 +13,7 @@ namespace Accounts.Core.Repositories
         Task<bool> DeleteUserMasterAsync(long userMasterId);
         Task<List<UserMaster>> GetQuery(int pageIndex, int pageSize);
         Task<UserMaster> GetQuery(long userMasterId, int pageIndex, int pageSize);
-        Task<List<UserPermissionChild>> GetMasterPermissions();
+        Task<List<PermissionMaster>> GetMasterPermissions();
         Task<UserMaster> Login(string? mobileNo, string password, string? emailId);
     }
 }
@@ -24,10 +24,15 @@ namespace Accounts.Core.Repositories
     {
         private readonly IBaseRepository<UserMaster, AppDbContext> _userMasterRepo;
         private readonly IBaseRepository<UserPermissionChild, AppDbContext> _userPermisionChild;
+        private readonly IBaseRepository<PermissionMaster, AppDbContext> _permissionMaster;
 
-        public UserMasterRepository(IBaseRepository<UserMaster, AppDbContext> userMasterRepo)
+        public UserMasterRepository(IBaseRepository<UserMaster, AppDbContext> userMasterRepo, 
+            IBaseRepository<UserPermissionChild, AppDbContext> userPermisionChild,
+            IBaseRepository<PermissionMaster, AppDbContext> permissionMaster)
         {
             _userMasterRepo = userMasterRepo;
+            _userPermisionChild = userPermisionChild;
+            _permissionMaster = permissionMaster;
         }
 
         public async Task<UserMaster> AddUserMasterAsync(UserMaster userMaster)
@@ -80,11 +85,11 @@ namespace Accounts.Core.Repositories
             return result?.FirstOrDefault();
         }
 
-        public async Task<List<UserPermissionChild>> GetMasterPermissions()
+        public async Task<List<PermissionMaster>> GetMasterPermissions()
         {
             try
             {
-                var permissions = await _userPermisionChild.QueryAsync(
+                var permissions = await _permissionMaster.QueryAsync(
                                query => query.Id > 0,
                                orderBy: c => c.Id);
 
@@ -107,11 +112,11 @@ namespace Accounts.Core.Repositories
 
                 if (users?.Any() == true && users.Count > 0)
                 {
-                    var permissions = await _userPermisionChild.QueryAsync(
-                                   query => query.UserId == users[0].Id,
-                                   orderBy: c => c.Id);
+                    //var permissions = await _userPermisionChild.QueryAsync(
+                                   //query => query.UserId == users[0].Id,
+                                   //orderBy: c => c.Id,0, 1000);
 
-                    users[0].Permissions = permissions;
+                    //users[0].Permissions = permissions;
 
                     return users[0];
                 }
