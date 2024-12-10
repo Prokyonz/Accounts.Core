@@ -1,4 +1,5 @@
 ﻿using Accounts.Core.Models;
+using Accounts.Core.Models.Response;
 using BaseClassLibrary;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +22,7 @@ namespace Accounts.Core.DbContext
         public DbSet<UserMaster> UserMaster { get; set; }
         public DbSet<BrokerMaster> BrokerMaster { get; set; }
         public DbSet<ItemMaster> ItemMaster { get; set; }
+        public DbSet<PurchaseReports> PurchaseReports { get; set; }
         public DbSet<PermissionMaster> PermissionMaster { get; set; }
         public DbSet<UserPermissionChild> UserPermissionChild { get; set; }
 
@@ -31,7 +33,7 @@ namespace Accounts.Core.DbContext
             base.OnModelCreating(modelBuilder);
 
             // Additional configurations for your entities
-            //modelBuilder.Entity<CompanyMaster>().HasKey(c => c.Id);
+            modelBuilder.Entity<PurchaseReports>().HasNoKey();
         }
     }
 }

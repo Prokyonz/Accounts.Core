@@ -34,7 +34,9 @@ namespace Accounts.Core.Models
         public long ItemId { get; set; }
         public decimal CarratQty { get; set; }
         public decimal Rate { get; set; }
-        public decimal GstAmount { get; set; }
+        public decimal SGST { get; set; }
+        public decimal CGST { get; set; }
+        public decimal IGST { get; set; }
         public decimal TotalAmount { get; set; }
     }
 
@@ -46,11 +48,11 @@ namespace Accounts.Core.Models
 
         [ForeignKey("SalesMasterId")]
         public long SalesMasterId { get; set; }
+        public string PaymentMode { get; set; }
         public bool FromDebitCard { get; set; }
         public bool FromCreditCard { get; set; }
         public string CardNo { get; set; }
         public string NameOnCard { get; set; }
-        public decimal CardAmount { get; set; }
-        public decimal CashAmount { get; set; }
+        public decimal Amount { get; set; }        
     }
 }

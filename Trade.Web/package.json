@@ -21,6 +21,8 @@
     "@capacitor/android": "^6.2.0",
     "@capacitor/angular": "^2.0.3",
     "@capacitor/core": "latest",
+    "@capacitor/filesystem": "^6.0.2",
+    "@capacitor/share": "^6.0.3",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.2",
     "primeflex": "^3.3.0",

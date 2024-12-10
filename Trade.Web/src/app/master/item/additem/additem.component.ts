@@ -28,7 +28,7 @@ export class AdditemComponent implements OnInit {
     this.sharedService.customPostApi("ItemMaster", this.item)
       .subscribe((data: any) => {
         if (data != null) {
-          this.showMessage('success', data.message);
+          this.showMessage('success', 'Item Save Successfully');
           this.clearForm();
         }
         else {
