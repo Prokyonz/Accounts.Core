@@ -52,6 +52,5 @@ namespace Accounts.Core.Models
         public string NameOnCard { get; set; }
         public decimal CardAmount { get; set; }
         public decimal CashAmount { get; set; }
-
     }
 }

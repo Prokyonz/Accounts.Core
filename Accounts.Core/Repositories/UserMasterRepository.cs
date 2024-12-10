@@ -13,6 +13,7 @@ namespace Accounts.Core.Repositories
         Task<bool> DeleteUserMasterAsync(long userMasterId);
         Task<List<UserMaster>> GetQuery(int pageIndex, int pageSize);
         Task<UserMaster> GetQuery(long userMasterId, int pageIndex, int pageSize);
+        Task<List<UserPermissionChild>> GetMasterPermissions();
         Task<UserMaster> Login(string? mobileNo, string password, string? emailId);
     }
 }
@@ -22,6 +23,7 @@ namespace Accounts.Core.Repositories
     public class UserMasterRepository : IUserMasterRepository
     {
         private readonly IBaseRepository<UserMaster, AppDbContext> _userMasterRepo;
+        private readonly IBaseRepository<UserPermissionChild, AppDbContext> _userPermisionChild;
 
         public UserMasterRepository(IBaseRepository<UserMaster, AppDbContext> userMasterRepo)
         {
@@ -78,6 +80,22 @@ namespace Accounts.Core.Repositories
             return result?.FirstOrDefault();
         }
 
+        public async Task<List<UserPermissionChild>> GetMasterPermissions()
+        {
+            try
+            {
+                var permissions = await _userPermisionChild.QueryAsync(
+                               query => query.Id > 0,
+                               orderBy: c => c.Id);
+
+                return permissions;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Not able to get the permissions, please try again later");
+            }
+        }
+
         public async Task<UserMaster> Login(string? mobileNo, string password, string? emailId)
         {
             try
@@ -87,13 +105,19 @@ namespace Accounts.Core.Repositories
                                orderBy: c => c.CreatedDate,
                                0, 10);
 
-                if(users?.Any() == true && users.Count > 0)
+                if (users?.Any() == true && users.Count > 0)
                 {
+                    var permissions = await _userPermisionChild.QueryAsync(
+                                   query => query.UserId == users[0].Id,
+                                   orderBy: c => c.Id);
+
+                    users[0].Permissions = permissions;
+
                     return users[0];
                 }
                 throw new Exception("MobileNo/EmailId or Password is incorrect");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception("Not able to login at this moment, please try again later");
             }

@@ -1,4 +1,5 @@
-﻿using BaseClassLibrary.Models;
+﻿using AutoMapper.Configuration.Annotations;
+using BaseClassLibrary.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,5 +17,8 @@ namespace Accounts.Core.Models
         public string? EmailId { get; set; }
         public bool? IsAgent { get; set; }
         public long? ParentUserId { get; set; }
+
+        [Ignore]
+        public List<UserPermissionChild> Permissions { get; set;}
     }
 }

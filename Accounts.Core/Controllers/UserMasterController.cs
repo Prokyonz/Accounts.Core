@@ -56,6 +56,17 @@ namespace Accounts.Core.Controllers
         }
 
         /// <summary>
+        /// Get the permission list.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetPermissionMasters")]
+        public async Task<List<UserPermissionChild>> GetPermissionMasters()
+        {
+            var result = await _userMasterRepository.GetMasterPermissions();
+            return result;
+        }
+
+        /// <summary>
         /// Create UserMaster.
         /// </summary>
         /// <returns></returns>

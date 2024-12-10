@@ -21,6 +21,8 @@ namespace Accounts.Core.DbContext
         public DbSet<UserMaster> UserMaster { get; set; }
         public DbSet<BrokerMaster> BrokerMaster { get; set; }
         public DbSet<ItemMaster> ItemMaster { get; set; }
+        public DbSet<PermissionMaster> PermissionMaster { get; set; }
+        public DbSet<UserPermissionChild> UserPermissionChild { get; set; }
 
 
         // You can override OnModelCreating if you need additional configurations
