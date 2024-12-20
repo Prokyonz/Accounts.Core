@@ -20,6 +20,7 @@ const routes: Routes = [
   {path:'dashboard', component:DashboardComponent},
   {path:'addcustomer', component:AddcustomerComponent},
   {path:'additem', component:AdditemComponent},
+  {path:'additem/:itemId', component:AdditemComponent},
   {path:'sale', component:SaleComponent},
   {path:'salebill', component:SaleBillComponent},
   {path:'purchase', component:PurchaseComponent},

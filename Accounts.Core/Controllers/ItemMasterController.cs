@@ -32,10 +32,10 @@ namespace Accounts.Core.Controllers
         /// Read ItemMaster from table.
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetItemMaster")]
-        public async Task<ItemMaster> GetRow(long itemMasterId, int pageIndex, int pageSize)
+        [HttpGet("GetItemMaster/{itemMasterId}")]
+        public async Task<ItemMaster> GetRow(long itemMasterId)
         {
-            return await _itemMasterRepository.GetQuery(itemMasterId, pageIndex, pageSize);
+            return await _itemMasterRepository.GetQuery(itemMasterId, 0, 1);
         }
 
         /// <summary>

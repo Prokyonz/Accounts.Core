@@ -1,7 +1,27 @@
-<app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName=""></app-header>
+<!-- <app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName=""></app-header> -->
+<app-header (onClickMainIcon) = "myfunction()" iconName="pi-arrow-left" leftIconName="{{isSaveButton ? '' : 'pi-plus'}}" (onClickLeftIcon)="onAddIconClick();" title="{{ PageTitle }}"></app-header>
 <p-toast [breakpoints]="{'920px': { right: '0', left: '50'}}"></p-toast>
 
-<div class="container">
+<div class="full-screen-card-container" *ngIf="!isSaveButton">  <!-- Adjust the condition as needed -->
+  <div *ngIf="itemData.length === 0" class="no-data">
+    No item data found.
+  </div>
+  
+  <div *ngFor="let item of itemData" class="customer-card">
+    <div class="card-header">
+      {{ item.name }}
+    </div>
+    <div class="card-body">
+      <div><strong>{{ item.description }}</strong></div>
+    </div>
+
+    <div class="action-icons">
+      <i class="pi pi-pencil edit-icon" [routerLink]="['/additem', item.id]" title="Edit" style="cursor: pointer;"></i>
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="isSaveButton">
     <form #addItemForm="ngForm">
       <!-- Item Name Input -->
       <div class="form-group">
@@ -61,5 +81,5 @@
   
     </form>
 
-    <p-button label="Submit" (onClick)="showDetails()" icon="pi pi-check"></p-button>
+    <p-button [label]="isEditMode ? 'Update' : 'Submit'" (onClick)="showDetails()" icon="pi pi-check"></p-button>
 </div>

@@ -40,10 +40,10 @@ export class ReportComponent implements OnInit {
       this.PageTitle = "Purchase Report";
       this.getPurchase();
     }
-    else if (this.reportIndex == 4) {
-      this.PageTitle = "Item Report";
-      this.getItem();
-    }
+    // else if (this.reportIndex == 4) {
+    //   this.PageTitle = "Item Report";
+    //   this.getItem();
+    // }
   }
 
   getCustomer() {
