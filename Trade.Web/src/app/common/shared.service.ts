@@ -5,8 +5,8 @@ import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 //import {config} from '../../assets/config/app.config';
 
-const apiUrl : string = "https://localhost:7261/"; //http://192.168.29.223/calculator/api/";
-//const apiUrl: string = "http://65.2.75.1/SunSparkal/";
+//const apiUrl : string = "https://localhost:7261/"; //http://192.168.29.223/calculator/api/";
+const apiUrl: string = "http://13.126.12.87/SunSparkal/";
 
 //const apiKey = config.apiKey;
 @Injectable({
@@ -32,11 +32,11 @@ export class SharedService {
 
   customPutApi(api: string, data: any): Observable<ApiResponse> {
     return this.httpClient.put<ApiResponse>(apiUrl + api, data).pipe(
-      map(t => t), 
+      map(t => t),
       catchError(err => throwError(err))
     );
   }
-  
+
   JsonConvert<T>(jsonString: string): T {
     const obj = JSON.parse(jsonString);
     return obj as T;

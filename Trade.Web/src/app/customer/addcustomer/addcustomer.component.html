@@ -26,44 +26,44 @@
 
                                 <td class="half-width">
                                     <label for="firstName">First Name</label>
-                                    <input id="firstName" pInputText pKeyFilter="int" type="text" class="form-control" 
-                                    name="firstName" [(ngModel)]="customerDetails.firstName"/>
+                                    <input id="firstName" pInputText pKeyFilter="int" type="text" class="form-control"
+                                        name="firstName" [(ngModel)]="customerDetails.firstName" />
                                 </td>
                                 <td class="half-width">
                                     <label for="lastName">Last Name</label>
-                                    <input id="lastName" pInputText type="text" class="form-control" 
-                                    name="lastName" [(ngModel)]="customerDetails.lastName"/>
+                                    <input id="lastName" pInputText type="text" class="form-control" name="lastName"
+                                        [(ngModel)]="customerDetails.lastName" />
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" class="input-field">
                                     <label for="address">Address</label>
-                                    <textarea id="address" pInputTextarea rows="5" cols="30"
-                                        class="form-control" name="CustomerAddress" [(ngModel)]="customerDetails.address"></textarea>
+                                    <textarea id="address" pInputTextarea rows="5" cols="30" class="form-control"
+                                        name="CustomerAddress" [(ngModel)]="customerDetails.address"></textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="half-width">
                                     <label for="mobile">Mobile</label>
-                                    <input id="mobile" pInputText type="text" class="form-control"
-                                    name="CustomerMobile" [(ngModel)]="customerDetails.mobileNo" />
+                                    <input id="mobile" pInputText type="text" class="form-control" name="CustomerMobile"
+                                        [(ngModel)]="customerDetails.mobileNo" />
                                 </td>
                                 <td class="half-width">
                                     <label for="email">Email</label>
-                                    <input id="email" pInputText type="text" class="form-control" 
-                                    name="CustomerEmail" [(ngModel)]="customerDetails.emailId"/>
+                                    <input id="email" pInputText type="text" class="form-control" name="CustomerEmail"
+                                        [(ngModel)]="customerDetails.emailId" />
                                 </td>
                             </tr>
                             <tr>
                                 <td class="half-width">
                                     <label for="aadhar">Aadharcard No</label>
-                                    <input id="aadhar" pInputText pKeyFilter="int" type="number" class="form-control" 
-                                    name="CustomerAadharCardNo" [(ngModel)]="customerDetails.aadharNo"/>
+                                    <input id="aadhar" pInputText pKeyFilter="int" type="number" class="form-control"
+                                        name="CustomerAadharCardNo" [(ngModel)]="customerDetails.aadharNo" />
                                 </td>
                                 <td class="half-width">
                                     <label for="pancard">Pancard No</label>
-                                    <input id="pancard" pInputText type="text" class="form-control" 
-                                    name="CustomerPancardNo" [(ngModel)]="customerDetails.panNo"/>
+                                    <input id="pancard" pInputText type="text" class="form-control"
+                                        name="CustomerPancardNo" [(ngModel)]="customerDetails.panNo" />
                                 </td>
                             </tr>
                         </table>
@@ -89,21 +89,25 @@
                         <tr class="document-row">
                             <td class="document-field">
                                 <label>Aadharcard Front</label><br />
-                                <p-button [label]="customerDetails.aadharImageFrontData === '' ? 'Upload' : 'View'" (onClick)="triggerFileInput('AadharcardFront')"></p-button>
+                                <p-button [label]="customerDetails.aadharImageFrontData === '' ? 'Upload' : 'View'"
+                                    (onClick)="triggerFileInput('AadharcardFront')"></p-button>
                             </td>
                             <td class="document-field">
                                 <label>Aadharcard Back</label><br />
-                                <p-button [label]="customerDetails.aadhbarImageBackData === '' ? 'Upload' : 'View'" (onClick)="triggerFileInput('AadharcardBack')"></p-button>
+                                <p-button [label]="customerDetails.aadhbarImageBackData === '' ? 'Upload' : 'View'"
+                                    (onClick)="triggerFileInput('AadharcardBack')"></p-button>
                             </td>
                         </tr>
                         <tr class="document-row">
                             <td class="document-field">
                                 <label>Pancard</label><br />
-                                <p-button [label]="customerDetails.panImageData === '' ? 'Upload' : 'View'" (onClick)="triggerFileInput('Pancard')"></p-button>
+                                <p-button [label]="customerDetails.panImageData === '' ? 'Upload' : 'View'"
+                                    (onClick)="triggerFileInput('Pancard')"></p-button>
                             </td>
                             <td class="document-field">
                                 <label>Signature</label><br />
-                                <p-button [label]="customerDetails.signatureImageData === '' ? 'Upload' : 'View'" (onClick)="triggerFileInput('Signature')"></p-button>
+                                <p-button [label]="customerDetails.signatureImageData === '' ? 'Upload' : 'View'"
+                                    (onClick)="triggerFileInput('Signature')"></p-button>
                             </td>
                         </tr>
                     </table>
@@ -113,8 +117,7 @@
                     <!-- <app-upload></app-upload> -->
                     <div class="upload-container">
                         <div>
-                            <img *ngIf="imageUrl"
-                                [src]="imageUrl" alt="Uploaded Image"
+                            <img *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image"
                                 style="max-width: 300px; max-height: 300px;" />
                         </div>
                         <p-button label="Upload" (onClick)="onUpload(true)"></p-button>
@@ -128,4 +131,4 @@
     <p-button label="Submit" (onClick)="showDetails()" icon="pi pi-check"></p-button>
 </div>
 
-<input type="file" id="fileInput" (change)="onFileSelected($event)" accept="image/*" style="display: none;" />
+<input type="file" id="fileInput" (change)="onUpload(true)" accept="image/*" style="display: none;" />
