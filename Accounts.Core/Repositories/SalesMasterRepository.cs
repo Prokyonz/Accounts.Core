@@ -1,5 +1,6 @@
 ﻿using Accounts.Core.DbContext;
 using Accounts.Core.Models;
+using Accounts.Core.Models.Response;
 using BaseClassLibrary.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,23 +16,25 @@ namespace Accounts.Core.Repositories
         Task<bool> DeleteSalesAsync(long salesId);
         Task<List<SalesMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
         Task<SalesMaster> GetQuery(long stockId, int pageIndex, int pageSize, bool includeDetails);
-        Task<List<SalesMaster>> SalesReport();
+        Task<List<SaleReport>> SalesReport();
     }
 
     public class SalesMasterRepository : ISalesMasterRepository
     {
         private readonly IBaseRepository<SalesMaster, AppDbContext> _salesRepo;
+        private readonly IBaseRepository<SaleReport, AppDbContext> _salesReportRepo;
 
-        public SalesMasterRepository(IBaseRepository<SalesMaster, AppDbContext> salesRepo)
+        public SalesMasterRepository(IBaseRepository<SalesMaster, AppDbContext> salesRepo, IBaseRepository<SaleReport, AppDbContext> salesReportRepo)
         {
             _salesRepo = salesRepo;
+            _salesReportRepo = salesReportRepo;
         }
 
-        public async Task<List<SalesMaster>> SalesReport()
+        public async Task<List<SaleReport>> SalesReport()
         {
             object[] paramerers = new object[] { "Id", 1, "Name", "Abhishek" };
 
-            var result = await _salesRepo.ExecuteStoredProcedureAsync("salesReport", paramerers);
+            var result = await _salesReportRepo.ExecuteStoredProcedureAsync("salesReport", paramerers);
 
             return result;
         }

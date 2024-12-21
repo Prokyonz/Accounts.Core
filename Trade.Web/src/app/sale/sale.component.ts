@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { SharedService } from '../common/shared.service';
-import { amountReceived, Customer, item, sale, salesDetails } from '../Model/models';
+import { amountReceived, Customer, item, sale, salesDetails, stockReport } from '../Model/models';
 
 @Component({
   selector: 'app-sale',
@@ -14,9 +14,10 @@ export class SaleComponent implements OnInit {
   PageTitle: string = "Sale";
   loading: boolean = false;
   saleData: sale;
+  logInUserID: string;
 
   parties: Customer[];
-  itemsList: item[];
+  itemsList: stockReport[];
 
   constructor(private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.saleData = new sale();
@@ -24,6 +25,7 @@ export class SaleComponent implements OnInit {
     this.saleData.salesDetails = [];
     this.saleData.amountReceived = [];
     this.saleData.amountReceived.push(new amountReceived);
+    this.logInUserID = localStorage.getItem('userid') ?? '0';
 
     this.getCustomer();
     this.addItem();
@@ -53,8 +55,8 @@ export class SaleComponent implements OnInit {
 
   getItem() {
     this.loading = true;
-    this.sharedService.customGetApi1<item[]>('ItemMaster').subscribe(
-      (data: item[]) => {
+    this.sharedService.customGetApi1<stockReport[]>('PurchaseMaster/StockReport').subscribe(
+      (data: stockReport[]) => {
         this.itemsList = data; // Data is directly returned here as an array of User objects
         this.loading = false;
       },
@@ -64,7 +66,7 @@ export class SaleComponent implements OnInit {
       }
     );
   }
-  
+
   addItem() {
     this.saleData.salesDetails.push(new salesDetails());
   }
@@ -72,9 +74,10 @@ export class SaleComponent implements OnInit {
   // Method to calculate totals
   calculateTotal(item: any): void {
     item.total = item.carratQty * item.rate;
-    item.sgst = item.total * 0.09; // Example SGST at 9%
-    item.cgst = item.total * 0.09; // Example CGST at 9%
-    item.igst = item.total * 0.18; // If SGST and CGST are applied, IGST is 0
+    let gSTAmount = (item.total * item.gstper) / 100;
+    item.sgst = gSTAmount / 2; // Example SGST at 9%
+    item.cgst = gSTAmount / 2; // Example CGST at 9%
+    item.igst = gSTAmount; // If SGST and CGST are applied, IGST is 0
     item.totalAmount = item.total + item.sgst + item.cgst; // + item.igst;
     this.saleData.amount = this.getBillAmount();
     this.calculateCashAmount();
@@ -146,8 +149,37 @@ export class SaleComponent implements OnInit {
 
   showDetails() {
     var a = this.saleData.salesDetails;
-    //this.showMessage('success','Sales details added successfully');
-    this.router.navigate(['salebill']);
+    this.saleData.createdBy = parseInt(this.logInUserID);
+    this.saleData.createdDate = new Date();
+    this.saleData.updatedBy = parseInt(this.logInUserID);
+    this.saleData.updatedDate = new Date();
+    this.sharedService.customPostApi("Sales", this.saleData)
+      .subscribe((data: any) => {
+        if (data != null) {
+          this.showMessage('success', 'Sale details added successfully');
+          this.clearForm();
+        }
+        else {
+          this.loading = false;
+          this.showMessage('error', 'Something went wrong...');
+        }
+      }, (ex: any) => {
+        this.loading = false;
+        this.showMessage('error', ex);
+      });
+
+    //this.router.navigate(['salebill']);
+  }
+
+  clearForm() {
+    this.saleData = new sale();
+    this.saleData.invoiceDate = new Date();
+    this.saleData.salesDetails = [];
+    this.saleData.amountReceived = [];
+    this.saleData.amountReceived.push(new amountReceived);
+    this.getItem();
+    this.addItem();
+    this.loading = false;
   }
 
   showMessage(type: string, message: string) {
@@ -178,6 +210,20 @@ export class SaleComponent implements OnInit {
     let cashPayment = this.saleData.amountReceived.find(payment => payment.paymentMode === 'Cash');
     if (cashPayment) {
       cashPayment.amount = remainingAmount;
+    }
+  }
+
+  onItemSelect(itemL: any) {
+    const selectedItem = this.itemsList.find(item => item.rowNum === parseInt(itemL.rowNum.toString()));
+    if (selectedItem) {
+      this.saleData.salesDetails.forEach(x => {
+        if (x.rowNum.toString() === selectedItem.rowNum.toString()) {
+          x.itemId = selectedItem.itemId;
+          x.rate = selectedItem.rate;
+          x.gstper = selectedItem.gstPer;
+        }
+      });
+      this.calculateTotal(itemL);
     }
   }
 }

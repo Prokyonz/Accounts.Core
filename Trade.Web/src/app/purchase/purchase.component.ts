@@ -73,12 +73,15 @@ export class PurchaseComponent {
     if (selectedItem) {
       this.purchase.purchaseDetails.forEach(x => {
         if (x.itemId.toString() === selectedItem.id.toString()) {
-          item.gSTAmount = (total * selectedItem.gstPercentage)/100;
+          item.gSTPer = selectedItem.gstPercentage;
+          let gstAmount = ((total * selectedItem.gstPercentage)/100)/2;
+          item.sGST = gstAmount;
+          item.cGST = gstAmount;
         }
       });
     }
 
-    item.total = total + item.gSTAmount;
+    item.total = total + item.sGST + item.cGST;
     this.purchase.billAmount = this.getBillAmount();
   }
 

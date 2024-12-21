@@ -11,7 +11,7 @@ namespace Accounts.Core.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public long PurchaseSlipNo { get; set; }
-        public long CustomerId { get; set; }
+        public string DealerName { get; set; }
         public DateTime InvoiceDate { get; set; }
         public DateTime EntryDate { get; set; }
         public string? Description { get; set; }
@@ -35,7 +35,9 @@ namespace Accounts.Core.Models
         public string? ItemDescription { get; set; }
         public long Quantity { get; set; }
         public decimal Rate { get; set; }
-        public decimal GSTAmount { get; set; }
+        public decimal GSTPer { get; set; }
+        public decimal SGST { get; set; }
+        public decimal CGST { get; set; }
         public decimal Total { get; set; }
     }
 }

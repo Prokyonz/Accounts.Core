@@ -89,5 +89,15 @@ namespace Accounts.Core.Controllers
         {
             return await _purchaseMasterRepository.DeletePurchaseMasterAsync(purchaseMasterId);
         }
+
+        /// <summary>
+        /// Get Stock Details
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("StockReport")]
+        public async Task<List<StockReport>> GetStockReport()
+        {
+            return await _purchaseMasterRepository.StockReport();
+        }
     }
 }

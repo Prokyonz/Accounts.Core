@@ -16,6 +16,7 @@ namespace Accounts.Core.Repositories
         Task<List<PurchaseMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
         Task<PurchaseMaster> GetQuery(long purchaseMasterId, int pageIndex, int pageSize, bool includeDetails);
         Task<List<PurchaseReports>> PurchaseReport();
+        Task<List<StockReport>> StockReport();
     }
 }
 
@@ -25,11 +26,14 @@ namespace Accounts.Core.Repositories
     {
         private readonly IBaseRepository<PurchaseMaster, AppDbContext> _purchaseMasterRepo;
         private readonly IBaseRepository<PurchaseReports, AppDbContext> _purchaseReportRepo;
+        private readonly IBaseRepository<StockReport, AppDbContext> _stockReportRepo;
 
-        public PurchaseMasterRepository(IBaseRepository<PurchaseMaster, AppDbContext> purchaseMasterRepo, IBaseRepository<PurchaseReports, AppDbContext> purchaseReportRepo)
+
+        public PurchaseMasterRepository(IBaseRepository<PurchaseMaster, AppDbContext> purchaseMasterRepo, IBaseRepository<PurchaseReports, AppDbContext> purchaseReportRepo, IBaseRepository<StockReport, AppDbContext> stockReportRepo)
         {
             _purchaseMasterRepo = purchaseMasterRepo;
             _purchaseReportRepo = purchaseReportRepo;
+            _stockReportRepo = stockReportRepo;
         }
 
         public async Task<List<PurchaseReports>> PurchaseReport()
@@ -97,6 +101,14 @@ namespace Accounts.Core.Repositories
         {
             await _purchaseMasterRepo.UpdateAsync(purchaseMaster);
             return purchaseMaster;
+        }
+
+        public async Task<List<StockReport>> StockReport()
+        {
+            object[] paramerers = new object[] {  };
+            var result = await _stockReportRepo.ExecuteStoredProcedureAsync("stockReport", paramerers);
+
+            return result;
         }
     }
 }

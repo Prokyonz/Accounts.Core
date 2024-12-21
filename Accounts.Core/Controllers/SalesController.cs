@@ -1,5 +1,8 @@
-﻿using Accounts.Core.Models;
+﻿using Accounts.Core.DbContext;
+using Accounts.Core.Models;
+using Accounts.Core.Models.Response;
 using Accounts.Core.Repositories;
+using BaseClassLibrary.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Accounts.Core.Controllers
@@ -76,6 +79,16 @@ namespace Accounts.Core.Controllers
             {
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Read all Sale from table.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("SaleReport")]
+        public async Task<List<SaleReport>> GetSaleReport()
+        {
+            return await _salesMasterRepository.SalesReport();
         }
     }
 }

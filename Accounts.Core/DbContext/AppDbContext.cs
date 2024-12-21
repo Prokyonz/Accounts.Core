@@ -25,7 +25,8 @@ namespace Accounts.Core.DbContext
         public DbSet<PurchaseReports> PurchaseReports { get; set; }
         public DbSet<PermissionMaster> PermissionMaster { get; set; }
         public DbSet<UserPermissionChild> UserPermissionChild { get; set; }
-
+        public DbSet<StockReport> StockReport { get; set; }
+        public DbSet<SaleReport> SaleReport { get; set; }
 
         // You can override OnModelCreating if you need additional configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,6 +35,8 @@ namespace Accounts.Core.DbContext
 
             // Additional configurations for your entities
             modelBuilder.Entity<PurchaseReports>().HasNoKey();
+            modelBuilder.Entity<StockReport>().HasNoKey();
+            modelBuilder.Entity<SaleReport>().HasNoKey();
         }
     }
 }

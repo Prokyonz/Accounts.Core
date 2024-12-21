@@ -58,6 +58,30 @@ export class HeaderComponent implements OnInit {
       expanded: true,
       items: [
         {
+          label: 'Stock',
+          icon: 'pi pi-fw pi-user-minus',
+          routerLink: "/report/5",
+          command: () => {
+            this.sidebarVisible = false;
+          }
+        },
+        {
+          label: 'Sale',
+          icon: 'pi pi-fw pi-user-minus',
+          routerLink: "/report/4",
+          command: () => {
+            this.sidebarVisible = false;
+          }
+        },
+        {
+          label: 'Purchase',
+          icon: 'pi pi-fw pi-user-minus',
+          routerLink: "/report/3",
+          command: () => {
+            this.sidebarVisible = false;
+          }
+        },
+        {
           label: 'Customer',
           icon: 'pi pi-fw pi-user-plus',
           routerLink: "/report/1",
@@ -69,14 +93,6 @@ export class HeaderComponent implements OnInit {
           label: 'User',
           icon: 'pi pi-fw pi-user-minus',
           routerLink: "/report/2",
-          command: () => {
-            this.sidebarVisible = false;
-          }
-        },
-        {
-          label: 'Purchase',
-          icon: 'pi pi-fw pi-user-minus',
-          routerLink: "/report/3",
           command: () => {
             this.sidebarVisible = false;
           }

@@ -1,4 +1,5 @@
-<app-header (onClickMainIcon)="goBack()" iconName="pi-arrow-left" title="{{ PageTitle }}" leftIconName=""></app-header>
+<app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName=""></app-header>
+<!-- <app-header (onClickMainIcon)="goBack()" iconName="pi-arrow-left" title="{{ PageTitle }}" leftIconName=""></app-header> -->
 
 <div class="full-screen-card-container" *ngIf="reportIndex == 1">
   <div *ngIf="customers.length === 0" class="no-data">
@@ -64,7 +65,7 @@
       <strong>Purchase No: </strong>{{ purchase.purchaseSlipNo }}
     </div>
     <div class="card-body">
-      <div><strong>{{ purchase.partyName }}</strong></div>
+      <div><strong>{{ purchase.dealerName }}</strong></div>
 
       <!-- Total Items Section -->
       <div class="details-section">
@@ -73,11 +74,65 @@
 
       <!-- Bill Amount Section -->
       <div class="details-section">
-        <span>{{ purchase.billAmount | currency }}</span>  <!-- Currency pipe for formatting -->
+        <span>{{ purchase.billAmount | currency:'INR' }}</span>  <!-- Currency pipe for formatting -->
       </div>
 
       <div class="details-section">
         <span>{{ purchase.invoiceDate | date }}</span>  <!-- Currency pipe for formatting -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="full-screen-card-container" *ngIf="reportIndex == 4">  <!-- Adjust the condition as needed -->
+  <div *ngIf="saleData.length === 0" class="no-data">
+    No sale data found.
+  </div>
+  
+  <div *ngFor="let sale of saleData" class="customer-card">
+    <div class="card-header">
+      <strong>Sale No: </strong>{{ sale.saleSlipNo }}
+    </div>
+    <div class="card-body">
+      <div><strong>{{ sale.partyName }}</strong></div>
+
+      <!-- Total Items Section -->
+      <div class="details-section">
+        <span>{{ sale.totalItems }} Items</span>
+      </div>
+
+      <!-- Bill Amount Section -->
+      <div class="details-section">
+        <span>{{ sale.billAmount | currency:'INR' }}</span>  <!-- Currency pipe for formatting -->
+      </div>
+
+      <div class="details-section">
+        <span>{{ sale.invoiceDate | date }}</span>  <!-- Currency pipe for formatting -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="full-screen-card-container" *ngIf="reportIndex == 5">  <!-- Adjust the condition as needed -->
+  <div *ngIf="stockData.length === 0" class="no-data">
+    No stock data found.
+  </div>
+  
+  <div *ngFor="let stock of stockData" class="customer-card">
+    <div class="card-header">
+      <strong>Item: </strong>{{ stock.name }}
+    </div>
+    <div class="card-body">
+      <div>
+        <strong>Qty: </strong>{{ stock.quantity }}
+      </div>
+
+      <div class="details-section">
+        <strong>Rate: </strong>{{ stock.rate }}
+      </div>
+
+      <div class="details-section">
+        <strong>GST: </strong>{{ stock.gstPer }}
       </div>
     </div>
   </div>

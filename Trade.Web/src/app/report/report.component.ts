@@ -4,7 +4,7 @@ import { Table } from 'primeng/table';
 import { SharedService } from '../common/shared.service';
 import { RememberCompany } from '../shared/component/companyselection/companyselection.component';
 import { Message, MessageService } from 'primeng/api';
-import { Customer, item, purchase, purchaseReport, user } from '../Model/models';
+import { Customer, item, purchase, purchaseReport, saleReport, stockReport, user } from '../Model/models';
 
 @Component({
   selector: 'app-report',
@@ -14,11 +14,13 @@ import { Customer, item, purchase, purchaseReport, user } from '../Model/models'
 
 export class ReportComponent implements OnInit {
   PageTitle: string = "Report";
-  reportIndex: number = 0;
+  reportIndex: number | undefined = 0;
   customers: Customer[];
   users: user[];
   purchaseData: purchaseReport[];
+  saleData: saleReport[];
   itemData: item[];
+  stockData: stockReport[];
 
   loading = false;
 
@@ -27,19 +29,34 @@ export class ReportComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loading = false;
-    if (this.reportIndex == 1) {
-      this.PageTitle = "Customer Report";
-      this.getCustomer();
-    }
-    else if (this.reportIndex == 2) {
-      this.PageTitle = "User Report";
-      this.getUser();
-    }
-    else if (this.reportIndex == 3) {
-      this.PageTitle = "Purchase Report";
-      this.getPurchase();
-    }
+    this.activateRoute.paramMap.subscribe(params => {
+      const reportId = params.get('id'); // Assuming 'id' is the parameter name in your route
+      if (reportId) {
+        this.reportIndex = parseInt(reportId);
+
+        this.loading = false;
+        if (this.reportIndex == 1) {
+          this.PageTitle = "Customer Report";
+          this.getCustomer();
+        }
+        else if (this.reportIndex == 2) {
+          this.PageTitle = "User Report";
+          this.getUser();
+        }
+        else if (this.reportIndex == 3) {
+          this.PageTitle = "Purchase Report";
+          this.getPurchase();
+        }
+        else if (this.reportIndex == 4) {
+          this.PageTitle = "Sale Report";
+          this.getSale();
+        }
+        else if (this.reportIndex == 5) {
+          this.PageTitle = "Stock Report";
+          this.getStock();
+        }
+      }
+    });
     // else if (this.reportIndex == 4) {
     //   this.PageTitle = "Item Report";
     //   this.getItem();
@@ -83,7 +100,35 @@ export class ReportComponent implements OnInit {
       },
       (error) => {
         this.loading = false;
-        this.showMessage('Error fetching purchas details:', error);
+        this.showMessage('Error fetching purchase details:', error);
+      }
+    );
+  }
+
+  getSale() {
+    this.loading = true;
+    this.sharedService.customGetApi1<saleReport[]>('Sales/SaleReport').subscribe(
+      (data: saleReport[]) => {
+        this.saleData = data; // Data is directly returned here as an array of User objects
+        this.loading = false;
+      },
+      (error) => {
+        this.loading = false;
+        this.showMessage('Error fetching sale details:', error);
+      }
+    );
+  }
+
+  getStock() {
+    this.loading = true;
+    this.sharedService.customGetApi1<stockReport[]>('PurchaseMaster/StockReport').subscribe(
+      (data: stockReport[]) => {
+        this.stockData = data; // Data is directly returned here as an array of User objects
+        this.loading = false;
+      },
+      (error) => {
+        this.loading = false;
+        this.showMessage('Error fetching stock details:', error);
       }
     );
   }

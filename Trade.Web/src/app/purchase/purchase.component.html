@@ -14,12 +14,11 @@
 
       <div class="form-group">
         <label for="party">Select Party</label>
-        <!-- <select id="party" [(ngModel)]="saleData.party" name="party" class="form-control" required>
-            <option *ngFor="let party of parties" [value]="party.id">{{ party.name }}</option>
-          </select> -->
-        <p-dropdown id="party" [(ngModel)]="purchase.customerId" name="party" [options]="parties" optionLabel="fullName"
+        <!-- <p-dropdown id="party" [(ngModel)]="purchase.customerId" name="party" [options]="parties" optionLabel="fullName"
           optionValue="id" placeholder="Search and select a party" [filter]="true" [showClear]="true" filterBy="fullName">
-        </p-dropdown>
+        </p-dropdown> -->
+        <input type="text" [(ngModel)]="purchase.dealerName" name="dealerName" class="form-control" placeholder="Party Name"
+                    required>
       </div>
 
       <div class="form-group">
@@ -62,10 +61,17 @@
                 </div>
               </div>
 
-              <div class="form-group">
-                <label for="gst{{i}}">GST Rate</label>
-                <input type="number" [(ngModel)]="item.gSTAmount" name="gst{{i}}" class="form-control" placeholder="GST"
-                  required (ngModelChange)="calculateTotal(item)" [disabled]="true">
+              <div class="form-row">
+                <div class="col-6">
+                  <label for="gst{{i}}">SGST Rate</label>
+                  <input type="number" [(ngModel)]="item.sGST" name="sGST{{i}}" class="form-control" placeholder="GST"
+                    required (ngModelChange)="calculateTotal(item)" [disabled]="true">
+                </div>
+                <div class="col-6">
+                  <label for="gst{{i}}">CGST Rate</label>
+                  <input type="number" [(ngModel)]="item.cGST" name="cGST{{i}}" class="form-control" placeholder="GST"
+                    required (ngModelChange)="calculateTotal(item)" [disabled]="true">
+                </div>
               </div>
 
               <div class="form-group">

@@ -25,7 +25,7 @@ export class purchase {
     purchaseSlipNo: number = 0;
     invoiceDate: Date = new Date();
     EntryDate: Date = new Date();
-    customerId: string;
+    dealerName: string;
     description: string = '';
     brokerId: number = 0;
     discountAmount: number = 0;
@@ -44,6 +44,9 @@ export class purchaseItems {
     quantity: number = 1;
     rate: number = 0;
     gSTAmount: number = 0;
+    gSTPer: number = 0;
+    sGST: number = 0;
+    cGST: number = 0;
     total: number = 0;
     createdDate: Date = new Date();
     createdBy: number = 0;
@@ -91,6 +94,8 @@ export class salesDetails {
     sgst: number = 0;
     cgst: number = 0;
     igst: number = 0;
+    gstper: number = 18;
+    rowNum: number = 0;
     totalAmount: number = 0;
     createdDate: Date = new Date();
     createdBy: number = 0;
@@ -127,8 +132,24 @@ export class item {
 export class purchaseReport {
     purchaseSlipNo: number = 0;
     invoiceDate: Date = new Date();
-    customerId: number = 0;
+    dealerName: string = '';
+    totalItems: number = 0;
+    billAmount: number = 0;
+}
+
+export class saleReport {
+    saleSlipNo: number = 0;
+    invoiceDate: Date = new Date();
     partyName: string = '';
     totalItems: number = 0;
     billAmount: number = 0;
+}
+
+export class stockReport {
+    rowNum: number = 0;
+    itemId: number = 0;
+    name: string = '';
+    quantity: number = 0;
+    rate: number = 0;
+    gstPer: number = 0;
 }

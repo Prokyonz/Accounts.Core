@@ -30,9 +30,9 @@
               <div class="form-group">
                 <label for="itemName{{i}}">Item Name</label>
                 <!-- <input type="text" [(ngModel)]="item.itemName" name="itemName{{i}}" class="form-control" placeholder="Item Name" required> -->
-                <p-dropdown id="itemName{{i}}" [(ngModel)]="item.itemId" name="itemName{{i}}" [options]="itemsList"
-                  optionLabel="name" optionValue="id" placeholder="Select Item" [filter]="true" [showClear]="true"
-                  filterBy="name">
+                <p-dropdown id="itemName{{i}}" [(ngModel)]="item.rowNum" name="itemName{{i}}" [options]="itemsList"
+                  optionLabel="name" optionValue="rowNum" placeholder="Select Item" [filter]="true" [showClear]="true"
+                  filterBy="name" (onChange)="onItemSelect(item)">
                 </p-dropdown>
               </div>
 
@@ -46,14 +46,14 @@
                 <div class="col-6">
                   <label for="rate{{i}}">Rate</label><br />
                   <input type="number" [(ngModel)]="item.rate" name="rate{{i}}" class="form-control" placeholder="Rate"
-                    required (ngModelChange)="calculateTotal(item)">
+                    required (ngModelChange)="calculateTotal(item)" [disabled]="true">
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="total{{i}}">Amount</label>
                 <input type="number" [(ngModel)]="item.total" name="total{{i}}" class="form-control" placeholder="Total"
-                  [readonly]="true">
+                [disabled]="true">
               </div>
 
               <div class="form-row">
