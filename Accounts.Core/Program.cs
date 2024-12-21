@@ -20,13 +20,12 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins",
-        builder =>
-        {
-            builder.AllowAnyHeader()
-                   .AllowAnyOrigin()
-                   .AllowAnyMethod();
-        });
+    options.AddPolicy("AllowSpecificOrigin", builder =>
+    {
+        builder.WithOrigins("http://localhost") // Add your allowed origins here
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -61,12 +60,13 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 
+app.UseRouting();
+app.UseCors("AllowSpecificOrigin");
+app.UseAuthorization();
+
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("../swagger/v1/swagger.json", "DiamondTrade.API v1"));
 
-app.UseRouting();
-app.UseCors("AllowLocalhost");
-app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
