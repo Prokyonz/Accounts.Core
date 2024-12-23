@@ -73,7 +73,7 @@ namespace Accounts.Core.Controllers
         /// Delete ItemMaster.
         /// </summary>
         /// <returns></returns>
-        [HttpDelete]
+        [HttpDelete("{itemMasterId}")]
         public async Task<bool> Delete(long itemMasterId)
         {
             return await _itemMasterRepository.DeleteItemMasterAsync(itemMasterId);

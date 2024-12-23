@@ -17,6 +17,7 @@
 
     <div class="action-icons">
       <i class="pi pi-pencil edit-icon" [routerLink]="['/additem', item.id]" title="Edit" style="cursor: pointer;"></i>
+      <i class="pi pi-times delete-icon" (click)="deleteItem(item)" title="Delete" style="cursor: pointer;"></i>
     </div>
   </div>
 </div>

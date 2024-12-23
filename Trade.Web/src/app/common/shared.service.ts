@@ -5,8 +5,8 @@ import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 //import {config} from '../../assets/config/app.config';
 
-//const apiUrl : string = "https://localhost:7261/"; //http://192.168.29.223/calculator/api/";
-const apiUrl: string = "http://35.154.211.170/SunSparkal/";
+const apiUrl : string = "https://localhost:7261/"; //http://192.168.29.223/calculator/api/";
+//const apiUrl: string = "http://35.154.211.170/SunSparkal/";
 
 //const apiKey = config.apiKey;
 @Injectable({
@@ -34,6 +34,13 @@ export class SharedService {
     return this.httpClient.put<ApiResponse>(apiUrl + api, data).pipe(
       map(t => t),
       catchError(err => throwError(err))
+    );
+  }
+
+  customDeleteApi(api: string): Observable<ApiResponse> {
+    return this.httpClient.delete<ApiResponse>(apiUrl + api).pipe(
+      map((response) => response),  // Process the response (you can also modify this if needed)
+      catchError((err) => throwError(err))  // Handle any errors
     );
   }
 

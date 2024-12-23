@@ -78,3 +78,33 @@
   color: #999;
   margin-top: 20px;
 }
+
+.action-icons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  padding-top: 10px;
+}
+
+.edit-icon, .delete-icon {
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0 10px;
+}
+
+.edit-icon {
+  color: #007bff; /* blue for edit */
+}
+
+.delete-icon {
+  color: #dc3545; /* red for delete */
+}
+
+.edit-icon:hover {
+  color: #0056b3;
+}
+
+.delete-icon:hover {
+  color: #c82333;
+}

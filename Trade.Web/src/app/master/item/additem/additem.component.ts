@@ -18,11 +18,11 @@ export class AdditemComponent implements OnInit {
   isEditMode = false;
   itemData: item[];
 
-  constructor(private route: ActivatedRoute,private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.item = new item();
   }
 
-  
+
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const itemId = params.get('itemId'); // Assuming 'id' is the parameter name in your route
@@ -40,7 +40,7 @@ export class AdditemComponent implements OnInit {
 
   loadItem(itemId: string) {
     this.loading = true;
-    this.sharedService.customGetApi1<item[]>('ItemMaster/GetItemMaster/'+itemId).subscribe(
+    this.sharedService.customGetApi1<item[]>('ItemMaster/GetItemMaster/' + itemId).subscribe(
       (data: any) => {
         this.item = data; // Data is directly returned here as an array of User objects
         this.isEditMode = true;
@@ -58,6 +58,7 @@ export class AdditemComponent implements OnInit {
       this.isSaveButton = false;
       this.PageTitle = "Item Details";
       this.clearForm();
+      this.router.navigate(["additem"]);
     }
     else {
       this.router.navigate(["dashboard"]);
@@ -85,7 +86,7 @@ export class AdditemComponent implements OnInit {
 
   // Function to handle the form submission
   showDetails() {
-    if(this.item.name.length == 0){
+    if (this.item.name.length == 0) {
       this.showMessage('error', 'Please enter Item Name');
       return;
     }
@@ -116,22 +117,37 @@ export class AdditemComponent implements OnInit {
       });
   }
 
-  updateItem(){
+  updateItem() {
     this.sharedService.customPutApi("ItemMaster", this.item)
-    .subscribe((data: any) => {
-      if (data != null) {
-        this.showMessage('success', 'Item Updated Successfully');
-        this.clearForm();
-        this.getItem();
-      }
-      else {
+      .subscribe((data: any) => {
+        if (data != null) {
+          this.showMessage('success', 'Item Updated Successfully');
+          this.clearForm();
+          this.getItem();
+        }
+        else {
+          this.loading = false;
+          this.showMessage('error', 'Something went wrong...');
+        }
+      }, (ex: any) => {
         this.loading = false;
-        this.showMessage('error', 'Something went wrong...');
-      }
-    }, (ex: any) => {
-      this.loading = false;
-      this.showMessage('error', ex);
-    });
+        this.showMessage('error', ex);
+      });
+  }
+
+  deleteItem(item: any) {
+    const confirmDelete = window.confirm('Are you sure you want to delete this item?');
+    if (confirmDelete) {
+      this.sharedService.customDeleteApi('ItemMaster/' + item.id).subscribe(
+        (response: any) => {
+          this.showMessage('success', 'Item Deleted Successfully');
+          this.getItem();
+        },
+        (error) => {
+          this.showMessage('error', 'Something went wrong...');
+        }
+      );
+    }
   }
 
   showMessage(type: string, message: string) {
