@@ -16,54 +16,75 @@
                     </table>
                 </ng-template>
                 <div class="form-content">
-                    <form>
+                    <form #customerForm="ngForm">
                         <table class="form-table" [cellSpacing]="5">
                             <tr>
-                                <!-- <td colspan="2" class="input-field">
-                                    <label for="name">Name</label>
-                                    <input id="name" pInputText type="text" class="form-control" name="CustomerName" [(ngModel)]="customerDetails.name"/>
-                                </td> -->
-
                                 <td class="half-width">
                                     <label for="firstName">First Name</label>
                                     <input id="firstName" pInputText pKeyFilter="int" type="text" class="form-control"
-                                        name="firstName" [(ngModel)]="customerDetails.firstName" />
+                                        name="firstName" [(ngModel)]="customerDetails.firstName" required #firstName="ngModel"/>
+                                    <div *ngIf="firstName.touched && firstName.invalid"
+                                        class="text-danger">
+                                        First Name is required.
+                                    </div>
                                 </td>
                                 <td class="half-width">
                                     <label for="lastName">Last Name</label>
                                     <input id="lastName" pInputText type="text" class="form-control" name="lastName"
-                                        [(ngModel)]="customerDetails.lastName" />
+                                        [(ngModel)]="customerDetails.lastName" required #lastName="ngModel"/>
+                                    <div *ngIf="lastName.touched && lastName.invalid"
+                                        class="text-danger">
+                                        Last Name is required.
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" class="input-field">
                                     <label for="address">Address</label>
                                     <textarea id="address" pInputTextarea rows="5" cols="30" class="form-control"
-                                        name="CustomerAddress" [(ngModel)]="customerDetails.address"></textarea>
+                                        name="CustomerAddress" [(ngModel)]="customerDetails.address"
+                                        required #address="ngModel"></textarea>
+                                    <div *ngIf="address.touched && address.invalid" class="text-danger">
+                                        Address is required.
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="half-width">
                                     <label for="mobile">Mobile</label>
                                     <input id="mobile" pInputText type="text" class="form-control" name="CustomerMobile"
-                                        [(ngModel)]="customerDetails.mobileNo" />
+                                        [(ngModel)]="customerDetails.mobileNo" required #mobileNo="ngModel"/>
+                                    <div *ngIf="mobileNo.touched && mobileNo.invalid"
+                                        class="text-danger">
+                                        Mobile is required.
+                                    </div>
                                 </td>
                                 <td class="half-width">
                                     <label for="email">Email</label>
                                     <input id="email" pInputText type="text" class="form-control" name="CustomerEmail"
-                                        [(ngModel)]="customerDetails.emailId" />
+                                        [(ngModel)]="customerDetails.emailId" required #email="ngModel"/>
+                                    <div *ngIf="email.touched && email.invalid" class="text-danger">
+                                        Email is required.
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="half-width">
                                     <label for="aadhar">Aadharcard No</label>
                                     <input id="aadhar" pInputText pKeyFilter="int" type="number" class="form-control"
-                                        name="CustomerAadharCardNo" [(ngModel)]="customerDetails.aadharNo" />
+                                        name="CustomerAadharCardNo" [(ngModel)]="customerDetails.aadharNo" required #aadharNo="ngModel"/>
+                                    <div *ngIf="aadharNo.touched && aadharNo.invalid"
+                                        class="text-danger">
+                                        Aadharcard Number is required.
+                                    </div>
                                 </td>
                                 <td class="half-width">
                                     <label for="pancard">Pancard No</label>
                                     <input id="pancard" pInputText type="text" class="form-control"
-                                        name="CustomerPancardNo" [(ngModel)]="customerDetails.panNo" />
+                                        name="CustomerPancardNo" [(ngModel)]="customerDetails.panNo" required #panNo="ngModel"/>
+                                    <div *ngIf="panNo.touched && panNo.invalid" class="text-danger">
+                                        Pancard Number is required.
+                                    </div>
                                 </td>
                             </tr>
                         </table>
@@ -128,7 +149,8 @@
     </div>
 
     <!-- Submit Button -->
-    <p-button label="Submit" (onClick)="showDetails()" icon="pi pi-check"></p-button>
+    <p-button label="Submit" (onClick)="showDetails()" icon="pi pi-check"
+        [disabled]="customerForm.invalid ?? false"></p-button>
 </div>
 
 <input type="file" id="fileInput" (change)="onUpload(true)" accept="image/*" style="display: none;" />
