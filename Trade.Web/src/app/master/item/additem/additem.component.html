@@ -35,10 +35,8 @@
         name="itemName"
         required
         #itemName="ngModel"
+        [ngClass]="{'is-invalid': itemName.invalid && itemName.touched}"
       />
-      <div *ngIf="itemName.invalid && itemName.touched" class="text-danger">
-        Item Name is required.
-      </div>
     </div>
 
     <!-- Item Description Input -->
@@ -64,10 +62,8 @@
         name="hsnCode"
         required
         #hsnCode="ngModel"
+        [ngClass]="{'is-invalid': hsnCode.invalid && hsnCode.touched}"
       />
-      <div *ngIf="hsnCode.invalid && hsnCode.touched" class="text-danger">
-        HSN Code is required.
-      </div>
     </div>
 
     <!-- GST Percentage Input -->
@@ -83,10 +79,8 @@
         min="0"
         step="0.01"
         #gstPercentage="ngModel"
+        [ngClass]="{'is-invalid': gstPercentage.invalid && gstPercentage.touched}"
       />
-      <div *ngIf="gstPercentage.invalid && gstPercentage.touched" class="text-danger">
-        GST Percentage is required.
-      </div>
     </div>
 
     <!-- Is Active Checkbox -->

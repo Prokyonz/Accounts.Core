@@ -47,15 +47,11 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  
-
-
   onLogin(){
       if (this.loginForm.valid) { 
         this.loading = true;
       this.authService.login(this.loginForm.get("username")?.value, this.loginForm.get("password")?.value)
         .subscribe((response: any) => {          
-        debugger;
           // if (response.success == true){
           if (response != null){
               localStorage.setItem('AuthorizeData', JSON.stringify(response));

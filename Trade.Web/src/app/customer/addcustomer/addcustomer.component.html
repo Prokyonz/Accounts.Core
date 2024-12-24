@@ -22,20 +22,14 @@
                                 <td class="half-width">
                                     <label for="firstName">First Name</label>
                                     <input id="firstName" pInputText pKeyFilter="int" type="text" class="form-control"
-                                        name="firstName" [(ngModel)]="customerDetails.firstName" required #firstName="ngModel"/>
-                                    <div *ngIf="firstName.touched && firstName.invalid"
-                                        class="text-danger">
-                                        First Name is required.
-                                    </div>
+                                        name="firstName" [(ngModel)]="customerDetails.firstName" required #firstName="ngModel"
+                                        [ngClass]="{'is-invalid': firstName.touched && firstName.invalid}"/>
                                 </td>
                                 <td class="half-width">
                                     <label for="lastName">Last Name</label>
                                     <input id="lastName" pInputText type="text" class="form-control" name="lastName"
-                                        [(ngModel)]="customerDetails.lastName" required #lastName="ngModel"/>
-                                    <div *ngIf="lastName.touched && lastName.invalid"
-                                        class="text-danger">
-                                        Last Name is required.
-                                    </div>
+                                        [(ngModel)]="customerDetails.lastName" required #lastName="ngModel"
+                                        [ngClass]="{'is-invalid': lastName.touched && lastName.invalid}"/>
                                 </td>
                             </tr>
                             <tr>
@@ -43,48 +37,36 @@
                                     <label for="address">Address</label>
                                     <textarea id="address" pInputTextarea rows="5" cols="30" class="form-control"
                                         name="CustomerAddress" [(ngModel)]="customerDetails.address"
-                                        required #address="ngModel"></textarea>
-                                    <div *ngIf="address.touched && address.invalid" class="text-danger">
-                                        Address is required.
-                                    </div>
+                                        required #address="ngModel"
+                                        [ngClass]="{'is-invalid': address.touched && address.invalid}"></textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="half-width">
                                     <label for="mobile">Mobile</label>
                                     <input id="mobile" pInputText type="text" class="form-control" name="CustomerMobile"
-                                        [(ngModel)]="customerDetails.mobileNo" required #mobileNo="ngModel"/>
-                                    <div *ngIf="mobileNo.touched && mobileNo.invalid"
-                                        class="text-danger">
-                                        Mobile is required.
-                                    </div>
+                                        [(ngModel)]="customerDetails.mobileNo" required #mobileNo="ngModel"
+                                        [ngClass]="{'is-invalid': mobileNo.touched && mobileNo.invalid}"/>
                                 </td>
                                 <td class="half-width">
                                     <label for="email">Email</label>
                                     <input id="email" pInputText type="text" class="form-control" name="CustomerEmail"
-                                        [(ngModel)]="customerDetails.emailId" required #email="ngModel"/>
-                                    <div *ngIf="email.touched && email.invalid" class="text-danger">
-                                        Email is required.
-                                    </div>
+                                        [(ngModel)]="customerDetails.emailId" required #email="ngModel"
+                                        [ngClass]="{'is-invalid': email.touched && email.invalid}"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="half-width">
                                     <label for="aadhar">Aadharcard No</label>
                                     <input id="aadhar" pInputText pKeyFilter="int" type="number" class="form-control"
-                                        name="CustomerAadharCardNo" [(ngModel)]="customerDetails.aadharNo" required #aadharNo="ngModel"/>
-                                    <div *ngIf="aadharNo.touched && aadharNo.invalid"
-                                        class="text-danger">
-                                        Aadharcard Number is required.
-                                    </div>
+                                        name="CustomerAadharCardNo" [(ngModel)]="customerDetails.aadharNo" required #aadharNo="ngModel"
+                                        [ngClass]="{'is-invalid': aadharNo.touched && aadharNo.invalid}"/>
                                 </td>
                                 <td class="half-width">
                                     <label for="pancard">Pancard No</label>
                                     <input id="pancard" pInputText type="text" class="form-control"
-                                        name="CustomerPancardNo" [(ngModel)]="customerDetails.panNo" required #panNo="ngModel"/>
-                                    <div *ngIf="panNo.touched && panNo.invalid" class="text-danger">
-                                        Pancard Number is required.
-                                    </div>
+                                        name="CustomerPancardNo" [(ngModel)]="customerDetails.panNo" required #panNo="ngModel"
+                                        [ngClass]="{'is-invalid': panNo.touched && panNo.invalid}"/>
                                 </td>
                             </tr>
                         </table>

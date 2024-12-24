@@ -60,6 +60,26 @@ export class AddcustomerComponent implements OnInit {
 
   // Show details method
   showDetails() {
+    var msg = '';
+    if (this.customerDetails.aadharImageFrontData === '') {
+      msg += ' Aadharcard Front Image,';
+    }
+    if (this.customerDetails.aadhbarImageBackData === '') {
+      msg += ' Aadharcard Back Image,';
+    }
+    if (this.customerDetails.panImageData === '') {
+      msg += ' Pancard Image,';
+    }
+    if (this.customerDetails.signatureImageData === '') {
+      msg += ' Signature Image,';
+    }
+
+    if (msg.length > 0) {
+      msg = msg.substring(0, msg.length - 1) + ' is required.';
+      this.showMessage('error', msg);
+      return;
+    }
+
     this.customerDetails.aadharNo = this.customerDetails.aadharNo.toString();
     this.customerDetails.panNo = this.customerDetails.panNo.toString();
     this.sharedService.customPostApi("Customer", this.customerDetails)
