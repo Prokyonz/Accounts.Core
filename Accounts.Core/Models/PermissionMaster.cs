@@ -19,10 +19,10 @@ namespace Accounts.Core.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Sr { get; set; }
-        public long Id { get; set; }
-        public long PermissionMasterId { get; set; }
+        //public long Id { get; set; }
+        //public long PermissionMasterId { get; set; }
         public long UserId { get; set; }
         public string KeyName { get; set; }
-        public bool Status { get; set; } //Permission Status true/false
+        //public bool Status { get; set; } //Permission Status true/false
     }
 }

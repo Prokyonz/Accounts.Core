@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { SharedService } from '../common/shared.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
-import { user } from '../Model/models';
+import { permission, permissions, user } from '../Model/models';
 
 @Component({
   selector: 'app-user',
@@ -20,14 +20,17 @@ export class UserComponent {
   //   { id: 3, name: 'Sharma Mayur' },
   // ];
   userList: user[];
+  permissionList: permission[];
 
   constructor(private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.user = new user();
+    this.user.permissions = [];
+    this.getPermission();
     this.getUsers();
   }
 
   ngOnInit(): void {
-    
+
   }
 
   getUsers() {
@@ -41,6 +44,17 @@ export class UserComponent {
       },
       (error) => {
         console.error('Error fetching users:', error);
+      }
+    );
+  }
+
+  getPermission() {
+    this.sharedService.customGetApi1<permission[]>('UserMaster/GetPermissionMasters').subscribe(
+      (data: permission[]) => {
+        this.permissionList = data; // Data is directly returned here as an array of User objects
+      },
+      (error) => {
+        console.error('Error fetching permission:', error);
       }
     );
   }
@@ -67,30 +81,51 @@ export class UserComponent {
 
   showDetails() {
     this.user.mobileNo = this.user.mobileNo.toString();
-    this.sharedService.customPostApi("UserMaster",this.user)
-          .subscribe((data: any) => {
-                if (data != null){                  
-                  this.showMessage('success','User Save Successfully.');
-                  this.clearForm();
-                }
-                else{
-                  this.loading = false;
-                  this.showMessage('error','Something went wrong...');
-                }
-              }, (ex: any) => {
-                this.loading = false;
-                this.showMessage('error',ex);
-            });
+    this.sharedService.customPostApi("UserMaster", this.user)
+      .subscribe((data: any) => {
+        if (data != null) {
+          this.showMessage('success', 'User Save Successfully.');
+          this.clearForm();
+        }
+        else {
+          this.loading = false;
+          this.showMessage('error', 'Something went wrong...');
+        }
+      }, (ex: any) => {
+        this.loading = false;
+        this.showMessage('error', ex);
+      });
 
     //this.showMessage('success','User details added successfully');
   }
 
-  showMessage(type: string, message: string){
-    this.messageService.add({severity: type, summary:message});
+  showMessage(type: string, message: string) {
+    this.messageService.add({ severity: type, summary: message });
   }
 
-  clearForm(){
+  clearForm() {
     this.user = new user();
     this.loading = false;
+  }
+
+  onPermissionChange(event: any) {
+    let keyName: string = event.target.value; // Convert to number
+    if (event.target.checked) {
+      let permission = new permissions();
+      permission.userId = 0;
+      permission.keyName = keyName;
+      this.user.permissions.push(permission);
+    } else {
+      this.user.permissions = this.user.permissions.filter(x => x.keyName !== keyName);
+    }
+  }
+
+  isChecked(keyName: string) {
+    if (keyName != undefined && keyName != null) {
+      return this.user.permissions?.some(p => p.keyName === keyName);
+    }
+    else {
+      return false;
+    }
   }
 }

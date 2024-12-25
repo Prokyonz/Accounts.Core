@@ -1,7 +1,7 @@
 export class Customer {
     id: number = 0;
     firstName: string = '';
-    lastName: string= '';
+    lastName: string = '';
     address: string = '';
     mobileNo: string = '';
     emailId: string = '';
@@ -67,6 +67,17 @@ export class user {
     createdBy: number = 0;
     updatedDate: Date = new Date();
     updatedBy: number = 0;
+    permissions: permissions[];
+}
+
+export class permission {
+    displayName: string;
+    keyName: string;
+}
+
+export class permissions {
+    userId: number;
+    keyName: string;
 }
 
 export class sale {
@@ -103,7 +114,7 @@ export class salesDetails {
     updatedBy: number = 0;
 }
 
-export class amountReceived{
+export class amountReceived {
     id: number = 0;
     salesMasterId: number = 0;
     paymentMode: string = 'Cash';

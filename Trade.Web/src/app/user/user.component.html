@@ -12,45 +12,64 @@
                             <tr>
                                 <td colspan="2" class="input-field">
                                     <label for="name">Parent User</label>
-                                    <p-dropdown id="party" [(ngModel)]="user.parentUserId" name="user" [options]="userList" optionLabel="fullName"
-                                        optionValue="id" placeholder="Search and select a user" [filter]="true" [showClear]="true" filterBy="fullName">
+                                    <p-dropdown id="party" [(ngModel)]="user.parentUserId" name="user"
+                                        [options]="userList" optionLabel="fullName" optionValue="id"
+                                        placeholder="Search and select a user" [filter]="true" [showClear]="true"
+                                        filterBy="fullName">
                                     </p-dropdown>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="half-width">
                                     <label for="firstName">First Name</label>
-                                    <input id="firstName" pInputText pKeyFilter="int" type="text" class="form-control" 
-                                    name="firstName" [(ngModel)]="user.firstName"/>
+                                    <input id="firstName" pInputText pKeyFilter="int" type="text" class="form-control"
+                                        name="firstName" [(ngModel)]="user.firstName" />
                                 </td>
                                 <td class="half-width">
                                     <label for="lastName">Last Name</label>
-                                    <input id="lastName" pInputText type="text" class="form-control" 
-                                    name="lastName" [(ngModel)]="user.lastName"/>
+                                    <input id="lastName" pInputText type="text" class="form-control" name="lastName"
+                                        [(ngModel)]="user.lastName" />
                                 </td>
                             </tr>
                             <tr>
                                 <td class="half-width">
                                     <label for="mobile">Mobile</label>
-                                    <input id="mobile" pInputText pKeyFilter="int" type="number" class="form-control" 
-                                    name="mobile" [(ngModel)]="user.mobileNo"/>
+                                    <input id="mobile" pInputText pKeyFilter="int" type="number" class="form-control"
+                                        name="mobile" [(ngModel)]="user.mobileNo" />
                                 </td>
                                 <td class="half-width">
                                     <label for="email">Email</label>
-                                    <input id="email" pInputText type="text" class="form-control" 
-                                    name="email" [(ngModel)]="user.emailId"/>
+                                    <input id="email" pInputText type="text" class="form-control" name="email"
+                                        [(ngModel)]="user.emailId" />
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" class="input-field">
                                     <label for="password">Password</label>
-                                    <input id="password" pInputText type="password" class="form-control" 
-                                    name="password" [(ngModel)]="user.password"/>
+                                    <input id="password" pInputText type="password" class="form-control" name="password"
+                                        [(ngModel)]="user.password" />
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" class="input-field">
-                                    <p-checkbox id="isAgent" [(ngModel)]="user.isAgent" name="isAgent" label="Agent" [binary]="true"></p-checkbox>
+                                    <p-checkbox id="isAgent" [(ngModel)]="user.isAgent" name="isAgent" label="Agent"
+                                        [binary]="true"></p-checkbox>
+                                </td>
+                            </tr>
+                            <!-- Permissions Multiselect Dropdown -->
+                            <tr>
+                                <td colspan="2" class="input-field">
+                                    <label for="permissions">Permissions</label>
+                                    <div class="multi-select">
+                                        <div *ngFor="let permission of permissionList" class="checkbox-item">
+                                            <input type="checkbox" [id]="'permission_' + permission.keyName"
+                                                [value]="permission.keyName" (change)="onPermissionChange($event)"
+                                                [checked]="isChecked(permission.keyName)" 
+                                                />
+                                            <label [for]="'permission_' + permission.keyName">{{ permission.displayName
+                                                }}</label>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                         </table>
