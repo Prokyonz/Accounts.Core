@@ -4,6 +4,7 @@ using Accounts.Core.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Accounts.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241225071107_POSMaster")]
+    partial class POSMaster
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -283,42 +285,6 @@ namespace Accounts.Core.Migrations
                     b.ToTable("PermissionMaster");
                 });
 
-            modelBuilder.Entity("Accounts.Core.Models.POSMaster", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("TIDBankName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TIDNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("POSMaster");
-                });
-
             modelBuilder.Entity("Accounts.Core.Models.PurchaseDetails", b =>
                 {
                     b.Property<long>("Id")
@@ -586,35 +552,6 @@ namespace Accounts.Core.Migrations
                     b.ToTable("SalesMasters");
                 });
 
-            modelBuilder.Entity("Accounts.Core.Models.SeriesMaster", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SeriesMaster");
-                });
-
             modelBuilder.Entity("Accounts.Core.Models.Stock", b =>
                 {
                     b.Property<long>("Id")
@@ -692,9 +629,6 @@ namespace Accounts.Core.Migrations
                     b.Property<long?>("POSId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("POSMasterId")
-                        .HasColumnType("bigint");
-
                     b.Property<long?>("ParentUserId")
                         .HasColumnType("bigint");
 
@@ -708,8 +642,6 @@ namespace Accounts.Core.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("POSMasterId");
 
                     b.ToTable("UserMaster");
                 });
@@ -778,23 +710,11 @@ namespace Accounts.Core.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Accounts.Core.Models.UserMaster", b =>
-                {
-                    b.HasOne("Accounts.Core.Models.POSMaster", null)
-                        .WithMany("UserMsters")
-                        .HasForeignKey("POSMasterId");
-                });
-
             modelBuilder.Entity("Accounts.Core.Models.UserPermissionChild", b =>
                 {
                     b.HasOne("Accounts.Core.Models.UserMaster", null)
                         .WithMany("Permissions")
                         .HasForeignKey("UserMasterId");
-                });
-
-            modelBuilder.Entity("Accounts.Core.Models.POSMaster", b =>
-                {
-                    b.Navigation("UserMsters");
                 });
 
             modelBuilder.Entity("Accounts.Core.Models.PurchaseMaster", b =>

@@ -12,6 +12,7 @@ namespace Accounts.Core.Models
         public long Id { get; set; }
         public long CustomerId { get; set; }        
         public DateTime InvoiceDate { get; set; }
+        public string InvoiceNo { get; set; }
         public DateTime EntryDate { get; set; }        
         public decimal DiscountAmount { get; set; }
         public decimal Amount { get; set; }

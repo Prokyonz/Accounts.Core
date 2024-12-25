@@ -10,7 +10,7 @@ namespace Accounts.Core.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public long PurchaseSlipNo { get; set; }
+        public long InvoiceNo { get; set; } //Auto Generate via code
         public string DealerName { get; set; }
         public DateTime InvoiceDate { get; set; }
         public DateTime EntryDate { get; set; }
@@ -18,6 +18,7 @@ namespace Accounts.Core.Models
         public long BrokerId { get; set; }
         public decimal DiscountAmount { get; set; }
         public decimal BillAmount { get; set; }
+        public string Pincode { get; set; }
 
         [Ignore]
         public virtual List<PurchaseDetails> PurchaseDetails { get; set; }

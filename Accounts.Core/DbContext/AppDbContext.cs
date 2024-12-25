@@ -27,6 +27,9 @@ namespace Accounts.Core.DbContext
         public DbSet<UserPermissionChild> UserPermissionChild { get; set; }
         public DbSet<StockReport> StockReport { get; set; }
         public DbSet<SaleReport> SaleReport { get; set; }
+        public DbSet<POSMaster> POSMaster { get; set; }
+        public DbSet<SeriesMaster> SeriesMaster { get; set; }
+
 
         // You can override OnModelCreating if you need additional configurations
         protected override void OnModelCreating(ModelBuilder modelBuilder)
