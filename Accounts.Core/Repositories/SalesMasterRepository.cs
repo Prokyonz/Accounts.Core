@@ -17,17 +17,22 @@ namespace Accounts.Core.Repositories
         Task<List<SalesMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
         Task<SalesMaster> GetQuery(long stockId, int pageIndex, int pageSize, bool includeDetails);
         Task<List<SaleReport>> SalesReport();
+        Task<long> GetMaxInvoiceNo();
     }
 
     public class SalesMasterRepository : ISalesMasterRepository
     {
         private readonly IBaseRepository<SalesMaster, AppDbContext> _salesRepo;
         private readonly IBaseRepository<SaleReport, AppDbContext> _salesReportRepo;
+        private readonly IBaseRepository<SeriesMaster, AppDbContext> _seriesMasterRepo;
 
-        public SalesMasterRepository(IBaseRepository<SalesMaster, AppDbContext> salesRepo, IBaseRepository<SaleReport, AppDbContext> salesReportRepo)
+        public SalesMasterRepository(IBaseRepository<SalesMaster, AppDbContext> salesRepo, 
+            IBaseRepository<SaleReport, AppDbContext> salesReportRepo,
+            IBaseRepository<SeriesMaster, AppDbContext> seriesMasterRepo)
         {
             _salesRepo = salesRepo;
             _salesReportRepo = salesReportRepo;
+            _seriesMasterRepo = seriesMasterRepo;
         }
 
         public async Task<List<SaleReport>> SalesReport()
@@ -39,10 +44,38 @@ namespace Accounts.Core.Repositories
             return result;
         }
 
+        public async Task<long> GetMaxInvoiceNo()
+        {
+            try
+            {
+                var result = await _salesRepo.QueryAsync(
+                           query => query.Id > 0,
+                           orderBy: c => c.CreatedDate ?? DateTime.Now,
+                           0, 10);
+
+                long invoiceNo = result.Max(x => x.InvoiceNo);
+
+                return invoiceNo += 1;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<SalesMaster> AddSalesAsync(SalesMaster salesMaster)
         {
             try
             {
+                var series = await _seriesMasterRepo.QueryAsync(
+                           query => query.Id > 0,
+                           orderBy: c => c.CreatedDate ?? DateTime.Now,
+                           0, 10);
+
+                salesMaster.SeriesName = series[0].Name;
+
+                salesMaster.InvoiceNo = await GetMaxInvoiceNo();
+
                 await _salesRepo.BeginTransactionAsync();
 
                 var result = await _salesRepo.AddAsync(salesMaster);

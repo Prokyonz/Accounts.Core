@@ -17,6 +17,7 @@ namespace Accounts.Core.Repositories
         Task<PurchaseMaster> GetQuery(long purchaseMasterId, int pageIndex, int pageSize, bool includeDetails);
         Task<List<PurchaseReports>> PurchaseReport();
         Task<List<StockReport>> StockReport();
+        Task<long> GetMaxInvoiceNo();
     }
 }
 
@@ -45,10 +46,31 @@ namespace Accounts.Core.Repositories
             return result;
         }
 
+        public async Task<long> GetMaxInvoiceNo()
+        {
+            try
+            {
+                var result = await _purchaseMasterRepo.QueryAsync(
+                           query => query.Id > 0,
+                           orderBy: c => c.CreatedDate ?? DateTime.Now,
+                           0, 10);
+                long invoiceNo = result.Max(x => x.InvoiceNo);
+
+                return invoiceNo += 1;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<PurchaseMaster> AddPurchaseMasterAsync(PurchaseMaster purchaseMaster)
         {
             try
             {
+                long InvoiceNo = await GetMaxInvoiceNo();
+                purchaseMaster.InvoiceNo = InvoiceNo;
+
                 await _purchaseMasterRepo.BeginTransactionAsync();
 
                 var result = await _purchaseMasterRepo.AddAsync(purchaseMaster);
@@ -95,7 +117,7 @@ namespace Accounts.Core.Repositories
                pageIndex, pageSize);
 
             return result?.FirstOrDefault();
-        }        
+        }
 
         public async Task<PurchaseMaster> UpdatePurchaseMasterAsync(PurchaseMaster purchaseMaster)
         {
@@ -105,7 +127,7 @@ namespace Accounts.Core.Repositories
 
         public async Task<List<StockReport>> StockReport()
         {
-            object[] paramerers = new object[] {  };
+            object[] paramerers = new object[] { };
             var result = await _stockReportRepo.ExecuteStoredProcedureAsync("stockReport", paramerers);
 
             return result;

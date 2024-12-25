@@ -13,9 +13,6 @@ namespace Accounts.Core.Models
         public string TIDNumber { get; set; }
         public string TIDBankName { get; set; }
         public bool IsActive { get; set; }
-
-        [Ignore]
-        public List<UserMaster> UserMsters { get; set; }
     }
 
     public class SeriesMaster : BaseModel
