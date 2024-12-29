@@ -46,6 +46,7 @@ import { AdditemComponent } from './master/item/additem/additem.component';
 import { PurchaseComponent } from './purchase/purchase.component';
 import { UserComponent } from './user/user.component';
 import { SaleBillComponent } from './sale/sale-bill/sale-bill.component';
+import { PosComponent } from './master/pos/pos.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { SaleBillComponent } from './sale/sale-bill/sale-bill.component';
     PurchaseComponent,
     UserComponent,
     SaleBillComponent,
+    PosComponent,
   ],
   imports: [
     BrowserModule,

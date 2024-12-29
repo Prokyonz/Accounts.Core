@@ -164,3 +164,10 @@ export class stockReport {
     rate: number = 0;
     gstPer: number = 0;
 }
+
+export class pos {
+    id: number = 0;
+    tidNumber: string = '';
+    tidBankName: string = '';
+    isActive: boolean = false;
+}

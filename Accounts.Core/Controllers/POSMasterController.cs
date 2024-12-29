@@ -32,10 +32,10 @@ namespace Accounts.Core.Controllers
         /// Read POSMaster from table.
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetPOSMaster")]
-        public async Task<POSMaster> GetRow(long pOSMasterId, int pageIndex, int pageSize)
+        [HttpGet("GetPOSMaster/{posMasterId}")]
+        public async Task<POSMaster> GetRow(long pOSMasterId)
         {
-            return await _pOSMasterRepository.GetQuery(pOSMasterId, pageIndex, pageSize);
+            return await _pOSMasterRepository.GetQuery(pOSMasterId, 0, 1);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Accounts.Core.Controllers
         /// Delete POSMaster.
         /// </summary>
         /// <returns></returns>
-        [HttpDelete]
+        [HttpDelete("{pOSMasterId}")]
         public async Task<bool> Delete(long pOSMasterId)
         {
             return await _pOSMasterRepository.DeletePOSMasterAsync(pOSMasterId);
