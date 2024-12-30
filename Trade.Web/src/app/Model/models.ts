@@ -62,6 +62,7 @@ export class user {
     mobileNo: string = '';
     emailId: string = '';
     password: string = '';
+    posId: number = 0;
     isAgent: boolean = false;
     createdDate: Date = new Date();
     createdBy: number = 0;

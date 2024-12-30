@@ -52,6 +52,16 @@
                             </tr>
                             <tr>
                                 <td colspan="2" class="input-field">
+                                    <label for="name">POS</label>
+                                    <p-dropdown id="pos" [(ngModel)]="user.posId" name="user"
+                                        [options]="posList" optionLabel="posName" optionValue="id"
+                                        placeholder="Search and select a POS" [filter]="true" [showClear]="true"
+                                        filterBy="posName">
+                                    </p-dropdown>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="input-field">
                                     <p-checkbox id="isAgent" [(ngModel)]="user.isAgent" name="isAgent" label="Agent"
                                         [binary]="true"></p-checkbox>
                                 </td>
