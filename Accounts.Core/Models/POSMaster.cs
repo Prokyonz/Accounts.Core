@@ -21,6 +21,6 @@ namespace Accounts.Core.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string Name { get; set; }
-
+        public bool IsActive { get; set; }
     }
 }

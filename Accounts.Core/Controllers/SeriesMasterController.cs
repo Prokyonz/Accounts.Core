@@ -32,10 +32,10 @@ namespace Accounts.Core.Controllers
         /// Read SeriesMaster from table.
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetSeriesMaster")]
+        [HttpGet("GetSeriesMaster/{seriesMasterId}")]
         public async Task<SeriesMaster> GetRow(long seriesMasterId, int pageIndex, int pageSize)
         {
-            return await _seriesMasterRepository.GetQuery(seriesMasterId, pageIndex, pageSize);
+            return await _seriesMasterRepository.GetQuery(seriesMasterId, 0, 1);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace Accounts.Core.Controllers
         /// Delete SeriesMaster.
         /// </summary>
         /// <returns></returns>
-        [HttpDelete]
+        [HttpDelete("{seriesMasterId}")]
         public async Task<bool> Delete(long seriesMasterId)
         {
             return await _seriesMasterRepository.DeleteSeriesMasterAsync(seriesMasterId);

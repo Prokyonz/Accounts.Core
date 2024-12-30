@@ -14,6 +14,7 @@ import { PurchaseComponent } from './purchase/purchase.component';
 import { UserComponent } from './user/user.component';
 import { SaleBillComponent } from './sale/sale-bill/sale-bill.component';
 import { PosComponent } from './master/pos/pos.component';
+import { SeriesComponent } from './master/series/series.component';
 
 const routes: Routes = [
   {path:'',component:LoginComponent},
@@ -24,6 +25,8 @@ const routes: Routes = [
   {path:'additem/:itemId', component:AdditemComponent},
   {path:'pos', component:PosComponent},
   {path:'pos/:posId', component:PosComponent},
+  {path:'series', component:SeriesComponent},
+  {path:'series/:seriesId', component:SeriesComponent},
   {path:'sale', component:SaleComponent},
   {path:'salebill', component:SaleBillComponent},
   {path:'purchase', component:PurchaseComponent},

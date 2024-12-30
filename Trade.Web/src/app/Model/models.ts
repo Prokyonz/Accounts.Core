@@ -172,3 +172,9 @@ export class pos {
     tidBankName: string = '';
     isActive: boolean = false;
 }
+
+export class series {
+    id: number = 0;
+    name: string = '';
+    isActive: boolean = false;
+}
