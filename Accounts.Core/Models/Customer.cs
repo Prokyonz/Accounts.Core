@@ -11,6 +11,7 @@ namespace Accounts.Core.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Address { get; set; }
+        public long Pincode { get; set; }
         public string MobileNo { get; set; }
         public string EmailId { get; set; }
         public string AadharNo { get; set; }

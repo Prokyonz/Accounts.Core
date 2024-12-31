@@ -22,51 +22,67 @@
                                 <td class="half-width">
                                     <label for="firstName">First Name</label>
                                     <input id="firstName" pInputText pKeyFilter="int" type="text" class="form-control"
-                                        name="firstName" [(ngModel)]="customerDetails.firstName" required #firstName="ngModel"
-                                        [ngClass]="{'is-invalid': firstName.touched && firstName.invalid}"/>
+                                        name="firstName" [(ngModel)]="customerDetails.firstName" required
+                                        #firstName="ngModel"
+                                        [ngClass]="{'is-invalid': firstName.touched && firstName.invalid}" />
                                 </td>
                                 <td class="half-width">
                                     <label for="lastName">Last Name</label>
                                     <input id="lastName" pInputText type="text" class="form-control" name="lastName"
                                         [(ngModel)]="customerDetails.lastName" required #lastName="ngModel"
-                                        [ngClass]="{'is-invalid': lastName.touched && lastName.invalid}"/>
+                                        [ngClass]="{'is-invalid': lastName.touched && lastName.invalid}" />
                                 </td>
                             </tr>
                             <tr>
                                 <td colspan="2" class="input-field">
                                     <label for="address">Address</label>
                                     <textarea id="address" pInputTextarea rows="5" cols="30" class="form-control"
-                                        name="CustomerAddress" [(ngModel)]="customerDetails.address"
-                                        required #address="ngModel"
+                                        name="CustomerAddress" [(ngModel)]="customerDetails.address" required
+                                        #address="ngModel"
                                         [ngClass]="{'is-invalid': address.touched && address.invalid}"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="input-field">
+                                    <label for="pincode">Pincode</label>
+                                    <input id="pincode" pInputText type="number" class="form-control"
+                                        name="CustomerPinCode" [(ngModel)]="customerDetails.pincode" required
+                                        #pincode="ngModel"
+                                        [ngClass]="{'is-invalid': pincode.touched && pincode.invalid}" />
                                 </td>
                             </tr>
                             <tr>
                                 <td class="half-width">
                                     <label for="mobile">Mobile</label>
-                                    <input id="mobile" pInputText type="text" class="form-control" name="CustomerMobile"
-                                        [(ngModel)]="customerDetails.mobileNo" required #mobileNo="ngModel"
-                                        [ngClass]="{'is-invalid': mobileNo.touched && mobileNo.invalid}"/>
+                                    <input id="mobile" pInputText type="number" class="form-control"
+                                        name="CustomerMobile" [(ngModel)]="customerDetails.mobileNo" required
+                                        #mobileNo="ngModel"
+                                        [ngClass]="{'is-invalid': mobileNo.touched && mobileNo.invalid}"
+                                        pattern="^\d{10}$" minlength="10" maxlength="10" />
                                 </td>
                                 <td class="half-width">
                                     <label for="email">Email</label>
-                                    <input id="email" pInputText type="text" class="form-control" name="CustomerEmail"
+                                    <input id="email" pInputText type="email" class="form-control" name="CustomerEmail"
                                         [(ngModel)]="customerDetails.emailId" required #email="ngModel"
-                                        [ngClass]="{'is-invalid': email.touched && email.invalid}"/>
+                                        [ngClass]="{'is-invalid': email.touched && email.invalid}" 
+                                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="half-width">
                                     <label for="aadhar">Aadharcard No</label>
                                     <input id="aadhar" pInputText pKeyFilter="int" type="number" class="form-control"
-                                        name="CustomerAadharCardNo" [(ngModel)]="customerDetails.aadharNo" required #aadharNo="ngModel"
-                                        [ngClass]="{'is-invalid': aadharNo.touched && aadharNo.invalid}"/>
+                                        name="CustomerAadharCardNo" [(ngModel)]="customerDetails.aadharNo" required
+                                        #aadharNo="ngModel"
+                                        [ngClass]="{'is-invalid': aadharNo.touched && aadharNo.invalid}"
+                                        pattern="^\d{12}$" minlength="12" maxlength="12" />
                                 </td>
                                 <td class="half-width">
                                     <label for="pancard">Pancard No</label>
                                     <input id="pancard" pInputText type="text" class="form-control"
-                                        name="CustomerPancardNo" [(ngModel)]="customerDetails.panNo" required #panNo="ngModel"
-                                        [ngClass]="{'is-invalid': panNo.touched && panNo.invalid}"/>
+                                        name="CustomerPancardNo" [(ngModel)]="customerDetails.panNo" required
+                                        #panNo="ngModel" [ngClass]="{'is-invalid': panNo.touched && panNo.invalid}"
+                                        pattern="^[A-Z]{5}[0-9]{4}[A-Z]{1}$" minlength="10" maxlength="10" />
                                 </td>
                             </tr>
                         </table>

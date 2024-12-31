@@ -126,7 +126,7 @@ export class PurchaseComponent {
     this.sharedService.customPostApi("PurchaseMaster", this.purchase)
       .subscribe((data: any) => {
         if (data != null) {
-          this.showMessage('success', 'Purchase details added successfully');
+          this.showMessage('success', `Invoice No: ${data.invoiceNo} - Purchase details added successfully`);
           this.clearForm();
         }
         else {

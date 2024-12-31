@@ -3,6 +3,7 @@ export class Customer {
     firstName: string = '';
     lastName: string = '';
     address: string = '';
+    pincode: number;
     mobileNo: string = '';
     emailId: string = '';
     aadharNo: string = '';
@@ -25,6 +26,7 @@ export class purchase {
     purchaseSlipNo: number = 0;
     invoiceDate: Date = new Date();
     EntryDate: Date = new Date();
+    invoiceNo: number = 0;
     dealerName: string;
     description: string = '';
     brokerId: number = 0;
@@ -35,6 +37,7 @@ export class purchase {
     createdBy: number = 0;
     updatedDate: Date = new Date();
     updatedBy: number = 0;
+    pincode: string = '';
 }
 
 export class purchaseItems {

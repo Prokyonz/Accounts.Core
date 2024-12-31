@@ -52,8 +52,8 @@ namespace Accounts.Core.Repositories
             {
                 var result = await _purchaseMasterRepo.QueryAsync(
                            query => query.Id > 0,
-                           orderBy: c => c.CreatedDate ?? DateTime.Now,
-                           0, 10);
+                           orderBy: c => c.InvoiceNo,
+                           0, int.MaxValue);
                 long invoiceNo = result.Max(x => x.InvoiceNo);
 
                 return invoiceNo += 1;
