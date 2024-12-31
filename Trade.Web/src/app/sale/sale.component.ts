@@ -25,6 +25,9 @@ export class SaleComponent implements OnInit {
     this.saleData.salesDetails = [];
     this.saleData.amountReceived = [];
     this.saleData.amountReceived.push(new amountReceived);
+    let cashAmount = new amountReceived();
+    cashAmount.paymentMode = "Cash"
+    this.saleData.amountReceived.push(cashAmount);
     this.logInUserID = localStorage.getItem('userid') ?? '0';
 
     this.getCustomer();
@@ -58,6 +61,10 @@ export class SaleComponent implements OnInit {
     this.sharedService.customGetApi1<stockReport[]>('PurchaseMaster/StockReport').subscribe(
       (data: stockReport[]) => {
         this.itemsList = data; // Data is directly returned here as an array of User objects
+        this.itemsList = this.itemsList.map(item => ({
+          ...item,
+          stockDisplayName: `${item.name} - ${item.rate}(${item.quantity})` // Concatenate first and last name
+        }));
         this.loading = false;
       },
       (error) => {
@@ -73,6 +80,22 @@ export class SaleComponent implements OnInit {
 
   // Method to calculate totals
   calculateTotal(item: any): void {
+    var selectedStock = this.itemsList.find(x => x.rowNum === item.rowNum);
+    if (selectedStock != null && selectedStock.quantity < item.carratQty) {
+      this.showMessage('error', `Quantity can not be more then available quantity. Available quantity is ${selectedStock.quantity}.`);
+      setTimeout(() => {
+        item.carratQty = '';  // Reset quantity if invalid
+        item.total = 0;       // Reset total as well
+        item.sgst = 0;        // Reset SGST
+        item.cgst = 0;        // Reset CGST
+        item.igst = 0;        // Reset IGST
+        item.totalAmount = 0; // Reset totalAmount
+        this.saleData.amount = this.getBillAmount();
+        this.calculateCashAmount(true); // Recalculate Cash if needed
+      }, 500);
+      return;
+    }
+
     item.total = item.carratQty * item.rate;
     let gSTAmount = (item.total * item.gstper) / 100;
     item.sgst = gSTAmount / 2; // Example SGST at 9%
@@ -80,14 +103,21 @@ export class SaleComponent implements OnInit {
     item.igst = gSTAmount; // If SGST and CGST are applied, IGST is 0
     item.totalAmount = item.total + item.sgst + item.cgst; // + item.igst;
     this.saleData.amount = this.getBillAmount();
-    this.calculateCashAmount();
+    this.calculateCashAmount(true);
   }
 
   getBillAmount(): number {
     return this.saleData.salesDetails.reduce((sum: any, item: { totalAmount: any; }) => sum + item.totalAmount, 0);
   }
 
-  calculateCashAmount(): void {
+  calculateCashAmount(isAddDefaultPayment: boolean, payment: any = null): void {
+    if (isAddDefaultPayment) {
+      this.saleData.amountReceived = [];
+      this.saleData.amountReceived.push(new amountReceived);
+      let cashAmount = new amountReceived();
+      cashAmount.paymentMode = "Cash"
+      this.saleData.amountReceived.push(cashAmount);
+    }
     // if(this.saleData.amountReceived.find(x=>x.paymentMode == "Cash"){
     //   this.saleData.paymentMode = 'Cash';
     // }
@@ -104,8 +134,13 @@ export class SaleComponent implements OnInit {
     });
 
     // The cash amount is the remaining balance after non-cash payments
-    const cashAmount = this.saleData.amount - totalPaymentAmount;
+    const creditCardAmount = this.saleData.amount - totalPaymentAmount;
 
+    if (payment != null && creditCardAmount < 0) {
+      this.showMessage('error', 'Ensure the total amount paid does not exceed the bill amount.');
+      payment.amount = '';
+      return;
+    }
     // Ensure the cash amount is not negative
     if (this.saleData.amountReceived.length == 0) {
       this.saleData.amountReceived.push(new amountReceived);
@@ -113,11 +148,14 @@ export class SaleComponent implements OnInit {
 
     this.saleData.amountReceived.forEach(payment => {
       if (payment.paymentMode === 'Cash') {
-        payment.amount = cashAmount;  // Set the calculated cash amount
+        payment.amount = creditCardAmount;  // Set the calculated cash amount
       }
     });
   }
 
+  onAmountChange(payment: any, index: number) {
+    this.calculateCashAmount(false, payment);
+  }
   // Check if the form is valid
   isFormValid(): boolean {
     //eturn this.saleData.invoiceDate && this.saleData.customerId && this.saleData.amount && this.isItemsValid();
@@ -145,10 +183,25 @@ export class SaleComponent implements OnInit {
   // Delete item method
   deleteItem(index: number): void {
     this.saleData.salesDetails.splice(index, 1);
+    this.calculateCashAmount(false);
   }
 
   showDetails() {
     var a = this.saleData.salesDetails;
+    if (this.saleData.customerId == 0) {
+      this.showMessage('error', 'Please select Party.');
+      return;
+    }
+    else if (this.saleData.amount == 0) {
+      this.showMessage('error', 'Please select Sale Item(s).');
+      return;
+    }
+    var paidAmount = this.saleData.amountReceived.reduce((total, payment) => total + payment.amount, 0)
+    if (this.saleData.amount < paidAmount) {
+      this.showMessage('error', 'Paid amount is lesser than bill amount.');
+      return;
+    }
+
     this.saleData.createdBy = parseInt(this.logInUserID);
     this.saleData.createdDate = new Date();
     this.saleData.updatedBy = parseInt(this.logInUserID);
@@ -156,7 +209,7 @@ export class SaleComponent implements OnInit {
     this.sharedService.customPostApi("Sales", this.saleData)
       .subscribe((data: any) => {
         if (data != null) {
-          this.showMessage('success', 'Sale details added successfully');
+          this.showMessage('success', `Invoice No: ${data.invoiceNo} - Sale details added successfully`);
           this.clearForm();
         }
         else {
@@ -177,6 +230,9 @@ export class SaleComponent implements OnInit {
     this.saleData.salesDetails = [];
     this.saleData.amountReceived = [];
     this.saleData.amountReceived.push(new amountReceived);
+    let cashAmount = new amountReceived();
+    cashAmount.paymentMode = "Cash"
+    this.saleData.amountReceived.push(cashAmount);
     this.getItem();
     this.addItem();
     this.loading = false;
@@ -192,6 +248,7 @@ export class SaleComponent implements OnInit {
 
   removePayment(index: number) {
     this.saleData.amountReceived.splice(index, 1);
+    this.calculateCashAmount(false);
   }
 
   onPaymentModeChange(payment: amountReceived, index: number) {
@@ -207,9 +264,9 @@ export class SaleComponent implements OnInit {
     let remainingAmount = this.saleData.amount - totalPaid;
 
     // If there's a remaining amount, set it to Cash
-    let cashPayment = this.saleData.amountReceived.find(payment => payment.paymentMode === 'Cash');
-    if (cashPayment) {
-      cashPayment.amount = remainingAmount;
+    let creditcardPayment = this.saleData.amountReceived.find(payment => payment.paymentMode === 'Cash');
+    if (creditcardPayment) {
+      creditcardPayment.amount = remainingAmount;
     }
   }
 

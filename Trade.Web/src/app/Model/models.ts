@@ -89,6 +89,7 @@ export class sale {
     customerId: number = 0;
     invoiceDate: Date = new Date();
     entryDate: Date = new Date();
+    invoiceNo: number = 0;
     discountAmount: number = 0;
     amount: number = 0;
     salesDetails: salesDetails[];
@@ -121,7 +122,7 @@ export class salesDetails {
 export class amountReceived {
     id: number = 0;
     salesMasterId: number = 0;
-    paymentMode: string = 'Cash';
+    paymentMode: string = 'Creditcard';
     cardNo: string = '';
     nameOnCard: string = '';
     amount: number = 0;

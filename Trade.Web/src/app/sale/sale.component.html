@@ -3,22 +3,20 @@
 <div class="container">
   <!-- Form Section -->
   <div class="form-container">
-    <form (ngSubmit)="onSubmit()" style="height: calc(82vh); overflow:scroll;">
+    <form style="height: calc(82vh); overflow:scroll;" #saleForm="ngForm">
       <!-- Sale Header Section -->
       <div class="form-group">
         <label for="date">Date</label>
-        <!-- <input type="date" id="date" [(ngModel)]="saleData.date" name="date" class="form-control" required> -->
         <p-calendar name="date" [(ngModel)]="saleData.invoiceDate" [showIcon]="true" [touchUI]="true"
           [readonlyInput]="true"></p-calendar>
       </div>
 
       <div class="form-group">
         <label for="party">Select Party</label>
-        <!-- <select id="party" [(ngModel)]="saleData.party" name="party" class="form-control" required>
-            <option *ngFor="let party of parties" [value]="party.id">{{ party.name }}</option>
-          </select> -->
         <p-dropdown id="party" [(ngModel)]="saleData.customerId" name="party" [options]="parties" optionLabel="fullName"
-          optionValue="id" placeholder="Search and select a party" [filter]="true" [showClear]="true" filterBy="fullName">
+          optionValue="id" placeholder="Search and select a party" [filter]="true" [showClear]="true"
+          filterBy="fullName" [required]="true" #party="ngModel"
+          [ngClass]="{'is-invalid': party.touched && party.invalid}">
         </p-dropdown>
       </div>
 
@@ -31,8 +29,8 @@
                 <label for="itemName{{i}}">Item Name</label>
                 <!-- <input type="text" [(ngModel)]="item.itemName" name="itemName{{i}}" class="form-control" placeholder="Item Name" required> -->
                 <p-dropdown id="itemName{{i}}" [(ngModel)]="item.rowNum" name="itemName{{i}}" [options]="itemsList"
-                  optionLabel="name" optionValue="rowNum" placeholder="Select Item" [filter]="true" [showClear]="true"
-                  filterBy="name" (onChange)="onItemSelect(item)">
+                  optionLabel="stockDisplayName" optionValue="rowNum" placeholder="Select Item" [filter]="true"
+                  [showClear]="true" filterBy="name" (onChange)="onItemSelect(item)">
                 </p-dropdown>
               </div>
 
@@ -40,8 +38,8 @@
               <div class="form-row">
                 <div class="col-6">
                   <label for="qty{{i}}">Quantity</label><br />
-                  <input type="number" [(ngModel)]="item.carratQty" name="qty{{i}}" class="form-control" placeholder="Qty"
-                    required (ngModelChange)="calculateTotal(item)">
+                  <input type="number" [(ngModel)]="item.carratQty" name="qty{{i}}" class="form-control"
+                    placeholder="Qty" required (ngModelChange)="calculateTotal(item)">
                 </div>
                 <div class="col-6">
                   <label for="rate{{i}}">Rate</label><br />
@@ -53,19 +51,19 @@
               <div class="form-group">
                 <label for="total{{i}}">Amount</label>
                 <input type="number" [(ngModel)]="item.total" name="total{{i}}" class="form-control" placeholder="Total"
-                [disabled]="true">
+                  [disabled]="true">
               </div>
 
               <div class="form-row">
                 <div class="col-6">
                   <label for="sgst{{i}}">SGST</label>
                   <input type="number" [(ngModel)]="item.sgst" name="sgst{{i}}" class="form-control" placeholder="SGST"
-                    required (ngModelChange)="calculateTotal(item)" [disabled]="true" >
+                    required (ngModelChange)="calculateTotal(item)" [disabled]="true">
                 </div>
                 <div class="col-6">
                   <label for="cgst{{i}}">CGST</label>
                   <input type="number" [(ngModel)]="item.cgst" name="cgst{{i}}" class="form-control" placeholder="CGST"
-                    required (ngModelChange)="calculateTotal(item)" [disabled]="true" >
+                    required (ngModelChange)="calculateTotal(item)" [disabled]="true">
                 </div>
               </div>
 
@@ -78,7 +76,7 @@
               <div class="form-group">
                 <label for="grandTotal{{i}}">Total</label>
                 <input type="number" [(ngModel)]="item.totalAmount" name="grandTotal{{i}}" class="form-control"
-                  placeholder="Grand Total" [readonly]="true" [disabled]="true" >
+                  placeholder="Grand Total" [readonly]="true" [disabled]="true">
               </div>
 
               <!-- Edit and Delete Actions -->
@@ -106,43 +104,43 @@
               <div class="form-row">
                 <div class="col-6">
                   <label for="paymentMode{{i}}">Payment Mode</label>
-                  <select [(ngModel)]="payment.paymentMode" name="paymentMode{{i}}" class="form-control" (change)="onPaymentModeChange(payment, i)" required>
-                    <option value="Cash">Cash</option>
+                  <select [(ngModel)]="payment.paymentMode" name="paymentMode{{i}}" class="form-control"
+                    (change)="onPaymentModeChange(payment, i)" required [disabled]="payment.paymentMode === 'Cash'">
                     <option value="Creditcard">Creditcard</option>
+                    <option value="Cash">Cash</option>
                     <option value="Debitcard">Debitcard</option>
                   </select>
                 </div>
               </div>
-      
+
               <div class="form-row">
                 <div class="col-6" *ngIf="payment.paymentMode === 'Creditcard' || payment.paymentMode === 'Debitcard'">
                   <label for="creditCardNo{{i}}">Card No.</label>
-                  <input type="text" [(ngModel)]="payment.cardNo" name="creditCardNo{{i}}" class="form-control" placeholder="Enter card number">
+                  <input type="text" [(ngModel)]="payment.cardNo" name="creditCardNo{{i}}" class="form-control"
+                    placeholder="Enter card number">
                 </div>
-      
+
                 <div class="col-6" *ngIf="payment.paymentMode === 'Creditcard' || payment.paymentMode === 'Debitcard'">
                   <label for="nameOnCard{{i}}">Name on Card</label>
-                  <input type="text" [(ngModel)]="payment.nameOnCard" name="nameOnCard{{i}}" class="form-control" placeholder="Enter name on card">
+                  <input type="text" [(ngModel)]="payment.nameOnCard" name="nameOnCard{{i}}" class="form-control"
+                    placeholder="Enter name on card">
                 </div>
               </div>
-      
+
               <div class="form-row">
                 <div class="col-6">
                   <label for="amount{{i}}">Amount</label>
-                  <input type="number" [(ngModel)]="payment.amount" name="amount{{i}}" class="form-control" placeholder="Enter amount" required>
+                  <input type="number" [(ngModel)]="payment.amount" name="amount{{i}}" class="form-control"
+                    placeholder="Enter amount" required [disabled]="payment.paymentMode === 'Cash'"
+                    (ngModelChange)="onAmountChange(payment, i)">
                 </div>
               </div>
-      
-              <!-- <div class="form-row">
-                <div class="col-12 mt-2">
-                  <button type="button" class="btn btn-danger" (click)="removePayment(i)">Remove</button>
-                </div>
-              </div> -->
-              <div class="action-icons">
+
+              <div class="action-icons" *ngIf="payment.paymentMode != 'Cash'">
                 <i class="pi pi-times delete-icon" (click)="removePayment(i)" title="Delete"></i>
               </div>
             </div>
-      
+
             <div class="form-row mt-2">
               <button type="button" class="btn btn-primary" (click)="addPayment()">Add Payment</button>
             </div>
@@ -150,20 +148,9 @@
         </div>
       </div>
 
-
-      <!-- <div class="form-group">
-        <div class="form-row">
-          <div class="col-6">
-            <label for="creditCardPaidAmount">Paid Amount</label>
-            <input type="number" id="creditCardPaidAmount" [(ngModel)]="saleData.amount"
-              name="creditCardPaidAmount" (ngModelChange)="calculateCashAmount()" class="form-control" placeholder="Enter amount paid via credit card">
-          </div>
-        </div>
-      </div> -->
-
       <div class="form-group">
-        <!-- <button type="submit" [disabled]="!isFormValid()" class="btn btn-primary btn-lg w-100">Submit</button> -->
-        <p-button label="Submit" (onClick)="showDetails()" icon="pi pi-check"></p-button>
+        <p-button label="Submit" (onClick)="showDetails()" icon="pi pi-check"
+        [disabled]="saleForm.invalid ?? false"></p-button>
       </div>
     </form>
   </div>
