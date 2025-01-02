@@ -17,7 +17,8 @@ namespace Accounts.Core.Models
         public string? EmailId { get; set; }
         public bool? IsAgent { get; set; }
         public long? ParentUserId { get; set; }
-        public long? POSId { get; set; }
+        [Ignore]
+        public List<POSChild> POSChilds { get; set; }
 
         [Ignore]
         public List<UserPermissionChild> Permissions { get; set;}
