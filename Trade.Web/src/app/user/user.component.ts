@@ -22,6 +22,17 @@ export class UserComponent {
   userList: user[];
   permissionList: permission[];
   posList: pos[];
+  selectedPosIds: number[] = [];
+
+  // // Getter for selectedPosIds
+  // get this.selectedPosIds(): number[] {
+  //   return this.user.posId.map(child => child.posId);
+  // }
+
+  // // Setter for selectedPosIds
+  // set selectedPosIds(selectedIds: number[]) {
+  //   this.user.posId = selectedIds.map(id => ({ userId: this.user.id || 0, posId: id }));
+  // }
 
   constructor(private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.user = new user();
@@ -100,6 +111,10 @@ export class UserComponent {
   // }
 
   showDetails() {
+    this.user.posChilds = this.selectedPosIds.map(id => ({
+      userId: 0,
+      posId: id
+    }));
     this.user.mobileNo = this.user.mobileNo.toString();
     this.sharedService.customPostApi("UserMaster", this.user)
       .subscribe((data: any) => {

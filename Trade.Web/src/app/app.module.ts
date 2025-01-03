@@ -34,6 +34,7 @@ import { ReportComponent } from './report/report.component';
 import { FilterbarComponent } from './shared/component/filterbar/filterbar.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { CheckboxModule } from 'primeng/checkbox';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { CompanyselectionComponent } from './shared/component/companyselection/companyselection.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageService } from 'primeng/api';
@@ -98,7 +99,8 @@ import { SeriesComponent } from './master/series/series.component';
     RadioButtonModule,
     CheckboxModule,
     ProgressSpinnerModule,
-    DialogModule
+    DialogModule,
+    MultiSelectModule
   ],
   providers: [SharedService, AuthService, MessageService],
   bootstrap: [AppComponent]

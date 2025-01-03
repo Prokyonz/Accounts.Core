@@ -27,6 +27,7 @@ namespace Accounts.Core.Models
         public long POSId { get; set; }
 
         [ForeignKey("UserId")]
+        [Ignore]
         public UserMaster? UserMaster { get; set; }
     }
 

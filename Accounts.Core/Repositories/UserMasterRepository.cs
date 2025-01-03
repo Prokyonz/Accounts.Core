@@ -45,6 +45,10 @@ namespace Accounts.Core.Repositories
 
                 await _userMasterRepo.CommitTransactionAsync();
 
+                result.POSChilds.ForEach(x => { x.UserMaster = null; });
+
+                result.Permissions.ForEach(x => { x.UserMaster = null; });
+
                 return result;
             }
             catch (Exception)

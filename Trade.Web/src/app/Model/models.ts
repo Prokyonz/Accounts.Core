@@ -65,13 +65,18 @@ export class user {
     mobileNo: string = '';
     emailId: string = '';
     password: string = '';
-    posId: number = 0;
+    posChilds: posChild[];
     isAgent: boolean = false;
     createdDate: Date = new Date();
     createdBy: number = 0;
     updatedDate: Date = new Date();
     updatedBy: number = 0;
     permissions: permissions[];
+}
+
+export class posChild {
+    userId: number = 0;
+    posId: number = 0;
 }
 
 export class permission {
@@ -160,7 +165,7 @@ export class saleReport {
     partyName: string = '';
     billAmount: number = 0;
     paymentNo: string = '';
-    paymentMode: string= '';
+    paymentMode: string = '';
     cardNo: string = '';
     paidAmount: number = 0;
 }
