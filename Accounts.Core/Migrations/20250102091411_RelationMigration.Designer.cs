@@ -4,6 +4,7 @@ using Accounts.Core.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Accounts.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250102091411_RelationMigration")]
+    partial class RelationMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -284,39 +286,6 @@ namespace Accounts.Core.Migrations
                     b.HasKey("Sr");
 
                     b.ToTable("PermissionMaster");
-                });
-
-            modelBuilder.Entity("Accounts.Core.Models.POSChild", b =>
-                {
-                    b.Property<long>("Sr")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Sr"), 1L, 1);
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("POSId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Sr");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("POSChild");
                 });
 
             modelBuilder.Entity("Accounts.Core.Models.POSMaster", b =>
@@ -730,6 +699,9 @@ namespace Accounts.Core.Migrations
                     b.Property<string>("MobileNo")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("POSId")
+                        .HasColumnType("bigint");
+
                     b.Property<long?>("ParentUserId")
                         .HasColumnType("bigint");
 
@@ -790,17 +762,6 @@ namespace Accounts.Core.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Accounts.Core.Models.POSChild", b =>
-                {
-                    b.HasOne("Accounts.Core.Models.UserMaster", "UserMaster")
-                        .WithMany("POSChilds")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserMaster");
-                });
-
             modelBuilder.Entity("Accounts.Core.Models.PurchaseDetails", b =>
                 {
                     b.HasOne("Accounts.Core.Models.PurchaseMaster", null)
@@ -844,8 +805,6 @@ namespace Accounts.Core.Migrations
 
             modelBuilder.Entity("Accounts.Core.Models.UserMaster", b =>
                 {
-                    b.Navigation("POSChilds");
-
                     b.Navigation("Permissions");
                 });
 #pragma warning restore 612, 618

@@ -15,6 +15,21 @@ namespace Accounts.Core.Models
         public bool IsActive { get; set; }
     }
 
+    public class POSChild : BaseModel
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long Sr { get; set; }
+        //public long Id { get; set; }
+        //public long PermissionMasterId { get; set; }
+        
+        public long UserId { get; set; }
+        public long POSId { get; set; }
+
+        [ForeignKey("UserId")]
+        public UserMaster? UserMaster { get; set; }
+    }
+
     public class SeriesMaster : BaseModel
     {
         [Key]

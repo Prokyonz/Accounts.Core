@@ -1,4 +1,5 @@
-﻿using BaseClassLibrary.Models;
+﻿using AutoMapper.Configuration.Annotations;
+using BaseClassLibrary.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,9 +21,13 @@ namespace Accounts.Core.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Sr { get; set; }
         //public long Id { get; set; }
-        //public long PermissionMasterId { get; set; }
+        //public long PermissionMasterId { get; set; }        
         public long UserId { get; set; }
         public string KeyName { get; set; }
         //public bool Status { get; set; } //Permission Status true/false
+
+        [ForeignKey("UserId")]
+        [Ignore]
+        public virtual UserMaster? UserMaster { get; set; }
     }
 }

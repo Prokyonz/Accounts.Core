@@ -29,6 +29,7 @@ namespace Accounts.Core.DbContext
         public DbSet<SaleReport> SaleReport { get; set; }
         public DbSet<POSMaster> POSMaster { get; set; }
         public DbSet<SeriesMaster> SeriesMaster { get; set; }
+        public DbSet<POSChild> POSChild { get; set; }
 
 
         // You can override OnModelCreating if you need additional configurations
