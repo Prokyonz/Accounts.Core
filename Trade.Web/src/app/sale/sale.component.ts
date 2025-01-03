@@ -241,7 +241,7 @@ export class SaleComponent implements OnInit {
         this.showMessage('error', ex);
       });
 
-    //this.router.navigate(['salebill']);
+    this.router.navigate(['salebill']);
   }
 
   clearForm() {
