@@ -98,6 +98,7 @@ export class sale {
     seriesName: string = '';
     discountAmount: number = 0;
     amount: number = 0;
+    posId: number = 0;
     salesDetails: salesDetails[];
     amountReceived: amountReceived[];
     createdDate: Date = new Date();

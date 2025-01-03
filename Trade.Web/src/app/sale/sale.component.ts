@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { SharedService } from '../common/shared.service';
-import { amountReceived, Customer, item, sale, salesDetails, stockReport } from '../Model/models';
+import { amountReceived, Customer, item, pos, sale, salesDetails, stockReport } from '../Model/models';
 
 @Component({
   selector: 'app-sale',
@@ -18,6 +18,7 @@ export class SaleComponent implements OnInit {
 
   parties: Customer[];
   itemsList: stockReport[];
+  posList: pos[];
 
   constructor(private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.saleData = new sale();
@@ -31,6 +32,7 @@ export class SaleComponent implements OnInit {
     this.logInUserID = localStorage.getItem('userid') ?? '0';
 
     this.getCustomer();
+    this.getPOS();
     this.addItem();
     this.getItem();
   }
@@ -70,6 +72,24 @@ export class SaleComponent implements OnInit {
       (error) => {
         this.loading = false;
         this.showMessage('Error fetching customers:', error);
+      }
+    );
+  }
+
+  getPOS() {
+    this.loading = true;
+    this.sharedService.customGetApi1<pos[]>('POSMaster/GetPOSByUser/'+this.logInUserID).subscribe(
+      (data: pos[]) => {
+        this.posList = data;
+        this.posList = this.posList.map(pos => ({
+          ...pos,
+          posName: `${pos.tidNumber} (${pos.tidBankName})` // Concatenate first and last name
+        }));
+        this.loading = false;
+      },
+      (error) => {
+        this.loading = false;
+        this.showMessage('Error fetching pos details:', error);
       }
     );
   }

@@ -10,8 +10,8 @@ namespace Accounts.Core.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-        public string TIDNumber { get; set; }
-        public string TIDBankName { get; set; }
+        public string? TIDNumber { get; set; }
+        public string? TIDBankName { get; set; }
         public bool IsActive { get; set; }
     }
 

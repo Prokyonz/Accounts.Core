@@ -6,6 +6,15 @@
     <form style="height: calc(82vh); overflow:scroll;" #saleForm="ngForm">
       <!-- Sale Header Section -->
       <div class="form-group">
+        <label for="party">POS</label>
+        <p-dropdown id="pos" [(ngModel)]="saleData.posId" name="user" [options]="posList" optionLabel="posName"
+          optionValue="id" placeholder="Search and select a POS" [filter]="true" [showClear]="true" filterBy="posName"
+          [required]="true" #pos="ngModel"
+          [ngClass]="{'is-invalid': pos.touched && pos.invalid}">
+        </p-dropdown>
+      </div>
+
+      <div class="form-group">
         <label for="date">Date</label>
         <p-calendar name="date" [(ngModel)]="saleData.invoiceDate" [showIcon]="true" [touchUI]="true"
           [readonlyInput]="true"></p-calendar>
@@ -150,7 +159,7 @@
 
       <div class="form-group">
         <p-button label="Submit" (onClick)="showDetails()" icon="pi pi-check"
-        [disabled]="saleForm.invalid ?? false"></p-button>
+          [disabled]="saleForm.invalid ?? false"></p-button>
       </div>
     </form>
   </div>

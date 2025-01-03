@@ -17,7 +17,7 @@ namespace Accounts.Core.Models
         public DateTime EntryDate { get; set; }        
         public decimal DiscountAmount { get; set; }
         public decimal Amount { get; set; }
-
+        public long POSId { get; set; }
         [Ignore]
         public virtual List<SalesDetails> SalesDetails { get; set; }
 

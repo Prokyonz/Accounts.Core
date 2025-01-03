@@ -30,6 +30,7 @@ namespace Accounts.Core.DbContext
         public DbSet<POSMaster> POSMaster { get; set; }
         public DbSet<SeriesMaster> SeriesMaster { get; set; }
         public DbSet<POSChild> POSChild { get; set; }
+        public DbSet<POSResponceModel> POSResponceModel { get; set; }
 
 
         // You can override OnModelCreating if you need additional configurations
@@ -41,6 +42,7 @@ namespace Accounts.Core.DbContext
             modelBuilder.Entity<PurchaseReports>().HasNoKey();
             modelBuilder.Entity<StockReport>().HasNoKey();
             modelBuilder.Entity<SaleReport>().HasNoKey();
+            modelBuilder.Entity<POSResponceModel>().HasNoKey();
         }
     }
 }

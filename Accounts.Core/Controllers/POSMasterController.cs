@@ -1,4 +1,5 @@
 using Accounts.Core.Models;
+using Accounts.Core.Models.Response;
 using Accounts.Core.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -77,6 +78,16 @@ namespace Accounts.Core.Controllers
         public async Task<bool> Delete(long pOSMasterId)
         {
             return await _pOSMasterRepository.DeletePOSMasterAsync(pOSMasterId);
+        }
+
+        /// <summary>
+        /// Read all Sale from table.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetPOSByUser/{userId}")]
+        public async Task<List<POSResponceModel>> GetPOSByUser(long userId)
+        {
+            return await _pOSMasterRepository.GetPOSByUser(userId);
         }
     }
 }

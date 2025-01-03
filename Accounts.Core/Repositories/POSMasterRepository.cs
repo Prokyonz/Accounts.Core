@@ -1,6 +1,7 @@
 
 using Accounts.Core.DbContext;
 using Accounts.Core.Models;
+using Accounts.Core.Models.Response;
 using BaseClassLibrary.Interface;
 using System.Linq.Expressions;
 
@@ -14,6 +15,7 @@ namespace Accounts.Core.Repositories
         Task<bool> DeletePOSMasterAsync(long pOSMasterId);
         Task<List<POSMaster>> GetQuery(int pageIndex, int pageSize);
         Task<POSMaster> GetQuery(long pOSMasterId, int pageIndex, int pageSize);
+        Task<List<POSResponceModel>> GetPOSByUser(long UserId);
     }
 }
 
@@ -22,10 +24,13 @@ namespace Accounts.Core.Repositories
     public class POSMasterRepository : IPOSMasterRepository
     {
         private readonly IBaseRepository<POSMaster, AppDbContext> _pOSMasterRepo;
+        private readonly IBaseRepository<POSResponceModel, AppDbContext> _pOSResponceModelRepo;
 
-        public POSMasterRepository(IBaseRepository<POSMaster, AppDbContext> pOSMasterRepo)
+        public POSMasterRepository(IBaseRepository<POSMaster, AppDbContext> pOSMasterRepo,
+            IBaseRepository<POSResponceModel, AppDbContext> pOSResponceModelRepo)
         {
             _pOSMasterRepo = pOSMasterRepo;
+            _pOSResponceModelRepo = pOSResponceModelRepo;
         }
 
         public async Task<POSMaster> AddPOSMasterAsync(POSMaster pOSMaster)
@@ -82,6 +87,15 @@ namespace Accounts.Core.Repositories
         {
             await _pOSMasterRepo.UpdateAsync(pOSMaster);
             return pOSMaster;
+        }
+
+        public async Task<List<POSResponceModel>> GetPOSByUser(long UserId)
+        {
+            //object[] paramerers = new object[] { "UserId", UserId };
+
+            var result = await _pOSResponceModelRepo.ExecuteStoredProcedureAsync("GetPOSByUser "+ UserId);
+
+            return result;
         }
     }
 }
