@@ -53,7 +53,11 @@ namespace Accounts.Core.Repositories
                            orderBy: c => c.InvoiceNo,
                            0, int.MaxValue);
 
-                long invoiceNo = result.Max(x => x.InvoiceNo);
+                long invoiceNo = 0;
+                if (result != null && result.Count > 0)
+                {
+                    invoiceNo = result.Max(x => x.InvoiceNo);
+                }
 
                 return invoiceNo += 1;
             }

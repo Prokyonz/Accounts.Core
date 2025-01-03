@@ -90,6 +90,7 @@ export class sale {
     invoiceDate: Date = new Date();
     entryDate: Date = new Date();
     invoiceNo: number = 0;
+    seriesName: string = '';
     discountAmount: number = 0;
     amount: number = 0;
     salesDetails: salesDetails[];
@@ -154,11 +155,14 @@ export class purchaseReport {
 }
 
 export class saleReport {
-    saleSlipNo: number = 0;
+    invoiceNo: string = '';
     invoiceDate: Date = new Date();
     partyName: string = '';
-    totalItems: number = 0;
     billAmount: number = 0;
+    paymentNo: string = '';
+    paymentMode: string= '';
+    cardNo: string = '';
+    paidAmount: number = 0;
 }
 
 export class stockReport {

@@ -82,3 +82,13 @@
     font-size: 18px;
   }
 }
+
+.sale-card-header {
+  display: flex;
+  justify-content: space-between; /* Aligns items to the left and right */
+  align-items: center;           /* Vertically centers items */
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 10px;
+}

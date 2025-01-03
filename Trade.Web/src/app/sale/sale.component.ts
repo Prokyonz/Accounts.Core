@@ -98,10 +98,10 @@ export class SaleComponent implements OnInit {
 
     item.total = item.carratQty * item.rate;
     let gSTAmount = (item.total * item.gstper) / 100;
-    item.sgst = gSTAmount / 2; // Example SGST at 9%
-    item.cgst = gSTAmount / 2; // Example CGST at 9%
-    item.igst = gSTAmount; // If SGST and CGST are applied, IGST is 0
-    item.totalAmount = item.total + item.sgst + item.cgst; // + item.igst;
+    item.sgst = parseFloat((gSTAmount / 2).toFixed(2));
+    item.cgst = parseFloat((gSTAmount / 2).toFixed(2));
+    item.igst = parseFloat(gSTAmount.toFixed(2));
+    item.totalAmount = Math.ceil(item.total + item.sgst + item.cgst);
     this.saleData.amount = this.getBillAmount();
     this.calculateCashAmount(true);
   }
@@ -209,7 +209,7 @@ export class SaleComponent implements OnInit {
     this.sharedService.customPostApi("Sales", this.saleData)
       .subscribe((data: any) => {
         if (data != null) {
-          this.showMessage('success', `Invoice No: ${data.invoiceNo} - Sale details added successfully`);
+          this.showMessage('success', `Invoice No: ${data.seriesName + data.invoiceNo} - Sale details added successfully`);
           this.clearForm();
         }
         else {

@@ -2,10 +2,13 @@
 {
     public class SaleReport
     {
-        public long SaleSlipNo { get; set; }
-        public string? PartyName { get; set; }
+        public string InvoiceNo { get; set; }
         public DateTime InvoiceDate { get; set; }
-        public long TotalItems { get; set; }
+        public string? PartyName { get; set; }
         public decimal BillAmount { get; set; }
+        public string PaymentNo { get; set; }
+        public string PaymentMode { get; set; }
+        public string CardNo { get; set; }
+        public decimal PaidAmount { get; set; }
     }
 }

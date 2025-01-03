@@ -5,7 +5,7 @@
   <div *ngIf="customers.length === 0" class="no-data">
     No customers found.
   </div>
-  
+
   <div *ngFor="let customer of customers" class="customer-card">
     <div class="card-header">
       <strong>Customer ID: </strong>{{ customer.id }}
@@ -15,13 +15,13 @@
 
       <!-- Mobile Section with Icon -->
       <div class="contact-section">
-        <i class="fa fa-mobile-alt icon"></i>  <!-- Font Awesome Mobile Icon -->
+        <i class="fa fa-mobile-alt icon"></i> <!-- Font Awesome Mobile Icon -->
         <span>{{ customer.mobileNo }}</span>
       </div>
-      
+
       <!-- Email Section with Icon -->
       <div class="contact-section">
-        <i class="fa fa-envelope icon"></i>  <!-- Font Awesome Email Icon -->
+        <i class="fa fa-envelope icon"></i> <!-- Font Awesome Email Icon -->
         <span>{{ customer.emailId }}</span>
       </div>
     </div>
@@ -32,7 +32,7 @@
   <div *ngIf="users.length === 0" class="no-data">
     No users found.
   </div>
-  
+
   <div *ngFor="let user of users" class="customer-card">
     <div class="card-header">
       <strong>User ID: </strong>{{ user.id }}
@@ -42,24 +42,24 @@
 
       <!-- Mobile Section with Icon -->
       <div class="contact-section">
-        <i class="fa fa-mobile-alt icon"></i>  <!-- Font Awesome Mobile Icon -->
+        <i class="fa fa-mobile-alt icon"></i> <!-- Font Awesome Mobile Icon -->
         <span>{{ user.mobileNo }}</span>
       </div>
-      
+
       <!-- Email Section with Icon -->
       <div class="contact-section">
-        <i class="fa fa-envelope icon"></i>  <!-- Font Awesome Email Icon -->
+        <i class="fa fa-envelope icon"></i> <!-- Font Awesome Email Icon -->
         <span>{{ user.emailId }}</span>
       </div>
     </div>
   </div>
 </div>
 
-<div class="full-screen-card-container" *ngIf="reportIndex == 3">  <!-- Adjust the condition as needed -->
+<div class="full-screen-card-container" *ngIf="reportIndex == 3"> <!-- Adjust the condition as needed -->
   <div *ngIf="purchaseData.length === 0" class="no-data">
     No purchase data found.
   </div>
-  
+
   <div *ngFor="let purchase of purchaseData" class="customer-card">
     <div class="card-header">
       <strong>Purchase No: </strong>{{ purchase.purchaseSlipNo }}
@@ -74,50 +74,51 @@
 
       <!-- Bill Amount Section -->
       <div class="details-section">
-        <span>{{ purchase.billAmount | currency:'INR' }}</span>  <!-- Currency pipe for formatting -->
+        <span>{{ purchase.billAmount | currency:'INR' }}</span> <!-- Currency pipe for formatting -->
       </div>
 
       <div class="details-section">
-        <span>{{ purchase.invoiceDate | date }}</span>  <!-- Currency pipe for formatting -->
+        <span>{{ purchase.invoiceDate | date }}</span> <!-- Currency pipe for formatting -->
       </div>
     </div>
   </div>
 </div>
 
-<div class="full-screen-card-container" *ngIf="reportIndex == 4">  <!-- Adjust the condition as needed -->
+<div class="full-screen-card-container" *ngIf="reportIndex == 4"> <!-- Adjust the condition as needed -->
   <div *ngIf="saleData.length === 0" class="no-data">
     No sale data found.
   </div>
-  
+
   <div *ngFor="let sale of saleData" class="customer-card">
-    <div class="card-header">
-      <strong>Sale No: </strong>{{ sale.saleSlipNo }}
+    <div class="sale-card-header d-flex justify-content-between align-items-center">
+      <strong>{{ sale.partyName }}</strong>
+      <strong>{{ sale.invoiceNo }}</strong>
     </div>
     <div class="card-body">
-      <div><strong>{{ sale.partyName }}</strong></div>
+      <!-- <div><strong>{{ sale.partyName }}</strong></div> -->
 
       <!-- Total Items Section -->
-      <div class="details-section">
+      <!-- <div class="details-section">
         <span>{{ sale.totalItems }} Items</span>
-      </div>
+      </div> -->
 
       <!-- Bill Amount Section -->
       <div class="details-section">
-        <span>{{ sale.billAmount | currency:'INR' }}</span>  <!-- Currency pipe for formatting -->
+        <span>{{ sale.billAmount | currency:'INR' }}</span> <!-- Currency pipe for formatting -->
       </div>
 
       <div class="details-section">
-        <span>{{ sale.invoiceDate | date }}</span>  <!-- Currency pipe for formatting -->
+        <span>{{ sale.invoiceDate | date }}</span> <!-- Currency pipe for formatting -->
       </div>
     </div>
   </div>
 </div>
 
-<div class="full-screen-card-container" *ngIf="reportIndex == 5">  <!-- Adjust the condition as needed -->
+<div class="full-screen-card-container" *ngIf="reportIndex == 5"> <!-- Adjust the condition as needed -->
   <div *ngIf="stockData.length === 0" class="no-data">
     No stock data found.
   </div>
-  
+
   <div *ngFor="let stock of stockData" class="customer-card">
     <div class="card-header">
       <strong>Item: </strong>{{ stock.name }}
