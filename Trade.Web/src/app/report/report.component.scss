@@ -87,8 +87,101 @@
   display: flex;
   justify-content: space-between; /* Aligns items to the left and right */
   align-items: center;           /* Vertically centers items */
-  font-size: 1.2em;
+  font-size: 1.1em;
   font-weight: bold;
   color: #007bff;
   margin-bottom: 10px;
+}
+
+.details-section table {
+  width: 100%;
+  table-layout: fixed; /* Distribute column width equally */
+}
+
+.details-section th, .details-section td {
+  text-align: center;
+  word-wrap: break-word; /* Wrap long text if necessary */
+}
+
+
+/* Filter Icon */
+.filter-icon {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background: white;
+  color: #007bff;
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.filter-icon i {
+  font-size: 20px;
+}
+
+/* Filter Modal */
+.filter-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+}
+
+.filter-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-field {
+  padding-top: 10px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* Responsive design */
+@media (max-width: 100%) {
+  .half-width-row {
+    flex-direction: column;
+    /* Stack fields vertically */
+  }
+
+  .half-width {
+    width: 100%;
+    /* Full width on small screens */
+    margin-bottom: 10px;
+    /* Space between the fields */
+  }
+
+  .form-container {
+    padding: 8px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+}
+
+.half-width-1 {
+  width: 50%;
+  display: flex;
+  align-items: center;
+}
+
+.half-width-1 i {
+  margin-right: 10px; /* Space between the icon and the text */
 }

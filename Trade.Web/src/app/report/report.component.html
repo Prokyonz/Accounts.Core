@@ -2,6 +2,46 @@
 <!-- <app-header (onClickMainIcon)="goBack()" iconName="pi-arrow-left" title="{{ PageTitle }}" leftIconName=""></app-header> -->
 
 <div class="full-screen-card-container" *ngIf="reportIndex == 1">
+  <!-- Filter Icon -->
+  <div class="filter-icon" (click)="showFilterPopup()">
+    <i class="fas fa-filter"></i>
+  </div>
+
+  <!-- Filter Modal -->
+  <div *ngIf="showFilter">
+    <div class="container">
+      <!-- Basic Details Card -->
+      <div class="panel">
+        <div class="card custom-card">
+          <p-card>
+            <div class="form-content">
+              <form>
+                <strong>Filter</strong>
+                <table class="form-table" [cellSpacing]="5">
+                  <tr>
+                    <td colspan="2" class="input-field">
+                      <label for="name">Customer</label><br />
+                      <input id="partyName" name="partyName" pInputText [(ngModel)]="filterCriteria.name" type="text"
+                        class="form-control" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="half-width">
+                      <p-button label="Search" (onClick)="filterSearch()"></p-button>
+                    </td>
+                    <td class="half-width">
+                      <p-button label="Reset" (onClick)="filterCancel()"></p-button>
+                    </td>
+                  </tr>
+                </table>
+              </form>
+            </div>
+          </p-card>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div *ngIf="customers.length === 0" class="no-data">
     No customers found.
   </div>
@@ -12,23 +52,65 @@
     </div>
     <div class="card-body">
       <div><strong>{{ customer.firstName }} {{ customer.lastName }}</strong></div>
-
-      <!-- Mobile Section with Icon -->
       <div class="contact-section">
-        <i class="fa fa-mobile-alt icon"></i> <!-- Font Awesome Mobile Icon -->
-        <span>{{ customer.mobileNo }}</span>
+        <i class="fas fa-map-marker-alt icon"></i>
+        <span>{{ customer.address }}</span>
       </div>
-
-      <!-- Email Section with Icon -->
-      <div class="contact-section">
-        <i class="fa fa-envelope icon"></i> <!-- Font Awesome Email Icon -->
-        <span>{{ customer.emailId }}</span>
+      <div class="contact-section d-flex">
+        <div class="half-width-1">
+          <i class="fa fa-mobile-alt icon"></i>
+          <span>{{ customer.mobileNo }}</span>
+        </div>
+        <div class="half-width-1">
+          <i class="fas fa-id-card icon"></i>
+          <span>{{ customer.panNo }}</span>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
 <div class="full-screen-card-container" *ngIf="reportIndex == 2">
+  <!-- Filter Icon -->
+  <div class="filter-icon" (click)="showFilterPopup()">
+    <i class="fas fa-filter"></i>
+  </div>
+
+  <!-- Filter Modal -->
+  <div *ngIf="showFilter">
+    <div class="container">
+      <!-- Basic Details Card -->
+      <div class="panel">
+        <div class="card custom-card">
+          <p-card>
+            <div class="form-content">
+              <form>
+                <strong>Filter</strong>
+                <table class="form-table" [cellSpacing]="5">
+                  <tr>
+                    <td colspan="2" class="input-field">
+                      <label for="name">User</label><br />
+                      <input id="partyName" name="partyName" pInputText [(ngModel)]="filterCriteria.name" type="text"
+                        class="form-control" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="half-width">
+                      <p-button label="Search" (onClick)="filterSearch()"></p-button>
+                    </td>
+                    <td class="half-width">
+                      <p-button label="Reset" (onClick)="filterCancel()"></p-button>
+                    </td>
+                  </tr>
+                </table>
+              </form>
+            </div>
+          </p-card>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div *ngIf="users.length === 0" class="no-data">
     No users found.
   </div>
@@ -56,21 +138,68 @@
 </div>
 
 <div class="full-screen-card-container" *ngIf="reportIndex == 3"> <!-- Adjust the condition as needed -->
+  <!-- Filter Icon -->
+  <div class="filter-icon" (click)="showFilterPopup()">
+    <i class="fas fa-filter"></i>
+  </div>
+
+  <!-- Filter Modal -->
+  <div *ngIf="showFilter">
+    <div class="container">
+      <!-- Basic Details Card -->
+      <div class="panel">
+        <div class="card custom-card">
+          <p-card>
+            <div class="form-content">
+              <form>
+                <strong>Filter</strong>
+                <table class="form-table" [cellSpacing]="5">
+                  <tr>
+                    <td class="half-width">
+                      <label for="frmdate">From Date</label>
+                      <p-calendar name="fromDate" [(ngModel)]="filterCriteria.fromDate" [showIcon]="true"
+                        [touchUI]="true" [readonlyInput]="true"></p-calendar>
+                    </td>
+                    <td class="half-width">
+                      <label for="todate">To Date</label>
+                      <p-calendar name="toDate" [(ngModel)]="filterCriteria.toDate" [showIcon]="true" [touchUI]="true"
+                        [readonlyInput]="true"></p-calendar>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="input-field">
+                      <label for="name">Dealer</label><br />
+                      <input id="partyName" name="partyName" pInputText [(ngModel)]="filterCriteria.name" type="text"
+                        class="form-control" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="half-width">
+                      <p-button label="Search" (onClick)="filterSearch()"></p-button>
+                    </td>
+                    <td class="half-width">
+                      <p-button label="Reset" (onClick)="filterCancel()"></p-button>
+                    </td>
+                  </tr>
+                </table>
+              </form>
+            </div>
+          </p-card>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <div *ngIf="purchaseData.length === 0" class="no-data">
     No purchase data found.
   </div>
 
   <div *ngFor="let purchase of purchaseData" class="customer-card">
     <div class="card-header">
-      <strong>Purchase No: </strong>{{ purchase.purchaseSlipNo }}
+      <strong>Purchase No: </strong>{{ purchase.invoiceNo }}
     </div>
     <div class="card-body">
       <div><strong>{{ purchase.dealerName }}</strong></div>
-
-      <!-- Total Items Section -->
-      <div class="details-section">
-        <span>{{ purchase.totalItems }} Items</span>
-      </div>
 
       <!-- Bill Amount Section -->
       <div class="details-section">
@@ -85,30 +214,102 @@
 </div>
 
 <div class="full-screen-card-container" *ngIf="reportIndex == 4"> <!-- Adjust the condition as needed -->
+  <!-- Filter Icon -->
+  <div class="filter-icon" (click)="showFilterPopup()">
+    <i class="fas fa-filter"></i>
+  </div>
+
+  <!-- Filter Modal -->
+  <div *ngIf="showFilter">
+    <div class="container">
+      <!-- Basic Details Card -->
+      <div class="panel">
+        <div class="card custom-card">
+          <p-card>
+            <div class="form-content">
+              <form>
+                <strong>Filter</strong>
+                <table class="form-table" [cellSpacing]="5">
+                  <tr>
+                    <td class="half-width">
+                      <label for="frmdate">From Date</label>
+                      <p-calendar name="fromDate" [(ngModel)]="filterCriteria.fromDate" [showIcon]="true"
+                        [touchUI]="true" [readonlyInput]="true"></p-calendar>
+                    </td>
+                    <td class="half-width">
+                      <label for="todate">To Date</label>
+                      <p-calendar name="toDate" [(ngModel)]="filterCriteria.toDate" [showIcon]="true" [touchUI]="true"
+                        [readonlyInput]="true"></p-calendar>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" class="input-field">
+                      <label for="name">Party</label><br />
+                      <input id="partyName" name="partyName" pInputText [(ngModel)]="filterCriteria.name" type="text"
+                        class="form-control" />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="half-width">
+                      <p-button label="Search" (onClick)="filterSearch()"></p-button>
+                    </td>
+                    <td class="half-width">
+                      <p-button label="Reset" (onClick)="filterCancel()"></p-button>
+                    </td>
+                  </tr>
+                </table>
+              </form>
+            </div>
+          </p-card>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div *ngIf="saleData.length === 0" class="no-data">
     No sale data found.
   </div>
 
-  <div *ngFor="let sale of saleData" class="customer-card">
+  <div *ngFor="let group of groupedSaleData" class="customer-card">
     <div class="sale-card-header d-flex justify-content-between align-items-center">
-      <strong>{{ sale.partyName }}</strong>
-      <strong>{{ sale.invoiceNo }}</strong>
+      <strong>{{ group.partyName }}</strong>
+      <strong>{{ group.invoiceNo }}</strong>
     </div>
     <div class="card-body">
-      <!-- <div><strong>{{ sale.partyName }}</strong></div> -->
-
-      <!-- Total Items Section -->
-      <!-- <div class="details-section">
-        <span>{{ sale.totalItems }} Items</span>
-      </div> -->
-
       <!-- Bill Amount Section -->
       <div class="details-section">
-        <span>{{ sale.billAmount | currency:'INR' }}</span> <!-- Currency pipe for formatting -->
+        <span><strong>Bill Amount:</strong> {{ group.billAmount | currency: 'INR' }}</span>
       </div>
 
+      <!-- Invoice Date -->
       <div class="details-section">
-        <span>{{ sale.invoiceDate | date }}</span> <!-- Currency pipe for formatting -->
+        <span><strong>Date:</strong> {{ group.invoiceDate | date: 'shortDate' }}</span>
+      </div>
+
+      <!-- Payment Details -->
+      <div class="details-section">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th style="width: 12%;">Type</th>
+              <th style="width: 25%;">No</th>
+              <th style="width: 28%;">Card No</th>
+              <th style="width: 35%;">Paid Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let detail of group.details">
+              <td>
+                <i [class]="detail.paymentMode === 'Cash' ? 'fas fa-money-bill-wave' : 'fas fa-credit-card'"
+                  [style.color]="detail.paymentMode === 'Cash' ? 'green' : '#007bff'">
+                </i>
+              </td>
+              <td>{{ detail.paymentNo }}</td>
+              <td>{{ detail.cardNo ? detail.cardNo.slice(-4) : '-' }}</td>
+              <td>{{ detail.paidAmount | currency: 'INR' }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>

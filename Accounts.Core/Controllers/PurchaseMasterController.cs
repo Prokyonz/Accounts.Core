@@ -24,9 +24,9 @@ namespace Accounts.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("PurchaseReport")]
-        public async Task<List<PurchaseReports>> GetPurchaseReport()
+        public async Task<List<PurchaseReports>> GetPurchaseReport([FromQuery] long userId, [FromQuery] DateTime? fromDate, [FromQuery] DateTime? toDate, [FromQuery] string? name)
         {
-            return await _purchaseMasterRepository.PurchaseReport();
+            return await _purchaseMasterRepository.PurchaseReport(userId, fromDate, toDate, name);
         }
 
         /// <summary>

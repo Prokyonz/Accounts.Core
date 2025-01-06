@@ -1,4 +1,5 @@
 using Accounts.Core.Models;
+using Accounts.Core.Models.Response;
 using Accounts.Core.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -95,6 +96,12 @@ namespace Accounts.Core.Controllers
         public async Task<bool> Delete(long userMasterId)
         {
             return await _userMasterRepository.DeleteUserMasterAsync(userMasterId);
+        }
+
+        [HttpGet("UserReport")]
+        public async Task<List<UserReport>> GetUserReport([FromQuery] long userId, [FromQuery] string? name)
+        {
+            return await _userMasterRepository.UserReport(userId, name);
         }
     }
 }

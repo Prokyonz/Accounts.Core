@@ -1,5 +1,6 @@
 using Accounts.Core.DbContext;
 using Accounts.Core.Models;
+using Accounts.Core.Models.Response;
 using BaseClassLibrary.Interface;
 using System.Linq.Expressions;
 
@@ -15,6 +16,7 @@ namespace Accounts.Core.Repositories
         Task<UserMaster> GetQuery(long userMasterId, int pageIndex, int pageSize);
         Task<List<PermissionMaster>> GetMasterPermissions();
         Task<UserMaster> Login(string? mobileNo, string password, string? emailId);
+        Task<List<UserReport>> UserReport(long userId, string? name);
     }
 }
 
@@ -25,14 +27,17 @@ namespace Accounts.Core.Repositories
         private readonly IBaseRepository<UserMaster, AppDbContext> _userMasterRepo;
         private readonly IBaseRepository<UserPermissionChild, AppDbContext> _userPermisionChild;
         private readonly IBaseRepository<PermissionMaster, AppDbContext> _permissionMaster;
+        private readonly IBaseRepository<UserReport, AppDbContext> _userReportRepo;
 
         public UserMasterRepository(IBaseRepository<UserMaster, AppDbContext> userMasterRepo, 
             IBaseRepository<UserPermissionChild, AppDbContext> userPermisionChild,
-            IBaseRepository<PermissionMaster, AppDbContext> permissionMaster)
+            IBaseRepository<PermissionMaster, AppDbContext> permissionMaster,
+            IBaseRepository<UserReport, AppDbContext> userReportRepo)
         {
             _userMasterRepo = userMasterRepo;
             _userPermisionChild = userPermisionChild;
             _permissionMaster = permissionMaster;
+            _userReportRepo = userReportRepo;
         }
 
         public async Task<UserMaster> AddUserMasterAsync(UserMaster userMaster)
@@ -136,6 +141,24 @@ namespace Accounts.Core.Repositories
         {
             await _userMasterRepo.UpdateAsync(userMaster);
             return userMaster;
+        }
+
+        public async Task<List<UserReport>> UserReport(long userId, string? name)
+        {
+            //object[] paramerers = new object[] { "Id", 1, "Name", "Abhishek" };
+
+            string spName = "userReport";
+            if (userId > 0)
+                spName += " " + userId;
+            else
+                spName += " " + "NULL";
+            if (!string.IsNullOrWhiteSpace(name))
+                spName += " ,'" + name + "'";
+            else
+                spName += " ," + "NULL";
+            var result = await _userReportRepo.ExecuteStoredProcedureAsync(spName);
+
+            return result;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Accounts.Core.Repositories
         Task<bool> DeletePurchaseMasterAsync(long purchaseMasterId);
         Task<List<PurchaseMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
         Task<PurchaseMaster> GetQuery(long purchaseMasterId, int pageIndex, int pageSize, bool includeDetails);
-        Task<List<PurchaseReports>> PurchaseReport();
+        Task<List<PurchaseReports>> PurchaseReport(long userId, DateTime? fromDate, DateTime? toDate, string? name);
         Task<List<StockReport>> StockReport();
         Task<long> GetMaxInvoiceNo();
     }
@@ -37,11 +37,28 @@ namespace Accounts.Core.Repositories
             _stockReportRepo = stockReportRepo;
         }
 
-        public async Task<List<PurchaseReports>> PurchaseReport()
+        public async Task<List<PurchaseReports>> PurchaseReport(long userId, DateTime? fromDate, DateTime? toDate, string? name)
         {
-            object[] paramerers = new object[] { "Id", 1, "Name", "Abhishek" };
-            ;
-            var result = await _purchaseReportRepo.ExecuteStoredProcedureAsync("purchaseReport", paramerers);
+            //object[] paramerers = new object[] { "Id", 1, "Name", "Abhishek" };
+
+            string spName = "purchaseReport";
+            if (userId > 0)
+                spName += " " + userId;
+            else
+                spName += " " + "NULL";
+            if (fromDate != null)
+                spName += " ,'" + fromDate?.ToString("yyyyMMdd") + "'";
+            else
+                spName += " ," + "NULL";
+            if (toDate != null)
+                spName += " ,'" + toDate?.ToString("yyyyMMdd") + "'";
+            else
+                spName += " ," + "NULL";
+            if (!string.IsNullOrWhiteSpace(name))
+                spName += " ,'" + name + "'";
+            else
+                spName += " ," + "NULL";
+            var result = await _purchaseReportRepo.ExecuteStoredProcedureAsync(spName);
 
             return result;
         }

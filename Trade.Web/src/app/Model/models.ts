@@ -153,10 +153,9 @@ export class item {
 }
 
 export class purchaseReport {
-    purchaseSlipNo: number = 0;
+    invoiceNo: number = 0;
     invoiceDate: Date = new Date();
     dealerName: string = '';
-    totalItems: number = 0;
     billAmount: number = 0;
 }
 
@@ -191,4 +190,10 @@ export class series {
     id: number = 0;
     name: string = '';
     isActive: boolean = false;
+}
+
+export class filterCriteria{
+    fromDate: Date | null;
+    toDate: Date | null;
+    name: string;
 }

@@ -86,9 +86,9 @@ namespace Accounts.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("SaleReport")]
-        public async Task<List<SaleReport>> GetSaleReport()
+        public async Task<List<SaleReport>> GetSaleReport([FromQuery] long userId, [FromQuery] DateTime? fromDate, [FromQuery] DateTime? toDate, [FromQuery] string? name)
         {
-            return await _salesMasterRepository.SalesReport();
+            return await _salesMasterRepository.SalesReport(userId, fromDate, toDate, name);
         }
     }
 }

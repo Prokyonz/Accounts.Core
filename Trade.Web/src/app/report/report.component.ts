@@ -4,7 +4,7 @@ import { Table } from 'primeng/table';
 import { SharedService } from '../common/shared.service';
 import { RememberCompany } from '../shared/component/companyselection/companyselection.component';
 import { Message, MessageService } from 'primeng/api';
-import { Customer, item, purchase, purchaseReport, saleReport, stockReport, user } from '../Model/models';
+import { Customer, filterCriteria, item, purchase, purchaseReport, saleReport, stockReport, user } from '../Model/models';
 
 @Component({
   selector: 'app-report',
@@ -21,11 +21,21 @@ export class ReportComponent implements OnInit {
   saleData: saleReport[];
   itemData: item[];
   stockData: stockReport[];
-
+  groupedSaleData: any[] = [];
   loading = false;
+  showFilter = false;
+  filteredSaleData = []; // Data after applying filters
+  logInUserID: string;
+  filterCriteria: filterCriteria;
 
   constructor(private rote: Router, private activateRoute: ActivatedRoute, private sharedService: SharedService, private messageService: MessageService) {
     this.reportIndex = activateRoute.snapshot.params['id'];
+    this.logInUserID = localStorage.getItem('userid') ?? '0';
+    this.filterCriteria = {
+      fromDate: new Date(new Date().setDate(new Date().getDate() - 30)), // Default: 30 days ago
+      toDate: new Date(), // Default: Today
+      name: ''
+    };
   }
 
   ngOnInit() {
@@ -65,7 +75,10 @@ export class ReportComponent implements OnInit {
 
   getCustomer() {
     this.loading = true;
-    this.sharedService.customGetApi1<Customer[]>('Customer').subscribe(
+    const params = {
+      name: this.filterCriteria.name,
+    };
+    this.sharedService.customGetApi1<Customer[]>('Customer/CustomerReport', params).subscribe(
       (data: Customer[]) => {
         this.customers = data; // Data is directly returned here as an array of User objects
         this.loading = false;
@@ -79,7 +92,11 @@ export class ReportComponent implements OnInit {
 
   getUser() {
     this.loading = true;
-    this.sharedService.customGetApi1<user[]>('UserMaster').subscribe(
+    this.loading = true;
+    const params = {
+      name: this.filterCriteria.name,
+    };
+    this.sharedService.customGetApi1<user[]>('UserMaster/UserReport', params).subscribe(
       (data: user[]) => {
         this.users = data; // Data is directly returned here as an array of User objects
         this.loading = false;
@@ -93,7 +110,13 @@ export class ReportComponent implements OnInit {
 
   getPurchase() {
     this.loading = true;
-    this.sharedService.customGetApi1<purchaseReport[]>('PurchaseMaster/PurchaseReport').subscribe(
+    const params = {
+      //userId: this.logInUserID,
+      fromDate: this.filterCriteria.fromDate != null ? this.filterCriteria.fromDate.toISOString().split('T')[0] : null,
+      toDate: this.filterCriteria.toDate != null ? this.filterCriteria.toDate.toISOString().split('T')[0] : null,
+      name: this.filterCriteria.name,
+    };
+    this.sharedService.customGetApi1<purchaseReport[]>('PurchaseMaster/PurchaseReport', params).subscribe(
       (data: purchaseReport[]) => {
         this.purchaseData = data; // Data is directly returned here as an array of User objects
         this.loading = false;
@@ -107,9 +130,39 @@ export class ReportComponent implements OnInit {
 
   getSale() {
     this.loading = true;
-    this.sharedService.customGetApi1<saleReport[]>('Sales/SaleReport').subscribe(
+    const params = {
+      //userId: this.logInUserID,
+      fromDate: this.filterCriteria.fromDate != null ? this.filterCriteria.fromDate.toISOString().split('T')[0] : null,
+      toDate: this.filterCriteria.toDate != null ? this.filterCriteria.toDate.toISOString().split('T')[0] : null,
+      name: this.filterCriteria.name,
+    };
+
+    this.sharedService.customGetApi1<saleReport[]>('Sales/SaleReport', params).subscribe(
       (data: saleReport[]) => {
         this.saleData = data; // Data is directly returned here as an array of User objects
+        const groupedMap = new Map<string, any>();
+
+        this.saleData.forEach((sale) => {
+          const key = `${sale.invoiceNo}-${sale.invoiceDate}-${sale.partyName}-${sale.billAmount}`;
+          if (!groupedMap.has(key)) {
+            groupedMap.set(key, {
+              invoiceNo: sale.invoiceNo,
+              invoiceDate: sale.invoiceDate,
+              partyName: sale.partyName,
+              billAmount: sale.billAmount,
+              details: [],
+            });
+          }
+          groupedMap.get(key).details.push({
+            paymentNo: sale.paymentNo,
+            paymentMode: sale.paymentMode,
+            cardNo: sale.cardNo,
+            paidAmount: sale.paidAmount,
+          });
+        });
+
+        this.groupedSaleData = Array.from(groupedMap.values());
+
         this.loading = false;
       },
       (error) => {
@@ -153,5 +206,47 @@ export class ReportComponent implements OnInit {
 
   showMessage(type: string, message: string) {
     this.messageService.add({ severity: type, summary: message });
+  }
+
+  showFilterPopup() {
+    this.showFilter = !this.showFilter;
+    this.filterCriteria.fromDate = new Date();
+    this.filterCriteria.toDate = new Date();
+    this.filterCriteria.name = '';
+  }
+
+  filterSearch() {
+    //this.showFilter = false;
+    if (this.reportIndex == 1) {
+      this.getCustomer();
+    }
+    else if (this.reportIndex == 2) {
+      this.getUser();
+    }
+    else if (this.reportIndex == 3) {
+      this.getPurchase();
+    }
+    else if (this.reportIndex == 4) {
+      this.getSale();
+    }
+  }
+
+  filterCancel() {
+    this.showFilter = false;
+    this.filterCriteria = new filterCriteria();
+    this.filterCriteria.fromDate = null;
+    this.filterCriteria.toDate = null;
+    if (this.reportIndex == 1) {
+      this.getCustomer();
+    }
+    else if (this.reportIndex == 2) {
+      this.getUser();
+    }
+    else if (this.reportIndex == 3) {
+      this.getPurchase();
+    }
+    else if (this.reportIndex == 4) {
+      this.getSale();
+    }
   }
 }

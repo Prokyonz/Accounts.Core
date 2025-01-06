@@ -1,4 +1,5 @@
 using Accounts.Core.Models;
+using Accounts.Core.Models.Response;
 using Accounts.Core.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -76,6 +77,12 @@ namespace Accounts.Core.Controllers
             {
                 throw;
             }
+        }
+
+        [HttpGet("CustomerReport")]
+        public async Task<List<CustomerReport>> GetCustomerReport([FromQuery] long userId, [FromQuery] string? name)
+        {
+            return await _customerMasterRepository.CustomerReport(userId, name);
         }
     }
 }

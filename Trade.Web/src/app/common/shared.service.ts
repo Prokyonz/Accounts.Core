@@ -19,8 +19,18 @@ export class SharedService {
   customGetApi(api: string): Observable<ApiResponse> {
     return this.httpClient.get<any>(apiUrl + api).pipe(map(t => t), catchError(err => throwError(err)));
   }
-  customGetApi1<T>(api: string): Observable<T> {
-    return this.httpClient.get<T>(apiUrl + api).pipe(
+  customGetApi1<T>(api: string, params?: any): Observable<T> {
+    let httpParams = new HttpParams();
+    // Append parameters if they are provided
+    if (params) {
+      Object.keys(params).forEach((key) => {
+        if (params[key] !== null && params[key] !== undefined) {
+          httpParams = httpParams.append(key, params[key]);
+        }
+      });
+    }
+
+    return this.httpClient.get<T>(apiUrl + api, { params: httpParams }).pipe(
       map((response) => response), // You can directly return the response as data
       catchError((err) => throwError(err)) // Handle errors
     );
