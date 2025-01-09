@@ -153,6 +153,7 @@ export class item {
 }
 
 export class purchaseReport {
+    id: number = 0;
     invoiceNo: number = 0;
     invoiceDate: Date = new Date();
     dealerName: string = '';

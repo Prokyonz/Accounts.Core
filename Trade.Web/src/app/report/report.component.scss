@@ -186,19 +186,34 @@
   margin-right: 10px; /* Space between the icon and the text */
 }
 
+.icon-container {
+  display: flex; /* Flex layout for horizontal alignment */
+  justify-content: space-between; /* Space between the left and right groups */
+  align-items: center; /* Vertically align icons */
+  padding: 10px; /* Add padding if needed */
+  padding-left: 0px;
+}
+
+.image-icons {
+  display: flex;
+  justify-content: flex-start; /* Align icons to the right */
+  gap: 10px;
+}
+
 .action-icons {
   display: flex;
   justify-content: flex-end; /* Align icons to the right */
-  align-items: center;
-  font-size: 18px;
-  padding-top: 10px;
-  gap: 10px; /* Add spacing between icons */
+  gap: 10px;
 }
 
-.edit-icon, .delete-icon {
+.edit-icon, .delete-icon, .view-icon {
   cursor: pointer;
   font-size: 18px;
   padding: 0 10px;
+}
+
+.view-icon {
+  color: green; /* blue for edit */
 }
 
 .edit-icon {
@@ -209,10 +224,19 @@
   color: #dc3545; /* red for delete */
 }
 
+.view-icon:hover {
+  color: green;
+}
+
 .edit-icon:hover {
   color: #0056b3;
 }
 
 .delete-icon:hover {
   color: #c82333;
+}
+
+.disabled-icon {
+  opacity: 0.5; /* Make the icon look dimmed */
+  pointer-events: none; /* Disable clicking on the icon */
 }

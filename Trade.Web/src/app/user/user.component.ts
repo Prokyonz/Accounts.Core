@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { SharedService } from '../common/shared.service';
 import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { permission, permissions, pos, user } from '../Model/models';
 
 @Component({
@@ -23,6 +23,7 @@ export class UserComponent {
   permissionList: permission[];
   posList: pos[];
   selectedPosIds: number[] = [];
+  isEditMode = false;
 
   // // Getter for selectedPosIds
   // get this.selectedPosIds(): number[] {
@@ -34,7 +35,7 @@ export class UserComponent {
   //   this.user.posId = selectedIds.map(id => ({ userId: this.user.id || 0, posId: id }));
   // }
 
-  constructor(private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
+  constructor(private route: ActivatedRoute,private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.user = new user();
     this.user.permissions = [];
     this.getPermission();
@@ -43,7 +44,18 @@ export class UserComponent {
   }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const itemId = params.get('id'); // Assuming 'id' is the parameter name in your route
 
+      if (itemId) {
+        this.isEditMode = true;
+        this.loadItem(itemId); // Fetch the item by ID if editing
+      }
+    });
+  }
+
+  loadItem(salesId: string) {
+    this.loading = true;
   }
 
   getUsers() {

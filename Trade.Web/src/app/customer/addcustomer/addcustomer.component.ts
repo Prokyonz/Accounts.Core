@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { MessageService } from 'primeng/api';
 import { SharedService } from 'src/app/common/shared.service';
@@ -20,6 +20,7 @@ export class AddcustomerComponent implements OnInit {
   selectedFile: File | null = null;
   imageUrl: string | null = null;
   currentDocumentType: string = '';
+  isEditMode = false;
   // customerDetails = {
   //   name: '',
   //   address: '',
@@ -34,12 +35,23 @@ export class AddcustomerComponent implements OnInit {
   // };
   customerDetails: Customer;
 
-  constructor(private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.customerDetails = new Customer();
   }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const itemId = params.get('id'); // Assuming 'id' is the parameter name in your route
 
+      if (itemId) {
+        this.isEditMode = true;
+        this.loadItem(itemId); // Fetch the item by ID if editing
+      }
+    });
+  }
+
+  loadItem(salesId: string) {
+    this.loading = true;
   }
 
   myfunction() {

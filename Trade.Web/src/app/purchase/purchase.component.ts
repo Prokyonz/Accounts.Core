@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { SharedService } from '../common/shared.service';
 import { Customer, item, purchase, purchaseItems } from '../Model/models';
@@ -16,8 +16,9 @@ export class PurchaseComponent {
   purchase: purchase;
   parties: Customer[];
   itemsList: item[];
+  isEditMode = false;
 
-  constructor(private router: Router, private messageService: MessageService, private sharedService: SharedService) {
+  constructor(private route: ActivatedRoute, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.purchase = new purchase();
     this.purchase.invoiceDate = new Date();
     this.purchase.purchaseDetails = [];
@@ -28,6 +29,18 @@ export class PurchaseComponent {
   }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const itemId = params.get('purchaseId'); // Assuming 'id' is the parameter name in your route
+
+      if (itemId) {
+        this.isEditMode = true;
+        this.loadItem(itemId); // Fetch the item by ID if editing
+      }
+    });
+  }
+
+  loadItem(salesId: string) {
+    this.loading = true;
   }
 
   getCustomer() {
@@ -61,7 +74,7 @@ export class PurchaseComponent {
       }
     );
   }
-  
+
   addItem() {
     this.purchase.purchaseDetails.push(new purchaseItems());
   }
@@ -74,7 +87,7 @@ export class PurchaseComponent {
       this.purchase.purchaseDetails.forEach(x => {
         if (x.itemId.toString() === selectedItem.id.toString()) {
           item.gSTPer = selectedItem.gstPercentage;
-          let gstAmount = ((total * selectedItem.gstPercentage)/100)/2;
+          let gstAmount = ((total * selectedItem.gstPercentage) / 100) / 2;
           item.sGST = gstAmount;
           item.cGST = gstAmount;
         }

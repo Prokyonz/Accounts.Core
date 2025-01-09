@@ -27,6 +27,8 @@ export class ReportComponent implements OnInit {
   filteredSaleData = []; // Data after applying filters
   logInUserID: string;
   filterCriteria: filterCriteria;
+  isImageVisible: boolean = false;
+  imageUrl: string | null = null;
 
   constructor(private rote: Router, private activateRoute: ActivatedRoute, private sharedService: SharedService, private messageService: MessageService) {
     this.reportIndex = activateRoute.snapshot.params['id'];
@@ -267,5 +269,14 @@ export class ReportComponent implements OnInit {
         this.getSale();
       }
     }
+  }
+
+  onDialogClose() {
+    this.isImageVisible = false;
+  }
+
+  imageClick(imageData: string){
+    this.imageUrl = imageData;
+    this.isImageVisible = true;
   }
 }

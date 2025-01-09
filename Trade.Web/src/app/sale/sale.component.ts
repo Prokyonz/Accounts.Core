@@ -45,27 +45,24 @@ export class SaleComponent implements OnInit {
       if (itemId) {
         this.isEditMode = true;
         this.loadItem(itemId); // Fetch the item by ID if editing
-      } else {
-        this.isEditMode = false;
-        this.getItem();
       }
     });
   }
 
   loadItem(salesId: string) {
-      this.loading = true;
-      this.sharedService.customGetApi1<sale[]>('Sales/GetSale/' + salesId).subscribe(
-        (data: any) => {
-          this.saleData = data; // Data is directly returned here as an array of User objects
-          this.isEditMode = true;
-          this.loading = false;
-        },
-        (error) => {
-          this.loading = false;
-          this.showMessage('Error fetching Sales details:', error);
-        }
-      );
-    }
+    this.loading = true;
+    this.sharedService.customGetApi1<sale[]>('Sales/GetSale/' + salesId).subscribe(
+      (data: any) => {
+        // this.saleData = data; // Data is directly returned here as an array of User objects
+        // this.isEditMode = true;
+        // this.loading = false;
+      },
+      (error) => {
+        this.loading = false;
+        this.showMessage('Error fetching Sales details:', error);
+      }
+    );
+  }
 
   getCustomer() {
     this.loading = true;
@@ -105,7 +102,7 @@ export class SaleComponent implements OnInit {
 
   getPOS() {
     this.loading = true;
-    this.sharedService.customGetApi1<pos[]>('POSMaster/GetPOSByUser/'+this.logInUserID).subscribe(
+    this.sharedService.customGetApi1<pos[]>('POSMaster/GetPOSByUser/' + this.logInUserID).subscribe(
       (data: pos[]) => {
         this.posList = data;
         this.posList = this.posList.map(pos => ({
