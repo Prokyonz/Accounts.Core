@@ -1,5 +1,6 @@
 using Accounts.Core.Models;
 using Accounts.Core.Repositories;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Accounts.Core.Controllers
@@ -67,6 +68,12 @@ namespace Accounts.Core.Controllers
         public async Task<SeriesMaster> Put(SeriesMaster seriesMaster)
         {
             return await _seriesMasterRepository.UpdateSeriesMasterAsync(seriesMaster);
+        }
+
+        [HttpPut("ActiveSeries")]
+        public async Task<bool> ActiveSeriesAsync(long seriesMasterId, long userId, bool status)
+        {
+            return await _seriesMasterRepository.ActiveInActiveSeries(seriesMasterId, userId, status);
         }
 
         /// <summary>
