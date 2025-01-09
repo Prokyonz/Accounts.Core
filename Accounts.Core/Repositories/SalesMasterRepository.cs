@@ -5,6 +5,7 @@ using BaseClassLibrary.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Accounts.Core.Repositories
 {
@@ -26,7 +27,7 @@ namespace Accounts.Core.Repositories
         private readonly IBaseRepository<SaleReport, AppDbContext> _salesReportRepo;
         private readonly IBaseRepository<SeriesMaster, AppDbContext> _seriesMasterRepo;
 
-        public SalesMasterRepository(IBaseRepository<SalesMaster, AppDbContext> salesRepo, 
+        public SalesMasterRepository(IBaseRepository<SalesMaster, AppDbContext> salesRepo,
             IBaseRepository<SaleReport, AppDbContext> salesReportRepo,
             IBaseRepository<SeriesMaster, AppDbContext> seriesMasterRepo)
         {
@@ -140,12 +141,32 @@ namespace Accounts.Core.Repositories
 
         public async Task<SalesMaster> GetQuery(long salesId, int pageIndex, int pageSize, bool includeDetails = false)
         {
-            var result = await _salesRepo.QueryAsync(
-               query => query.Id == salesId,
-               orderBy: c => c.EntryDate,
-               pageIndex, pageSize);
+            Expression<Func<SalesMaster, bool>> predicate = c => c.Id == salesId;
+            Expression<Func<SalesMaster, object>> salesDetails = x => x.SalesDetails;
+            Expression<Func<SalesMaster, object>> amountReceived = m => m.AmountReceived;
 
-            return result?.FirstOrDefault();
+            SalesMaster salesMaster = new SalesMaster();
+
+            if (includeDetails)
+            {
+                var salesWithAllDetails = await _salesRepo.GetAllAsync(predicate, salesDetails, amountReceived);
+
+                if(salesWithAllDetails.Any())
+                {
+                    salesMaster = salesWithAllDetails.FirstOrDefault();
+                }
+            }
+            else
+            {
+                var result = await _salesRepo.QueryAsync(
+                    query => query.Id == salesId,
+                    orderBy: c => c.EntryDate,
+                    pageIndex, pageSize);
+
+                salesMaster = result?.FirstOrDefault();
+            }
+
+            return salesMaster;
         }
 
         public async Task<SalesMaster> UpdateSalesAsync(SalesMaster salesMaster)

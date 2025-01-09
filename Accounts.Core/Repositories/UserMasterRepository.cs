@@ -115,17 +115,17 @@ namespace Accounts.Core.Repositories
             try
             {
                 var users = await _userMasterRepo.QueryAsync(
-                               query => (mobileNo != null && query.MobileNo == mobileNo && query.Password == password) || (emailId != null && query.EmailId == emailId && query.Password == password),
+                               query => (mobileNo != null && query.MobileNo == mobileNo && query.Password == password),
                                orderBy: c => c.CreatedDate,
                                0, 10);
 
                 if (users?.Any() == true && users.Count > 0)
                 {
-                    //var permissions = await _userPermisionChild.QueryAsync(
-                                   //query => query.UserId == users[0].Id,
-                                   //orderBy: c => c.Id,0, 1000);
+                    var permissions = await _userPermisionChild.QueryAsync(
+                                   query => query.UserId == users[0].Id,
+                                   orderBy: c => c.Sr, 0, 1000);
 
-                    //users[0].Permissions = permissions;
+                    users[0].Permissions = permissions;
 
                     return users[0];
                 }

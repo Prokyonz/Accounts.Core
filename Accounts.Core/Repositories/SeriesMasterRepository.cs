@@ -10,6 +10,7 @@ namespace Accounts.Core.Repositories
         Task<List<SeriesMaster>> GetAllSeriesMasters();
         Task<SeriesMaster> AddSeriesMasterAsync(SeriesMaster seriesMaster);
         Task<SeriesMaster> UpdateSeriesMasterAsync(SeriesMaster seriesMaster);
+        Task<bool> ActiveInActiveSeries(long seriesMasterId, long userId, bool status);
         Task<bool> DeleteSeriesMasterAsync(long seriesMasterId);
         Task<List<SeriesMaster>> GetQuery(int pageIndex, int pageSize);
         Task<SeriesMaster> GetQuery(long seriesMasterId, int pageIndex, int pageSize);
@@ -25,6 +26,44 @@ namespace Accounts.Core.Repositories
         public SeriesMasterRepository(IBaseRepository<SeriesMaster, AppDbContext> seriesMasterRepo)
         {
             _seriesMasterRepo = seriesMasterRepo;
+        }
+
+        public async Task<bool> ActiveInActiveSeries(long seriesMasterId, long userId, bool status)
+        {
+            try
+            {
+                await _seriesMasterRepo.BeginTransactionAsync();
+
+                var seriesMaster = await _seriesMasterRepo.GetAllAsync();
+
+                if (seriesMaster.Any())
+                {
+                    seriesMaster.ForEach(f =>
+                    {
+                        f.IsActive = false;
+                        f.UpdatedBy = userId;
+                        f.UpdatedDate = DateTime.Now;
+                    });
+                }
+
+                var series = seriesMaster.FirstOrDefault(f => f.Id == seriesMasterId);
+
+                if (series != null)
+                {
+                    series.IsActive = true;
+                    series.UpdatedBy = userId;
+                    series.UpdatedDate = DateTime.Now;
+                }
+
+                await _seriesMasterRepo.CommitTransactionAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
 
         public async Task<SeriesMaster> AddSeriesMasterAsync(SeriesMaster seriesMaster)
