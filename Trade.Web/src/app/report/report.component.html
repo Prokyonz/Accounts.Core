@@ -42,7 +42,7 @@
     </div>
   </div>
 
-  <div *ngIf="customers.length === 0" class="no-data">
+  <div *ngIf="customers?.length === 0" class="no-data">
     No customers found.
   </div>
 
@@ -141,7 +141,7 @@
     </div>
   </div>
 
-  <div *ngIf="users.length === 0" class="no-data">
+  <div *ngIf="users?.length === 0" class="no-data">
     No users found.
   </div>
 
@@ -225,7 +225,7 @@
     </div>
   </div>
 
-  <div *ngIf="purchaseData.length === 0" class="no-data">
+  <div *ngIf="purchaseData?.length === 0" class="no-data">
     No purchase data found.
   </div>
 
@@ -306,7 +306,7 @@
     </div>
   </div>
 
-  <div *ngIf="saleData.length === 0" class="no-data">
+  <div *ngIf="saleData?.length === 0" class="no-data">
     No sale data found.
   </div>
 
@@ -362,7 +362,7 @@
 </div>
 
 <div class="full-screen-card-container" *ngIf="reportIndex == 5"> <!-- Adjust the condition as needed -->
-  <div *ngIf="stockData.length === 0" class="no-data">
+  <div *ngIf="stockData?.length === 0" class="no-data">
     No stock data found.
   </div>
 

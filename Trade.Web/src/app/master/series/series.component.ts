@@ -15,11 +15,13 @@ export class SeriesComponent {
   seriesItem: series;
   loading: boolean = false;
   isSaveButton: boolean = false;
+  logInUserID: string;
   isEditMode = false;
   seriesItemData: series[];
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.seriesItem = new series();
+    this.logInUserID = localStorage.getItem('userid') ?? '0';
   }
 
 
@@ -136,6 +138,11 @@ export class SeriesComponent {
   }
 
   deleteItem(item: any) {
+    if(item.isActive){
+      this.showMessage('error', 'You can not delete Active series.');
+      return;
+    }
+
     const confirmDelete = window.confirm('Are you sure you want to delete this item?');
     if (confirmDelete) {
       this.sharedService.customDeleteApi('SeriesMaster/' + item.id).subscribe(
@@ -162,6 +169,7 @@ export class SeriesComponent {
   }
 
   onCheckChange(event: any, item: any): void {
+    this.loading = true;
     if (this.seriesItemData) {
       if (event.checked) {
         var result = this.seriesItemData.find(x => x.isActive && x.id != item.id);
@@ -198,11 +206,25 @@ export class SeriesComponent {
       //     return;
       //   }
       // }
-    }
-    if (event.checked) {
-      this.showMessage('success', `${item.name} is now active.`);
-    } else {
-      this.showMessage('success', `${item.name} is now inactive.`);
+      item.createdBy = this.logInUserID;
+      this.sharedService.customPutApi("SeriesMaster/ActiveSeries", item)
+      .subscribe((data: any) => {
+        if (data != null) {
+          if (event.checked) {
+            this.showMessage('success', `${item.name} is now active.`);
+          } else {
+            this.showMessage('success', `${item.name} is now inactive.`);
+          }
+          this.loading = false;
+        }
+        else {
+          this.loading = false;
+          this.showMessage('error', 'Something went wrong...');
+        }
+      }, (ex: any) => {
+        this.loading = false;
+        this.showMessage('error', ex);
+      });
     }
   }
 }

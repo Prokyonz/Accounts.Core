@@ -40,7 +40,10 @@
 
     <!-- Is Active Checkbox -->
     <div class="form-group form-check">
-      <p-checkbox id="isActive" [(ngModel)]="seriesItem.isActive" name="isActive" label="Is Active" [binary]="true"></p-checkbox>
+      <!-- <p-checkbox id="isActive" [(ngModel)]="seriesItem.isActive" name="isActive" label="Is Active" [binary]="true"></p-checkbox> -->
+      <label [ngClass]="seriesItem.isActive ? 'active-label' : 'inactive-label'">
+        {{ seriesItem.isActive ? 'Active' : 'In Active' }}
+      </label>
     </div>
   </form>
 

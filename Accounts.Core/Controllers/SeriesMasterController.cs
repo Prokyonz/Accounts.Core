@@ -71,9 +71,9 @@ namespace Accounts.Core.Controllers
         }
 
         [HttpPut("ActiveSeries")]
-        public async Task<bool> ActiveSeriesAsync(long seriesMasterId, long userId, bool status)
+        public async Task<bool> ActiveSeriesAsync(SeriesMaster seriesMaster)
         {
-            return await _seriesMasterRepository.ActiveInActiveSeries(seriesMasterId, userId, status);
+            return await _seriesMasterRepository.ActiveInActiveSeries(seriesMaster.Id, seriesMaster.CreatedBy.Value, seriesMaster.IsActive);
         }
 
         /// <summary>

@@ -53,9 +53,12 @@ export class SaleComponent implements OnInit {
     this.loading = true;
     this.sharedService.customGetApi1<sale[]>('Sales/GetSale/' + salesId).subscribe(
       (data: any) => {
-        // this.saleData = data; // Data is directly returned here as an array of User objects
-        // this.isEditMode = true;
-        // this.loading = false;
+        this.saleData = data; // Data is directly returned here as an array of User objects
+        if (this.saleData.invoiceDate) {
+          this.saleData.invoiceDate = new Date(this.saleData.invoiceDate);
+        }
+        this.isEditMode = true;
+        this.loading = false;
       },
       (error) => {
         this.loading = false;
@@ -246,26 +249,28 @@ export class SaleComponent implements OnInit {
       return;
     }
 
-    this.saleData.createdBy = parseInt(this.logInUserID);
-    this.saleData.createdDate = new Date();
-    this.saleData.updatedBy = parseInt(this.logInUserID);
-    this.saleData.updatedDate = new Date();
-    this.sharedService.customPostApi("Sales", this.saleData)
-      .subscribe((data: any) => {
-        if (data != null) {
-          this.showMessage('success', `Invoice No: ${data.seriesName + data.invoiceNo} - Sale details added successfully`);
-          this.clearForm();
-        }
-        else {
+    if (!this.isEditMode) {
+      this.saleData.createdBy = parseInt(this.logInUserID);
+      this.saleData.createdDate = new Date();
+      this.saleData.updatedBy = parseInt(this.logInUserID);
+      this.saleData.updatedDate = new Date();
+      this.sharedService.customPostApi("Sales", this.saleData)
+        .subscribe((data: any) => {
+          if (data != null) {
+            this.showMessage('success', `Invoice No: ${data.seriesName + data.invoiceNo} - Sale details added successfully`);
+            this.clearForm();
+          }
+          else {
+            this.loading = false;
+            this.showMessage('error', 'Something went wrong...');
+          }
+        }, (ex: any) => {
           this.loading = false;
-          this.showMessage('error', 'Something went wrong...');
-        }
-      }, (ex: any) => {
-        this.loading = false;
-        this.showMessage('error', ex);
-      });
+          this.showMessage('error', ex);
+        });
 
-    this.router.navigate(['salebill']);
+      this.router.navigate(['salebill']);
+    }
   }
 
   clearForm() {
