@@ -160,6 +160,7 @@ export class purchaseReport {
 }
 
 export class saleReport {
+    id: number = 0;
     invoiceNo: string = '';
     invoiceDate: Date = new Date();
     partyName: string = '';

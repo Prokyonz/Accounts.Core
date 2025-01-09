@@ -160,5 +160,50 @@ export class SeriesComponent {
     this.isSaveButton = false;
     this.loading = false;
   }
+
+  onCheckChange(event: any, item: any): void {
+    if (this.seriesItemData) {
+      if (event.checked) {
+        var result = this.seriesItemData.find(x => x.isActive && x.id != item.id);
+        if (result) {
+          const confirm = window.confirm('Are you want to activate this Series?');
+          if (!confirm) {
+            item.isActive = !item.isActive;
+            return;
+          }
+          else {
+            this.seriesItemData.forEach(x => {
+              if (x.id == item.id) {
+                x.isActive = true;
+              }
+              else {
+                x.isActive = false;
+              }
+            })
+          }
+
+        }
+      }
+      // else {
+      //   var result = this.seriesItemData.find(x => x.isActive);
+      //   if (!result) {
+      //     event.checked = true;
+      //     this.showMessage('error', 'You can not In Activate this Series, Atlist one series required to be activated.');
+      //     this.seriesItemData.forEach(x => {
+      //       if (x.id == item.id) {
+      //         x.isActive = !item.isActive;
+      //       }
+      //     });
+      //     this.cdr.detectChanges();
+      //     return;
+      //   }
+      // }
+    }
+    if (event.checked) {
+      this.showMessage('success', `${item.name} is now active.`);
+    } else {
+      this.showMessage('success', `${item.name} is now inactive.`);
+    }
+  }
 }
 

@@ -146,6 +146,7 @@ export class ReportComponent implements OnInit {
           const key = `${sale.invoiceNo}-${sale.invoiceDate}-${sale.partyName}-${sale.billAmount}`;
           if (!groupedMap.has(key)) {
             groupedMap.set(key, {
+              id: sale.id,
               invoiceNo: sale.invoiceNo,
               invoiceDate: sale.invoiceDate,
               partyName: sale.partyName,
@@ -247,6 +248,24 @@ export class ReportComponent implements OnInit {
     }
     else if (this.reportIndex == 4) {
       this.getSale();
+    }
+  }
+
+  deleteItem(Id: any) {
+    const confirmDelete = window.confirm('Are you sure you want to delete this item?');
+    if (confirmDelete) {
+      if (this.reportIndex == 1) {
+        this.getCustomer();
+      }
+      else if (this.reportIndex == 2) {
+        this.getUser();
+      }
+      else if (this.reportIndex == 3) {
+        this.getPurchase();
+      }
+      else if (this.reportIndex == 4) {
+        this.getSale();
+      }
     }
   }
 }

@@ -15,7 +15,7 @@ namespace Accounts.Core.Repositories
         Task<SalesMaster> UpdateSalesAsync(SalesMaster salesMaster);
         Task<bool> DeleteSalesAsync(long salesId);
         Task<List<SalesMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
-        Task<SalesMaster> GetQuery(long stockId, int pageIndex, int pageSize, bool includeDetails);
+        Task<SalesMaster> GetQuery(long salesId, int pageIndex, int pageSize, bool includeDetails);
         Task<List<SaleReport>> SalesReport(long userId, DateTime? fromDate, DateTime? toDate, string? name);
         Task<long> GetMaxInvoiceNo();
     }

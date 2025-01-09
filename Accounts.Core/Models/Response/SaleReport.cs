@@ -2,6 +2,7 @@
 {
     public class SaleReport
     {
+        public long Id { get; set; }
         public string InvoiceNo { get; set; }
         public DateTime InvoiceDate { get; set; }
         public string? PartyName { get; set; }

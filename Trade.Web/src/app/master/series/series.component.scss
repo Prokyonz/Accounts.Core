@@ -55,6 +55,7 @@
   border-radius: 5px;
   border: 1px solid #ddd;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  //position: relative; 
 }
 
 .card-header {
@@ -81,10 +82,11 @@
 
 .action-icons {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* Align icons to the right */
   align-items: center;
   font-size: 18px;
   padding-top: 10px;
+  gap: 10px; /* Add spacing between icons */
 }
 
 .edit-icon, .delete-icon {
@@ -116,3 +118,21 @@
 .is-invalid {
   border: 1px solid red;
 }
+
+// .checkbox-right {
+//   position: absolute;
+//   top: 10px;
+//   right: 10px;
+// }
+
+// @media (max-width: 600px) {
+//   .card-header {
+//     font-size: 14px; /* Adjust card header font for mobile */
+//   }
+
+//   .checkbox-right {
+//     top: 8px;
+//     right: 8px;
+//     transform: scale(0.9); /* Reduce the size for mobile screens */
+//   }
+// }

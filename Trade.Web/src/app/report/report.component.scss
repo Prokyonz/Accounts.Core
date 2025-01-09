@@ -185,3 +185,34 @@
 .half-width-1 i {
   margin-right: 10px; /* Space between the icon and the text */
 }
+
+.action-icons {
+  display: flex;
+  justify-content: flex-end; /* Align icons to the right */
+  align-items: center;
+  font-size: 18px;
+  padding-top: 10px;
+  gap: 10px; /* Add spacing between icons */
+}
+
+.edit-icon, .delete-icon {
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0 10px;
+}
+
+.edit-icon {
+  color: #007bff; /* blue for edit */
+}
+
+.delete-icon {
+  color: #dc3545; /* red for delete */
+}
+
+.edit-icon:hover {
+  color: #0056b3;
+}
+
+.delete-icon:hover {
+  color: #c82333;
+}

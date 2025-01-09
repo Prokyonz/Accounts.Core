@@ -28,10 +28,10 @@ namespace Accounts.Core.Controllers
             return result;
         }
 
-        [HttpGet("GetSale")]
-        public async Task<SalesMaster> GetRow(long salesId, int pageIndex, int pageSize, bool includeDetails = false)
+        [HttpGet("GetSale/{salesId}")]
+        public async Task<SalesMaster> GetRow(long salesId)
         {
-            var result = await _salesMasterRepository.GetQuery(salesId, pageIndex, pageSize, includeDetails);
+            var result = await _salesMasterRepository.GetQuery(salesId, 0, 1, true);
             return result;
         }
 

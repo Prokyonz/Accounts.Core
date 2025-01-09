@@ -3,12 +3,14 @@
 <p-toast [breakpoints]="{'920px': { right: '0', left: '50'}}"></p-toast>
 
 <div class="full-screen-card-container" *ngIf="!isSaveButton">  <!-- Adjust the condition as needed -->
-  <div *ngIf="seriesItemData.length === 0" class="no-data">
+  <div *ngIf="seriesItemData?.length === 0" class="no-data">
     No Series data found.
   </div>
   
   <div *ngFor="let item of seriesItemData" class="customer-card">
     <div class="card-header">
+      <p-checkbox id="isActiveList" [(ngModel)]="item.isActive" name="isActiveList" 
+      [binary]="true" [disabled]="item.isActive" (onChange)="onCheckChange($event, item)"></p-checkbox>
       {{ item.name }}
     </div>
 

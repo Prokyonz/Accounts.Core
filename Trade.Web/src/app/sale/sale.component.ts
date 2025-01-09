@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { SharedService } from '../common/shared.service';
 import { amountReceived, Customer, item, pos, sale, salesDetails, stockReport } from '../Model/models';
@@ -15,12 +15,13 @@ export class SaleComponent implements OnInit {
   loading: boolean = false;
   saleData: sale;
   logInUserID: string;
+  isEditMode = false;
 
   parties: Customer[];
   itemsList: stockReport[];
   posList: pos[];
 
-  constructor(private router: Router, private messageService: MessageService, private sharedService: SharedService) {
+  constructor(private route: ActivatedRoute, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.saleData = new sale();
     this.saleData.invoiceDate = new Date();
     this.saleData.salesDetails = [];
@@ -38,7 +39,33 @@ export class SaleComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      const itemId = params.get('salesId'); // Assuming 'id' is the parameter name in your route
+
+      if (itemId) {
+        this.isEditMode = true;
+        this.loadItem(itemId); // Fetch the item by ID if editing
+      } else {
+        this.isEditMode = false;
+        this.getItem();
+      }
+    });
   }
+
+  loadItem(salesId: string) {
+      this.loading = true;
+      this.sharedService.customGetApi1<sale[]>('Sales/GetSale/' + salesId).subscribe(
+        (data: any) => {
+          this.saleData = data; // Data is directly returned here as an array of User objects
+          this.isEditMode = true;
+          this.loading = false;
+        },
+        (error) => {
+          this.loading = false;
+          this.showMessage('Error fetching Sales details:', error);
+        }
+      );
+    }
 
   getCustomer() {
     this.loading = true;
