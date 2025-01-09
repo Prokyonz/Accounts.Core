@@ -15,7 +15,7 @@ namespace Accounts.Core.DbContext
         public DbSet<Customer> CustomerMaster { get; set; }
         public DbSet<PurchaseMaster> PurchaseMaster { get; set; }
         public DbSet<PurchaseDetails> PurchaseDetails { get; set; }
-        public DbSet<SalesMaster>  SalesMasters { get; set; }
+        public DbSet<SalesMaster> SalesMasters { get; set; }
         public DbSet<SalesDetails> SalesDetails { get; set; }
         public DbSet<AmountReceived> AmountReceived { get; set; }
         public DbSet<Stock> Stock { get; set; }
@@ -47,6 +47,8 @@ namespace Accounts.Core.DbContext
             modelBuilder.Entity<POSResponceModel>().HasNoKey();
             modelBuilder.Entity<CustomerReport>().HasNoKey();
             modelBuilder.Entity<UserReport>().HasNoKey();
+
+            modelBuilder.Entity<UserMaster>().HasIndex(h => h.MobileNo).IsUnique();
         }
     }
 }
