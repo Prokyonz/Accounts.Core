@@ -16,6 +16,7 @@ export class SaleComponent implements OnInit {
   saleData: sale;
   logInUserID: string;
   isEditMode = false;
+  salesId: string | null = '0';
 
   parties: Customer[];
   itemsList: stockReport[];
@@ -40,11 +41,12 @@ export class SaleComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const itemId = params.get('salesId'); // Assuming 'id' is the parameter name in your route
+      this.salesId = params.get('salesId'); // Assuming 'id' is the parameter name in your route
 
-      if (itemId) {
+      if (this.salesId) {
         this.isEditMode = true;
-        this.loadItem(itemId); // Fetch the item by ID if editing
+        this.getItem();
+        this.loadItem(this.salesId); // Fetch the item by ID if editing
       }
     });
   }
@@ -57,6 +59,12 @@ export class SaleComponent implements OnInit {
         if (this.saleData.invoiceDate) {
           this.saleData.invoiceDate = new Date(this.saleData.invoiceDate);
         }
+        this.saleData.salesDetails.forEach(x=>{
+          const selectedItem = this.itemsList.find(item => item.itemId === x.itemId && item.rate === x.rate);
+          if(selectedItem){
+            x.rowNum = selectedItem.rowNum;
+          }
+        });
         this.isEditMode = true;
         this.loading = false;
       },
@@ -85,9 +93,9 @@ export class SaleComponent implements OnInit {
     );
   }
 
-  getItem() {
+  async getItem() {
     this.loading = true;
-    this.sharedService.customGetApi1<stockReport[]>('PurchaseMaster/StockReport').subscribe(
+    await this.sharedService.customGetApi1<stockReport[]>('PurchaseMaster/StockReport/' + this.salesId).subscribe(
       (data: stockReport[]) => {
         this.itemsList = data; // Data is directly returned here as an array of User objects
         this.itemsList = this.itemsList.map(item => ({

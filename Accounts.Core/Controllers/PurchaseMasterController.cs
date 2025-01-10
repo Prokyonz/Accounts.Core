@@ -94,10 +94,10 @@ namespace Accounts.Core.Controllers
         /// Get Stock Details
         /// </summary>
         /// <returns></returns>
-        [HttpGet("StockReport")]
-        public async Task<List<StockReport>> GetStockReport()
+        [HttpGet("StockReport/{salesId}")]
+        public async Task<List<StockReport>> GetStockReport(string salesId)
         {
-            return await _purchaseMasterRepository.StockReport();
+            return await _purchaseMasterRepository.StockReport(salesId);
         }
     }
 }

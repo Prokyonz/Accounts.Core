@@ -16,7 +16,7 @@ namespace Accounts.Core.Repositories
         Task<List<PurchaseMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
         Task<PurchaseMaster> GetQuery(long purchaseMasterId, int pageIndex, int pageSize, bool includeDetails);
         Task<List<PurchaseReports>> PurchaseReport(long userId, DateTime? fromDate, DateTime? toDate, string? name);
-        Task<List<StockReport>> StockReport();
+        Task<List<StockReport>> StockReport(string salesId);
         Task<long> GetMaxInvoiceNo();
     }
 }
@@ -142,10 +142,9 @@ namespace Accounts.Core.Repositories
             return purchaseMaster;
         }
 
-        public async Task<List<StockReport>> StockReport()
+        public async Task<List<StockReport>> StockReport(string salesId)
         {
-            object[] paramerers = new object[] { };
-            var result = await _stockReportRepo.ExecuteStoredProcedureAsync("stockReport", paramerers);
+            var result = await _stockReportRepo.ExecuteStoredProcedureAsync("stockReport '"+ salesId +"'");
 
             return result;
         }

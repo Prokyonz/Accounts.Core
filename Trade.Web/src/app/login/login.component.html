@@ -40,8 +40,12 @@
 
 
 <div *ngIf="!showCompanySelection" style="height: calc(100vh); background: #1c80cf;">
+  <span _ngcontent-hct-c17="" style="color: black;position: fixed;z-index: 9999;top: 95%;left: 85%;">1.0</span>
   <div class="center">
     <div class="card justify-content-center">
+      <div style="text-align: center;">
+        <img width="150px" height="150px" src="../../assets/Logo.png" />
+      </div>
       <p-card header="Login">      
           <ng-template pTemplate="content">   
                 <form [formGroup]="loginForm">

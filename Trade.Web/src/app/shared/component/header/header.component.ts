@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
   items: MenuItem[] = [
     {
       label: 'Home',
-      icon: 'pi pi-fw pi-file',
+      icon: 'pi pi-fw pi-home',
       routerLink: "/dashboard",
       command: () => {
         this.sidebarVisible = false;
@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit {
     },
     {
       label: 'Customer',
-      icon: 'pi pi-fw pi-calculator',
+      icon: 'pi pi-fw pi-user-plus',
       routerLink: "/addcustomer",
       expanded: false,
       command: () => {
@@ -37,29 +37,20 @@ export class HeaderComponent implements OnInit {
     },
     {
       label: 'Sale',
-      icon: 'pi pi-fw pi-calculator',
+      icon: 'pi pi-fw pi-chart-line',
       routerLink: "/sale",
       expanded: false,
       command: () => {
         this.sidebarVisible = false;
       }
     },
-    // {
-    //     label: 'Calculator',
-    //     icon: 'pi pi-fw pi-calculator',
-    //     routerLink: "/viewcts",
-    //     expanded: false,
-    //     command: () => {
-    //       this.sidebarVisible = false;
-    //     }
-    // },
     {
       label: 'Reports',
       expanded: true,
       items: [
         {
           label: 'Stock',
-          icon: 'pi pi-fw pi-user-minus',
+          icon: 'pi pi-fw pi-list',
           routerLink: "/report/5",
           command: () => {
             this.sidebarVisible = false;
@@ -67,7 +58,7 @@ export class HeaderComponent implements OnInit {
         },
         {
           label: 'Sale',
-          icon: 'pi pi-fw pi-user-minus',
+          icon: 'pi pi-fw pi-chart-line',
           routerLink: "/report/4",
           command: () => {
             this.sidebarVisible = false;
@@ -75,7 +66,7 @@ export class HeaderComponent implements OnInit {
         },
         {
           label: 'Purchase',
-          icon: 'pi pi-fw pi-user-minus',
+          icon: 'pi pi-fw pi-shopping-cart',
           routerLink: "/report/3",
           command: () => {
             this.sidebarVisible = false;
@@ -91,60 +82,21 @@ export class HeaderComponent implements OnInit {
         },
         {
           label: 'User',
-          icon: 'pi pi-fw pi-user-minus',
+          icon: 'pi pi-fw pi-user',
           routerLink: "/report/2",
           command: () => {
             this.sidebarVisible = false;
           }
-        },
-        // {
-        //   label: 'Item',
-        //   icon: 'pi pi-fw pi-user-minus',
-        //   routerLink: "/report/4",
-        //   command: () => {
-        //     this.sidebarVisible = false;
-        //   }
-        // },
-        // {
-        //   label: 'Bank',
-        //   icon: 'pi pi-fw pi-users',
-        //   routerLink: "/report/3",
-        //   command: () => {
-        //     this.sidebarVisible = false;
-        //   }
-        // },
-        // {
-        //   label: 'Cash',
-        //   icon: 'pi pi-fw pi-users',
-        //   routerLink: "/report/4",
-        //   command: () => {
-        //     this.sidebarVisible = false;
-        //   }
-        // }
+        }
       ]
     },
-    // {
-    //   label: 'Settings',
-    //   icon: 'pi pi-spin pi-cog',
-    //   expanded: true,
-    //   items: [
-    //     {
-    //       label: 'Change Company',
-    //       icon: 'pi pi-fw pi-user-plus',
-    //       routerLink: "/companyselection/header",
-    //       command: () => {
-    //         this.sidebarVisible = false;
-    //       }
-    //     },
-    //   ]
-    // },
     {
       label: 'Master',
       expanded: true,
       items: [
         {
           label: 'User',
-          icon: 'pi pi-fw pi-user-plus',
+          icon: 'pi pi-fw pi-user',
           routerLink: "/user",
           command: () => {
             this.sidebarVisible = false;
@@ -152,7 +104,7 @@ export class HeaderComponent implements OnInit {
         },
         {
           label: 'Purchase',
-          icon: 'pi pi-fw pi-user-plus',
+          icon: 'pi pi-fw pi-shopping-cart',
           routerLink: "/purchase",
           command: () => {
             this.sidebarVisible = false;
@@ -160,7 +112,7 @@ export class HeaderComponent implements OnInit {
         },
         {
           label: 'Item',
-          icon: 'pi pi-fw pi-user-plus',
+          icon: 'pi pi-fw pi-box',
           routerLink: "/additem",
           command: () => {
             this.sidebarVisible = false;
@@ -168,7 +120,7 @@ export class HeaderComponent implements OnInit {
         },
         {
           label: 'POS',
-          icon: 'pi pi-fw pi-user-plus',
+          icon: 'pi pi-fw pi-credit-card',
           routerLink: "/pos",
           command: () => {
             this.sidebarVisible = false;
@@ -176,7 +128,7 @@ export class HeaderComponent implements OnInit {
         },
         {
           label: 'Series',
-          icon: 'pi pi-fw pi-user-plus',
+          icon: 'pi pi-fw pi-tag',
           routerLink: "/series",
           command: () => {
             this.sidebarVisible = false;
@@ -186,7 +138,7 @@ export class HeaderComponent implements OnInit {
     },
     {
       label: 'Logout',
-      icon: 'pi pi-fw pi-calendar',
+      icon: 'pi pi-fw pi-sign-out',
       routerLink: "/login",
       command: () => {
         this.sidebarVisible = false;
