@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.prokyonz.app',
-  appName: 'Trade.Web',
+  appName: 'Sunsparkle',
   webDir: 'dist',
   bundledWebRuntime: false
 };
