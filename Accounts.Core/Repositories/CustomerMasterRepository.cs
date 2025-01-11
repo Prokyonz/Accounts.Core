@@ -48,7 +48,7 @@ namespace Accounts.Core.Repositories
         public async Task<Customer> GetQuery(long customerId, int pageIndex, int pageSize)
         {
             var result = await _customerMasterRepo.QueryAsync(
-                query => query.Id == customerId,
+                query => query.Id == customerId && c.IsDelete == false,
                 orderBy: c => c.FirstName,
                 pageIndex, pageSize);
 
@@ -58,14 +58,14 @@ namespace Accounts.Core.Repositories
         public async Task<List<Customer>> GetQuery(int pageIndex, int pageSize)
         {
             return await _customerMasterRepo.QueryAsync(
-                query => query.Id > 0,
+                query => query.Id > 0 && query.IsDelete == false,
                 orderBy: c => c.FirstName,
                 pageIndex, pageSize);
         }
 
         public async Task<List<Customer>> GetAllCustomers()
         {
-            Expression<Func<Customer, bool>> predicate = c => c.Id > 0;
+            Expression<Func<Customer, bool>> predicate = c => c.Id > 0 && c.IsDelete == false;
 
             return await _customerMasterRepo.GetAllAsync(predicate);
         }

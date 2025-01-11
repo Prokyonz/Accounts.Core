@@ -72,7 +72,7 @@ namespace Accounts.Core.Repositories
             try
             {
                 var result = await _salesRepo.QueryAsync(
-                           query => query.Id > 0,
+                           query => query.Id > 0 && query.IsDelete == false,
                            orderBy: c => c.InvoiceNo,
                            0, int.MaxValue);
 
@@ -95,7 +95,7 @@ namespace Accounts.Core.Repositories
             try
             {
                 var series = await _seriesMasterRepo.QueryAsync(
-                           query => query.Id > 0,
+                           query => query.Id > 0 && query.IsDelete == false,
                            orderBy: c => c.CreatedDate ?? DateTime.Now,
                            0, 10);
 
@@ -126,9 +126,9 @@ namespace Accounts.Core.Repositories
 
         public async Task<List<SalesMaster>> GetAllSales(bool includeDetails = false)
         {
-            Expression<Func<SalesMaster, bool>> predicate = c => c.Id > 0;
-            Expression<Func<SalesMaster, object>> salesDetails = x => x.SalesDetails;
-            Expression<Func<SalesMaster, object>> amountReceived = m => m.AmountReceived;
+            Expression<Func<SalesMaster, bool>> predicate = c => c.Id > 0 && c.IsDelete == false;
+            Expression<Func<SalesMaster, object>> salesDetails = x => x.SalesDetails.Where(s => !s.IsDelete);
+            Expression<Func<SalesMaster, object>> amountReceived = m => m.AmountReceived.Where(s=>!s.IsDelete);
 
             if (includeDetails)
                 return await _salesRepo.GetAllAsync(predicate, salesDetails, amountReceived);
@@ -139,16 +139,16 @@ namespace Accounts.Core.Repositories
         public async Task<List<SalesMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails = false)
         {
             return await _salesRepo.QueryAsync(
-                query => query.Id > 0,
+                query => query.Id > 0 && query.IsDelete == false,
                 orderBy: c => c.EntryDate,
                 pageIndex, pageSize);
         }
 
         public async Task<SalesMaster> GetQuery(long salesId, int pageIndex, int pageSize, bool includeDetails = false)
         {
-            Expression<Func<SalesMaster, bool>> predicate = c => c.Id == salesId;
-            Expression<Func<SalesMaster, object>> salesDetails = x => x.SalesDetails;
-            Expression<Func<SalesMaster, object>> amountReceived = m => m.AmountReceived;
+            Expression<Func<SalesMaster, bool>> predicate = c => c.Id == salesId && c.IsDelete == false;
+            Expression<Func<SalesMaster, object>> salesDetails = x => x.SalesDetails.Where(s => !s.IsDelete);
+            Expression<Func<SalesMaster, object>> amountReceived = m => m.AmountReceived.Where(s => !s.IsDelete);
 
             SalesMaster salesMaster = new SalesMaster();
 
@@ -164,7 +164,7 @@ namespace Accounts.Core.Repositories
             else
             {
                 var result = await _salesRepo.QueryAsync(
-                    query => query.Id == salesId,
+                    query => query.Id == salesId && query.IsDelete == false,
                     orderBy: c => c.EntryDate,
                     pageIndex, pageSize);
 
@@ -181,10 +181,10 @@ namespace Accounts.Core.Repositories
                 // get the old amount received. 
 
                 var amountReceived = await _appDbContext.AmountReceived.Where(
-                    query => salesMaster.AmountReceived.Select(s => s.Id).Contains(query.Id)).ToListAsync();
+                    query => salesMaster.AmountReceived.Where(x=>!x.IsDelete).Select(s => s.Id).Contains(query.Id)).ToListAsync();
 
                 var salesDetails = await _appDbContext.SalesDetails.Where(
-                    query => salesMaster.SalesDetails.Select(s => s.Id).Contains(query.Id)).ToListAsync();
+                    query => salesMaster.SalesDetails.Where(x => !x.IsDelete).Select(s => s.Id).Contains(query.Id)).ToListAsync();
 
                 await _appDbContext.Database.BeginTransactionAsync();
 
@@ -208,7 +208,8 @@ namespace Accounts.Core.Repositories
 
                 return salesMaster;
 
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw;
             }

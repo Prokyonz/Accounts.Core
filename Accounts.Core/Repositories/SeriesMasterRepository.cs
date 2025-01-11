@@ -34,7 +34,9 @@ namespace Accounts.Core.Repositories
             {
                 await _seriesMasterRepo.BeginTransactionAsync();
 
-                var seriesMaster = await _seriesMasterRepo.GetAllAsync();
+                Expression<Func<SeriesMaster, bool>> predicate = c => c.Id > 0 && c.IsDelete == false;
+
+                var seriesMaster = await _seriesMasterRepo.GetAllAsync(predicate);
 
                 if (seriesMaster.Any())
                 {
@@ -93,7 +95,7 @@ namespace Accounts.Core.Repositories
 
         public async Task<List<SeriesMaster>> GetAllSeriesMasters()
         {
-            Expression<Func<SeriesMaster, bool>> predicate = c => c.Id > 0;
+            Expression<Func<SeriesMaster, bool>> predicate = c => c.Id > 0 && c.IsDelete == false;
 
             return await _seriesMasterRepo.GetAllAsync(predicate);
         }
@@ -101,7 +103,7 @@ namespace Accounts.Core.Repositories
         public async Task<List<SeriesMaster>> GetQuery(int pageIndex, int pageSize)
         {
             return await _seriesMasterRepo.QueryAsync(
-                query => query.Id > 0,
+                query => query.Id > 0 && query.IsDelete == false,
                 orderBy: c => c.CreatedDate ?? DateTime.Now,
                 pageIndex, pageSize);
         }
@@ -109,7 +111,7 @@ namespace Accounts.Core.Repositories
         public async Task<SeriesMaster> GetQuery(long seriesMasterId, int pageIndex, int pageSize)
         {
             var result = await _seriesMasterRepo.QueryAsync(
-               query => query.Id == seriesMasterId,
+               query => query.Id == seriesMasterId && query.IsDelete == false,
                orderBy: c => c.CreatedDate,
                pageIndex, pageSize);
 

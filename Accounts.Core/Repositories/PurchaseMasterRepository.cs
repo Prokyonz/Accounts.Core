@@ -68,7 +68,7 @@ namespace Accounts.Core.Repositories
             try
             {
                 var result = await _purchaseMasterRepo.QueryAsync(
-                           query => query.Id > 0,
+                           query => query.Id > 0 && query.IsDelete == false,
                            orderBy: c => c.InvoiceNo,
                            0, int.MaxValue);
                 long invoiceNo = result.Max(x => x.InvoiceNo);
@@ -111,7 +111,7 @@ namespace Accounts.Core.Repositories
 
         public async Task<List<PurchaseMaster>> GetAllPurchaseMasters(bool includeDetails = false)
         {
-            Expression<Func<PurchaseMaster, bool>> predicate = c => c.Id > 0;
+            Expression<Func<PurchaseMaster, bool>> predicate = c => c.Id > 0 && c.IsDelete == false;
             if (includeDetails)
                 return await _purchaseMasterRepo.GetAllAsync(predicate, x => x.PurchaseDetails);
             else
@@ -121,7 +121,7 @@ namespace Accounts.Core.Repositories
         public async Task<List<PurchaseMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails = false)
         {
             return await _purchaseMasterRepo.QueryAsync(
-                query => query.Id > 0,
+                query => query.Id > 0 && query.IsDelete == false,
                 orderBy: c => c.CreatedDate ?? DateTime.Now,
                 pageIndex, pageSize);
         }
@@ -129,7 +129,7 @@ namespace Accounts.Core.Repositories
         public async Task<PurchaseMaster> GetQuery(long purchaseMasterId, int pageIndex, int pageSize, bool includeDetails = false)
         {
             var result = await _purchaseMasterRepo.QueryAsync(
-               query => query.Id == purchaseMasterId,
+               query => query.Id == purchaseMasterId && query.IsDelete == false,
                orderBy: c => c.CreatedDate,
                pageIndex, pageSize);
 

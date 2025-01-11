@@ -54,7 +54,7 @@ namespace Accounts.Core.Repositories
 
         public async Task<List<AmountReceived>> GetAllAmountReceiveds()
         {
-            Expression<Func<AmountReceived, bool>> predicate = c => c.Id > 0;
+            Expression<Func<AmountReceived, bool>> predicate = c => c.Id > 0 && c.IsDelete == false;
 
             return await _amountReceivedRepo.GetAllAsync(predicate);
         }
@@ -62,7 +62,7 @@ namespace Accounts.Core.Repositories
         public async Task<List<AmountReceived>> GetQuery(int pageIndex, int pageSize)
         {
             return await _amountReceivedRepo.QueryAsync(
-                query => query.Id > 0,
+                query => query.Id > 0 && query.IsDelete == false,
                 orderBy: c => c.CreatedDate ?? DateTime.Now,
                 pageIndex, pageSize);
         }
@@ -70,7 +70,7 @@ namespace Accounts.Core.Repositories
         public async Task<AmountReceived> GetQuery(long amountReceivedId, int pageIndex, int pageSize)
         {
             var result = await _amountReceivedRepo.QueryAsync(
-               query => query.Id == amountReceivedId,
+               query => query.Id == amountReceivedId && query.IsDelete == false,
                orderBy: c => c.CreatedDate,
                pageIndex, pageSize);
 

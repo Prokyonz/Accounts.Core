@@ -71,7 +71,7 @@ namespace Accounts.Core.Repositories
 
         public async Task<List<UserMaster>> GetAllUserMasters()
         {
-            Expression<Func<UserMaster, bool>> predicate = c => c.Id > 0;
+            Expression<Func<UserMaster, bool>> predicate = c => c.Id > 0 && c.IsDelete == false;
 
             return await _userMasterRepo.GetAllAsync(predicate);
         }
@@ -79,7 +79,7 @@ namespace Accounts.Core.Repositories
         public async Task<List<UserMaster>> GetQuery(int pageIndex, int pageSize)
         {
             return await _userMasterRepo.QueryAsync(
-                query => query.Id > 0,
+                query => query.Id > 0 && query.IsDelete == false,
                 orderBy: c => c.CreatedDate ?? DateTime.Now,
                 pageIndex, pageSize);
         }
@@ -87,7 +87,7 @@ namespace Accounts.Core.Repositories
         public async Task<UserMaster> GetQuery(long userMasterId, int pageIndex, int pageSize)
         {
             var result = await _userMasterRepo.QueryAsync(
-               query => query.Id == userMasterId,
+               query => query.Id == userMasterId && query.IsDelete == false,
                orderBy: c => c.CreatedDate,
                pageIndex, pageSize);
 
@@ -115,7 +115,10 @@ namespace Accounts.Core.Repositories
             try
             {
                 var users = await _userMasterRepo.QueryAsync(
-                               query => (mobileNo != null && query.MobileNo == mobileNo && query.Password == password),
+                               query => (mobileNo != null 
+                                    && query.MobileNo == mobileNo 
+                                    && query.Password == password
+                                    && query.IsDelete == false),
                                orderBy: c => c.CreatedDate,
                                0, 10);
 

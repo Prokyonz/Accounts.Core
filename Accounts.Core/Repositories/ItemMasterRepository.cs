@@ -54,7 +54,7 @@ namespace Accounts.Core.Repositories
 
         public async Task<List<ItemMaster>> GetAllItemMasters()
         {
-            Expression<Func<ItemMaster, bool>> predicate = c => c.Id > 0;
+            Expression<Func<ItemMaster, bool>> predicate = c => c.Id > 0 && c.IsDelete == false;
 
             return await _itemMasterRepo.GetAllAsync(predicate);
         }
@@ -62,7 +62,7 @@ namespace Accounts.Core.Repositories
         public async Task<List<ItemMaster>> GetQuery(int pageIndex, int pageSize)
         {
             return await _itemMasterRepo.QueryAsync(
-                query => query.Id > 0,
+                query => query.Id > 0 && query.IsDelete == false,
                 orderBy: c => c.CreatedDate ?? DateTime.Now,
                 pageIndex, pageSize);
         }
@@ -70,7 +70,7 @@ namespace Accounts.Core.Repositories
         public async Task<ItemMaster> GetQuery(long itemMasterId, int pageIndex, int pageSize)
         {
             var result = await _itemMasterRepo.QueryAsync(
-               query => query.Id == itemMasterId,
+               query => query.Id == itemMasterId && query.IsDelete == false,
                orderBy: c => c.CreatedDate,
                pageIndex, pageSize);
 

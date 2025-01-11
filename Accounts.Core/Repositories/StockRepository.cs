@@ -1,6 +1,7 @@
 ﻿using Accounts.Core.DbContext;
 using Accounts.Core.Models;
 using BaseClassLibrary.Interface;
+using System.Globalization;
 using System.Linq.Expressions;
 
 namespace Accounts.Core.Repositories
@@ -45,7 +46,7 @@ namespace Accounts.Core.Repositories
 
         public async Task<List<Stock>> GetAllStock()
         {
-            Expression<Func<Stock, bool>> predicate = c => c.Id > 0;
+            Expression<Func<Stock, bool>> predicate = c => c.Id > 0 && c.IsDelete == false;
 
             return await _stockRepo.GetAllAsync(predicate);
         }
@@ -53,7 +54,7 @@ namespace Accounts.Core.Repositories
         public async Task<List<Stock>> GetQuery(int pageIndex, int pageSize)
         {
             return await _stockRepo.QueryAsync(
-                query => query.Id > 0,
+                query => query.Id > 0 && query.IsDelete == false,
                 orderBy: c => c.Name ,
                 pageIndex, pageSize);
         }
@@ -61,7 +62,7 @@ namespace Accounts.Core.Repositories
         public async Task<Stock> GetQuery(long stockId, int pageIndex, int pageSize)
         {
             var result = await _stockRepo.QueryAsync(
-                query => query.Id == stockId,
+                query => query.Id == stockId && query.IsDelete == false,
                 orderBy: c => c.Name,
                 pageIndex, pageSize);
 

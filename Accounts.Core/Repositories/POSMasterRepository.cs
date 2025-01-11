@@ -60,7 +60,7 @@ namespace Accounts.Core.Repositories
 
         public async Task<List<POSMaster>> GetAllPOSMasters()
         {
-            Expression<Func<POSMaster, bool>> predicate = c => c.Id > 0;
+            Expression<Func<POSMaster, bool>> predicate = c => c.Id > 0 && c.IsDelete == false;
 
             return await _pOSMasterRepo.GetAllAsync(predicate);
         }
@@ -68,7 +68,7 @@ namespace Accounts.Core.Repositories
         public async Task<List<POSMaster>> GetQuery(int pageIndex, int pageSize)
         {
             return await _pOSMasterRepo.QueryAsync(
-                query => query.Id > 0,
+                query => query.Id > 0 && query.IsDelete == false,
                 orderBy: c => c.CreatedDate ?? DateTime.Now,
                 pageIndex, pageSize);
         }
@@ -76,7 +76,7 @@ namespace Accounts.Core.Repositories
         public async Task<POSMaster> GetQuery(long pOSMasterId, int pageIndex, int pageSize)
         {
             var result = await _pOSMasterRepo.QueryAsync(
-               query => query.Id == pOSMasterId,
+               query => query.Id == pOSMasterId && query.IsDelete == false,
                orderBy: c => c.CreatedDate,
                pageIndex, pageSize);
 

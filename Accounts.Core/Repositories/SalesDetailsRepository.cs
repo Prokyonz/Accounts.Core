@@ -51,7 +51,7 @@ namespace Accounts.Core.Repositories
 
         public async Task<List<SalesDetails>> GetAllSalesDetails()
         {
-            Expression<Func<SalesDetails, bool>> predicate = c => c.Id > 0;
+            Expression<Func<SalesDetails, bool>> predicate = c => c.Id > 0 && c.IsDelete == false;
 
             return await _salesDetailsRepo.GetAllAsync(predicate);
         }
@@ -59,7 +59,7 @@ namespace Accounts.Core.Repositories
         public async Task<List<SalesDetails>> GetQuery(int pageIndex, int pageSize)
         {
             return await _salesDetailsRepo.QueryAsync(
-                query => query.Id > 0,
+                query => query.Id > 0 && query.IsDelete == false,
                 orderBy: c => c.CreatedDate ?? DateTime.Now,
                 pageIndex, pageSize);
         }
@@ -67,7 +67,7 @@ namespace Accounts.Core.Repositories
         public async Task<SalesDetails> GetQuery(long stockDetailsId, int pageIndex, int pageSize)
         {
             var result = await _salesDetailsRepo.QueryAsync(
-               query => query.Id == stockDetailsId,
+               query => query.Id == stockDetailsId && query.IsDelete == false,
                orderBy: c => c.CreatedDate,
                pageIndex, pageSize);
 
