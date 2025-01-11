@@ -19,6 +19,7 @@ namespace Accounts.Core.Models
         public decimal DiscountAmount { get; set; }
         public decimal BillAmount { get; set; }
         public string Pincode { get; set; }
+        public bool IsDelete { get; set; }
 
         [Ignore]
         public virtual List<PurchaseDetails> PurchaseDetails { get; set; }
@@ -40,5 +41,6 @@ namespace Accounts.Core.Models
         public decimal SGST { get; set; }
         public decimal CGST { get; set; }
         public decimal Total { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

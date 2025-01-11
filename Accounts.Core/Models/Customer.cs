@@ -23,5 +23,6 @@ namespace Accounts.Core.Models
         public string PanImageData { get; set; }
         public string? SignatureFileName { get; set; }
         public string SignatureImageData { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

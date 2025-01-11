@@ -18,6 +18,8 @@ namespace Accounts.Core.Models
         public decimal DiscountAmount { get; set; }
         public decimal Amount { get; set; }
         public long POSId { get; set; }
+        public bool IsDelete { get; set; }
+
         [Ignore]
         public virtual List<SalesDetails> SalesDetails { get; set; }
 
@@ -40,6 +42,7 @@ namespace Accounts.Core.Models
         public decimal CGST { get; set; }
         public decimal IGST { get; set; }
         public decimal TotalAmount { get; set; }
+        public bool IsDelete { get; set; }
     }
 
     public class AmountReceived : BaseModel
@@ -55,6 +58,7 @@ namespace Accounts.Core.Models
         public bool FromCreditCard { get; set; }
         public string CardNo { get; set; }
         public string NameOnCard { get; set; }
-        public decimal Amount { get; set; }        
+        public decimal Amount { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

@@ -18,5 +18,6 @@ namespace Accounts.Core.Models
         public decimal SGSTRate { get; set; }
         public decimal IGSTRate { get; set; }
         public bool IsActive { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

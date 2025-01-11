@@ -13,6 +13,7 @@ namespace Accounts.Core.Models
         public string? TIDNumber { get; set; }
         public string? TIDBankName { get; set; }
         public bool IsActive { get; set; }
+        public bool IsDelete { get; set; }
     }
 
     public class POSChild : BaseModel
@@ -38,5 +39,6 @@ namespace Accounts.Core.Models
         public long Id { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
+        public bool IsDelete { get; set; }
     }
 }

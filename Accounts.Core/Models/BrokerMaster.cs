@@ -13,5 +13,6 @@ namespace Accounts.Core.Models
         public string Address { get; set; }
         public string EmailId { get; set; }
         public string MobileNo { get; set; }
+        public bool IsDelete { get; set; }
     }
 }
