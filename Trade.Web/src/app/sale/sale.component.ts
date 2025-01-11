@@ -16,7 +16,7 @@ export class SaleComponent implements OnInit {
   saleData: sale;
   logInUserID: string;
   isEditMode = false;
-  salesId: string | null = '0';
+  salesId: string = '0';
 
   parties: Customer[];
   itemsList: stockReport[];
@@ -41,12 +41,22 @@ export class SaleComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.salesId = params.get('salesId'); // Assuming 'id' is the parameter name in your route
+      this.salesId = params.get('salesId') ?? ''; // Assuming 'id' is the parameter name in your route
 
       if (this.salesId) {
         this.isEditMode = true;
-        this.getItem();
-        this.loadItem(this.salesId); // Fetch the item by ID if editing
+        // this.getItem();
+        // this.loadItem(this.salesId); // Fetch the item by ID if editing
+
+        this.getItem()
+        .then(() => {
+          // Only call loadItem after getItem completes
+          this.loadItem(this.salesId);
+        })
+        .catch((error) => {
+          // Handle any errors in getItem
+          this.showMessage('Error occurred during initialization:', error);
+        });
       }
     });
   }
@@ -59,10 +69,12 @@ export class SaleComponent implements OnInit {
         if (this.saleData.invoiceDate) {
           this.saleData.invoiceDate = new Date(this.saleData.invoiceDate);
         }
-        this.saleData.salesDetails.forEach(x=>{
+        this.saleData.salesDetails.forEach(x => {
           const selectedItem = this.itemsList.find(item => item.itemId === x.itemId && item.rate === x.rate);
-          if(selectedItem){
+          if (selectedItem) {
             x.rowNum = selectedItem.rowNum;
+            x.gstper = selectedItem.gstPer;
+            x.total = x.carratQty * x.rate;
           }
         });
         this.isEditMode = true;
@@ -158,7 +170,7 @@ export class SaleComponent implements OnInit {
     item.igst = parseFloat(gSTAmount.toFixed(2));
     item.totalAmount = Math.ceil(item.total + item.sgst + item.cgst);
     this.saleData.amount = this.getBillAmount();
-    this.calculateCashAmount(true);
+    this.calculateCashAmount(this.isEditMode ? false : true);
   }
 
   getBillAmount(): number {
@@ -257,28 +269,52 @@ export class SaleComponent implements OnInit {
       return;
     }
 
-    if (!this.isEditMode) {
-      this.saleData.createdBy = parseInt(this.logInUserID);
-      this.saleData.createdDate = new Date();
-      this.saleData.updatedBy = parseInt(this.logInUserID);
-      this.saleData.updatedDate = new Date();
-      this.sharedService.customPostApi("Sales", this.saleData)
-        .subscribe((data: any) => {
-          if (data != null) {
-            this.showMessage('success', `Invoice No: ${data.seriesName + data.invoiceNo} - Sale details added successfully`);
-            this.clearForm();
-          }
-          else {
-            this.loading = false;
-            this.showMessage('error', 'Something went wrong...');
-          }
-        }, (ex: any) => {
-          this.loading = false;
-          this.showMessage('error', ex);
-        });
-
-      this.router.navigate(['salebill']);
+    if (this.isEditMode) {
+      this.updateItem();
+    } else {
+      this.createItem();
     }
+    this.router.navigate(['salebill']);
+  }
+
+  createItem() {
+    this.saleData.createdBy = parseInt(this.logInUserID);
+    this.saleData.createdDate = new Date();
+    this.saleData.updatedBy = parseInt(this.logInUserID);
+    this.saleData.updatedDate = new Date();
+    this.sharedService.customPostApi("Sales", this.saleData)
+      .subscribe((data: any) => {
+        if (data != null) {
+          this.showMessage('success', `Invoice No: ${data.seriesName + data.invoiceNo} - Sale details added successfully`);
+          this.clearForm();
+        }
+        else {
+          this.loading = false;
+          this.showMessage('error', 'Something went wrong...');
+        }
+      }, (ex: any) => {
+        this.loading = false;
+        this.showMessage('error', ex);
+      });
+  }
+
+  updateItem() {
+    this.saleData.updatedBy = parseInt(this.logInUserID);
+    this.saleData.updatedDate = new Date();
+    this.sharedService.customPutApi("Sales", this.saleData)
+      .subscribe((data: any) => {
+        if (data != null) {
+          this.showMessage('success', `Invoice No: ${data.seriesName + data.invoiceNo} - Sale details updated successfully`);
+          this.clearForm();
+        }
+        else {
+          this.loading = false;
+          this.showMessage('error', 'Something went wrong...');
+        }
+      }, (ex: any) => {
+        this.loading = false;
+        this.showMessage('error', ex);
+      });
   }
 
   clearForm() {

@@ -159,7 +159,7 @@
 
       <div class="form-group">
         <p-button label="Submit" (onClick)="showDetails()" icon="pi pi-check"
-          [disabled]="saleForm.invalid || isEditMode?? false"></p-button>
+          [disabled]="saleForm.invalid ?? false"></p-button>
       </div>
     </form>
   </div>
