@@ -1,16 +1,27 @@
 <app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName=""></app-header>
 <p-toast [breakpoints]="{'920px': { right: '0', left: '50'}}"></p-toast>
 <div class="container">
-  <!-- Form Section -->
-  <div class="form-container">
-    <form style="height: calc(82vh); overflow:scroll;" #saleForm="ngForm">
+  <form #saleForm="ngForm">
+    <div class="stepper">
+      <div class="step" [class.active]="currentStep === 1">
+        <div class="circle" (click)="currentStep = 1">1</div>
+        <div class="label">Fill Details</div>
+      </div>
+      <div class="line" [class.active]="currentStep >= 2"></div>
+      <div class="step" [class.active]="currentStep === 2" [class.disabled]="saleForm.invalid ?? false">
+        <div class="circle" (click)="(currentStep = 2)">2</div>
+        <div class="label">Preview</div>
+      </div>
+    </div>
+
+    <!-- Form Section -->
+    <div style="height: calc(76vh); overflow:scroll;" *ngIf="currentStep === 1" class="form-container">
       <!-- Sale Header Section -->
       <div class="form-group">
         <label for="party">POS</label>
         <p-dropdown id="pos" [(ngModel)]="saleData.posId" name="user" [options]="posList" optionLabel="posName"
           optionValue="id" placeholder="Search and select a POS" [filter]="true" [showClear]="true" filterBy="posName"
-          [required]="true" #pos="ngModel"
-          [ngClass]="{'is-invalid': pos.touched && pos.invalid}">
+          [required]="true" #pos="ngModel" [ngClass]="{'is-invalid': pos.touched && pos.invalid}">
         </p-dropdown>
       </div>
 
@@ -158,9 +169,69 @@
       </div>
 
       <div class="form-group">
-        <p-button label="Submit" (onClick)="showDetails()" icon="pi pi-check"
+        <!-- <p-button label="Submit" (onClick)="showDetails()" icon="pi pi-check"
+          [disabled]="saleForm.invalid ?? false"></p-button> -->
+        <p-button label="Preview" icon="pi pi-eye" (onClick)="goToPreview()"
           [disabled]="saleForm.invalid ?? false"></p-button>
       </div>
-    </form>
-  </div>
+    </div>
+
+    <!-- Preview Section -->
+    <div style="height: calc(76vh); overflow:scroll;" *ngIf="currentStep === 2" class="preview-container">
+      <h3>Preview Sale Details</h3>
+      <div class="preview-details">
+        <p><strong>POS:</strong> {{ getPosName(saleData.posId) }}</p>
+        <p><strong>Date:</strong> {{ saleData.invoiceDate | date }}</p>
+        <p><strong>Party:</strong> {{ getPartyName(saleData.customerId) }}</p>
+        <h4>Items:</h4>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th style="width: 12%;">Item</th>
+              <th style="width: 25%;">Quantity</th>
+              <th style="width: 28%;">Rate</th>
+              <th style="width: 35%;">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of saleData.salesDetails">
+              <td>{{ getItemName(item.rowNum) }}</td>
+              <td>{{ item.carratQty }}</td>
+              <td>{{ item.rate }}</td>
+              <td>{{ item.totalAmount }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h4>Payment:</h4>
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="width: 12%;">Type</th>
+              <th style="width: 25%;">No</th>
+              <th style="width: 28%;">Card No</th>
+              <th style="width: 35%;">Paid Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of saleData.amountReceived">
+              <td>
+                <i [class]="item.paymentMode === 'Cash' ? 'fas fa-money-bill-wave' : 'fas fa-credit-card'"
+                  [style.color]="item.paymentMode === 'Cash' ? 'green' : '#007bff'">
+                </i>
+              </td>
+              <td>{{ item.paymentMode }}</td>
+              <td>{{ item.cardNo ? item.cardNo.slice(-4) : '-' }}</td>
+              <td>{{ item.amount | currency: 'INR' }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p><strong>Total Amount:</strong> {{ saleData.amount }}</p>
+      </div>
+
+      <div class="form-group">
+        <p-button label="Submit" (onClick)="showDetails()" icon="pi pi-check"></p-button>
+      </div>
+    </div>
+  </form>
 </div>

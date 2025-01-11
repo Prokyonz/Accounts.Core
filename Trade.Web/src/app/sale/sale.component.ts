@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { SharedService } from '../common/shared.service';
-import { amountReceived, Customer, item, pos, sale, salesDetails, stockReport } from '../Model/models';
+import { amountReceived, Customer, pos, sale, salesDetails, stockReport } from '../Model/models';
 
 @Component({
   selector: 'app-sale',
@@ -17,6 +17,7 @@ export class SaleComponent implements OnInit {
   logInUserID: string;
   isEditMode = false;
   salesId: string = '0';
+  currentStep: number = 1; // Step 1: Form, Step 2: Preview
 
   parties: Customer[];
   itemsList: stockReport[];
@@ -375,5 +376,24 @@ export class SaleComponent implements OnInit {
       });
       this.calculateTotal(itemL);
     }
+  }
+
+  goToPreview(): void {
+    this.currentStep = 2;
+  }
+
+  getPosName(posId: any): string {
+    var result = this.posList.find((pos) => pos.id === posId);
+    return `${result?.tidNumber} (${result?.tidBankName})`;
+  }
+
+  getPartyName(partyId: any): string {
+    var result = this.parties.find((party) => party.id === partyId);
+    return `${result?.firstName} ${result?.lastName}`
+  }
+
+  getItemName(rowNum: any): string {
+    var result = this.itemsList.find((item) => item.rowNum === rowNum);
+    return `${result?.name}`;
   }
 }
