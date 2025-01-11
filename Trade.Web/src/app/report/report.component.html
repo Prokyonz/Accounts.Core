@@ -92,8 +92,8 @@
         <div class="action-icons">
           <i class="pi pi-pencil edit-icon" [routerLink]="['/addcustomer', customer.id ]" title="Edit"
             style="cursor: pointer;"></i>
-          <i class="pi pi-times delete-icon" (click)="deleteItem(customer.id )" title="Delete"
-            style="cursor: pointer;"></i>
+          <!-- <i class="pi pi-times delete-icon" (click)="deleteItem(customer.id )" title="Delete"
+            style="cursor: pointer;"></i> -->
         </div>
       </div>
     </div>
@@ -245,10 +245,10 @@
         <span>{{ purchase.invoiceDate | date }}</span> <!-- Currency pipe for formatting -->
       </div>
 
-      <div class="action-icons">
+      <!-- <div class="action-icons">
         <i class="pi pi-pencil edit-icon" [routerLink]="['/purchase', purchase.id]" title="Edit" style="cursor: pointer;"></i>
         <i class="pi pi-times delete-icon" (click)="deleteItem(purchase.id)" title="Delete" style="cursor: pointer;"></i>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
