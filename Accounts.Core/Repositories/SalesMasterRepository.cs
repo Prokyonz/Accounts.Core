@@ -3,7 +3,9 @@ using Accounts.Core.Models;
 using Accounts.Core.Models.Response;
 using BaseClassLibrary.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Data.SqlTypes;
 using System.Linq.Expressions;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -26,14 +28,17 @@ namespace Accounts.Core.Repositories
         private readonly IBaseRepository<SalesMaster, AppDbContext> _salesRepo;
         private readonly IBaseRepository<SaleReport, AppDbContext> _salesReportRepo;
         private readonly IBaseRepository<SeriesMaster, AppDbContext> _seriesMasterRepo;
+        private readonly AppDbContext _appDbContext;
 
         public SalesMasterRepository(IBaseRepository<SalesMaster, AppDbContext> salesRepo,
             IBaseRepository<SaleReport, AppDbContext> salesReportRepo,
-            IBaseRepository<SeriesMaster, AppDbContext> seriesMasterRepo)
+            IBaseRepository<SeriesMaster, AppDbContext> seriesMasterRepo,
+            AppDbContext appDbContext)
         {
             _salesRepo = salesRepo;
             _salesReportRepo = salesReportRepo;
             _seriesMasterRepo = seriesMasterRepo;
+            _appDbContext = appDbContext;
         }
 
         public async Task<List<SaleReport>> SalesReport(long userId, DateTime? fromDate, DateTime? toDate, string? name)
@@ -151,7 +156,7 @@ namespace Accounts.Core.Repositories
             {
                 var salesWithAllDetails = await _salesRepo.GetAllAsync(predicate, salesDetails, amountReceived);
 
-                if(salesWithAllDetails.Any())
+                if (salesWithAllDetails.Any())
                 {
                     salesMaster = salesWithAllDetails.FirstOrDefault();
                 }
@@ -171,8 +176,42 @@ namespace Accounts.Core.Repositories
 
         public async Task<SalesMaster> UpdateSalesAsync(SalesMaster salesMaster)
         {
-            await _salesRepo.UpdateAsync(salesMaster);
-            return salesMaster;
+            try
+            {
+                // get the old amount received. 
+
+                var amountReceived = await _appDbContext.AmountReceived.Where(
+                    query => salesMaster.AmountReceived.Select(s => s.Id).Contains(query.Id)).ToListAsync();
+
+                var salesDetails = await _appDbContext.SalesDetails.Where(
+                    query => salesMaster.SalesDetails.Select(s => s.Id).Contains(query.Id)).ToListAsync();
+
+                await _appDbContext.Database.BeginTransactionAsync();
+
+                if (amountReceived.Any())
+                    _appDbContext.AmountReceived.RemoveRange(amountReceived);
+
+                if (salesDetails.Any())
+                    _appDbContext.SalesDetails.RemoveRange(salesDetails);
+
+                // Add the new records
+
+                if (salesMaster.AmountReceived.Any())
+                    await _appDbContext.AmountReceived.AddRangeAsync(salesMaster.AmountReceived);
+
+                if (salesMaster.SalesDetails.Any())
+                    await _appDbContext.SalesDetails.AddRangeAsync(salesMaster.SalesDetails);
+
+                await _appDbContext.SaveChangesAsync();
+
+                await _appDbContext.Database.CommitTransactionAsync();
+
+                return salesMaster;
+
+            } catch(Exception ex)
+            {
+                throw;
+            }
         }
     }
 }
