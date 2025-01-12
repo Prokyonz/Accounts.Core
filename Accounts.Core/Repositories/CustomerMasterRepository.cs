@@ -48,7 +48,7 @@ namespace Accounts.Core.Repositories
         public async Task<Customer> GetQuery(long customerId, int pageIndex, int pageSize)
         {
             var result = await _customerMasterRepo.QueryAsync(
-                query => query.Id == customerId && c.IsDelete == false,
+                query => query.Id == customerId && query.IsDelete == false,
                 orderBy: c => c.FirstName,
                 pageIndex, pageSize);
 
