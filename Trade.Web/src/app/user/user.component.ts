@@ -35,7 +35,7 @@ export class UserComponent {
   //   this.user.posId = selectedIds.map(id => ({ userId: this.user.id || 0, posId: id }));
   // }
 
-  constructor(private route: ActivatedRoute,private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.user = new user();
     this.user.permissions = [];
     this.getPermission();
@@ -50,16 +50,36 @@ export class UserComponent {
       if (itemId) {
         this.isEditMode = true;
         this.loadItem(itemId); // Fetch the item by ID if editing
+
+        this.getUsers()
+        .then(() => {
+          this.loadItem(itemId);
+        })
+        .catch((error) => {
+          // Handle any errors in getItem
+          this.showMessage('Error occurred during initialization:', error);
+        });
       }
     });
   }
 
-  loadItem(salesId: string) {
+  loadItem(userId: string) {
     this.loading = true;
+    this.sharedService.customGetApi1<user[]>('UserMaster/GetUserMaster/' + userId).subscribe(
+      (data: any) => {
+        this.user = data;
+        this.isEditMode = true;
+        this.loading = false;
+      },
+      (error) => {
+        this.loading = false;
+        this.showMessage('Error fetching user details:', error);
+      }
+    );
   }
 
-  getUsers() {
-    this.sharedService.customGetApi1<user[]>('UserMaster').subscribe(
+  async getUsers() {
+    await this.sharedService.customGetApi1<user[]>('UserMaster').subscribe(
       (data: user[]) => {
         this.userList = data; // Data is directly returned here as an array of User objects
         this.userList = this.userList.map(user => ({
@@ -128,6 +148,16 @@ export class UserComponent {
       posId: id
     }));
     this.user.mobileNo = this.user.mobileNo.toString();
+    
+    if (this.isEditMode) {
+      this.updateItem();
+    } else {
+      this.createItem();
+    }
+    //this.showMessage('success','User details added successfully');
+  }
+
+  createItem(){
     this.sharedService.customPostApi("UserMaster", this.user)
       .subscribe((data: any) => {
         if (data != null) {
@@ -142,8 +172,23 @@ export class UserComponent {
         this.loading = false;
         this.showMessage('error', ex);
       });
+  }
 
-    //this.showMessage('success','User details added successfully');
+  updateItem(){
+    this.sharedService.customPutApi("UserMaster", this.user)
+      .subscribe((data: any) => {
+        if (data != null) {
+          this.showMessage('success', 'User update Successfully.');
+          this.clearForm();
+        }
+        else {
+          this.loading = false;
+          this.showMessage('error', 'Something went wrong...');
+        }
+      }, (ex: any) => {
+        this.loading = false;
+        this.showMessage('error', ex);
+      });
   }
 
   showMessage(type: string, message: string) {
@@ -153,6 +198,7 @@ export class UserComponent {
   clearForm() {
     this.user = new user();
     this.loading = false;
+    this.isEditMode = false;
   }
 
   onPermissionChange(event: any) {

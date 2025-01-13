@@ -26,18 +26,21 @@ namespace Accounts.Core.Repositories
     {
         private readonly IBaseRepository<UserMaster, AppDbContext> _userMasterRepo;
         private readonly IBaseRepository<UserPermissionChild, AppDbContext> _userPermisionChild;
+        private readonly IBaseRepository<POSChild, AppDbContext> _posChild;
         private readonly IBaseRepository<PermissionMaster, AppDbContext> _permissionMaster;
         private readonly IBaseRepository<UserReport, AppDbContext> _userReportRepo;
 
         public UserMasterRepository(IBaseRepository<UserMaster, AppDbContext> userMasterRepo, 
             IBaseRepository<UserPermissionChild, AppDbContext> userPermisionChild,
             IBaseRepository<PermissionMaster, AppDbContext> permissionMaster,
-            IBaseRepository<UserReport, AppDbContext> userReportRepo)
+            IBaseRepository<UserReport, AppDbContext> userReportRepo,
+            IBaseRepository<POSChild, AppDbContext> posChild)
         {
             _userMasterRepo = userMasterRepo;
             _userPermisionChild = userPermisionChild;
             _permissionMaster = permissionMaster;
             _userReportRepo = userReportRepo;
+            _posChild = posChild;
         }
 
         public async Task<UserMaster> AddUserMasterAsync(UserMaster userMaster)
@@ -86,12 +89,31 @@ namespace Accounts.Core.Repositories
 
         public async Task<UserMaster> GetQuery(long userMasterId, int pageIndex, int pageSize)
         {
-            var result = await _userMasterRepo.QueryAsync(
+            var users = await _userMasterRepo.QueryAsync(
                query => query.Id == userMasterId && query.IsDelete == false,
                orderBy: c => c.CreatedDate,
                pageIndex, pageSize);
 
-            return result?.FirstOrDefault();
+            if (users?.Any() == true && users.Count > 0)
+            {
+                var posChilds = await _posChild.QueryAsync(
+                               query => query.UserId== users[0].Id,
+                               orderBy: c => c.Sr, 0, 1000);
+
+                users[0].POSChilds = null;
+                users[0].POSChilds = posChilds;
+
+                var permissions = await _userPermisionChild.QueryAsync(
+                               query => query.UserId == users[0].Id,
+                               orderBy: c => c.Sr, 0, 1000);
+
+                users[0].Permissions = null;
+                users[0].Permissions = permissions;
+
+                //return users[0];
+            }
+
+            return users?.FirstOrDefault();
         }
 
         public async Task<List<PermissionMaster>> GetMasterPermissions()

@@ -39,10 +39,10 @@ namespace Accounts.Core.Controllers
         /// Read UserMaster from table.
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetUserMaster")]
+        [HttpGet("GetUserMaster/{userMasterId}")]
         public async Task<UserMaster> GetRow(long userMasterId, int pageIndex, int pageSize)
         {
-            return await _userMasterRepository.GetQuery(userMasterId, pageIndex, pageSize);
+            return await _userMasterRepository.GetQuery(userMasterId, 0, 1);
         }
 
         /// <summary>

@@ -319,6 +319,7 @@ export class SaleComponent implements OnInit {
   }
 
   clearForm() {
+    this.isEditMode = false;
     this.saleData = new sale();
     this.saleData.invoiceDate = new Date();
     this.saleData.salesDetails = [];

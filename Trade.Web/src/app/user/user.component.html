@@ -101,6 +101,6 @@
         </div>
     </div>
 
-    <p-button label="Submit" (onClick)="showDetails()" icon="pi pi-check"
+    <p-button [label]="isEditMode ? 'Update' : 'Submit'" (onClick)="showDetails()" icon="pi pi-check"
         [disabled]="userForm.invalid ?? false"></p-button>
 </div>

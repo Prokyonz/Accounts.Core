@@ -147,7 +147,7 @@
     </div>
 
     <!-- Submit Button -->
-    <p-button label="Submit" (onClick)="showDetails()" icon="pi pi-check"
+    <p-button [label]="isEditMode ? 'Update' : 'Submit'" (onClick)="showDetails()" icon="pi pi-check"
         [disabled]="customerForm.invalid ?? false"></p-button>
 </div>
 

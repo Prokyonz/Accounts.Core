@@ -26,10 +26,10 @@ namespace Accounts.Core.Controllers
             return result;
         }
 
-        [HttpGet("GetCustomer")]
+        [HttpGet("GetCustomer/{customerId}")]
         public async Task<Customer> GetRow(long customerId, int pageIndex, int pageSize)
         {
-            var result = await _customerMasterRepository.GetQuery(customerId, pageIndex, pageSize);
+            var result = await _customerMasterRepository.GetQuery(customerId, 0, 1);
             return result;
         }
 

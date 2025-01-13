@@ -20,9 +20,9 @@ namespace Accounts.Core.Models
         public bool IsDelete { get; set; }
         public bool IsAdmin { get; set; }
         [Ignore]
-        public List<POSChild> POSChilds { get; set; }
+        public List<POSChild>? POSChilds { get; set; }
 
         [Ignore]
-        public List<UserPermissionChild> Permissions { get; set;}
+        public List<UserPermissionChild>? Permissions { get; set;}
     }
 }
