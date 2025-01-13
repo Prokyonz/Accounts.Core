@@ -5,6 +5,8 @@ import { SharedService } from '../common/shared.service';
 import { RememberCompany } from '../shared/component/companyselection/companyselection.component';
 import { Message, MessageService } from 'primeng/api';
 import { Customer, filterCriteria, item, purchase, purchaseReport, saleReport, stockReport, user } from '../Model/models';
+import { Directory, Filesystem } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
 
 @Component({
   selector: 'app-report',
@@ -29,6 +31,8 @@ export class ReportComponent implements OnInit {
   filterCriteria: filterCriteria;
   isImageVisible: boolean = false;
   imageUrl: string | null = null;
+  imageDetails: string | null = null;
+  customerId: number | null = 0;
 
   constructor(private rote: Router, private activateRoute: ActivatedRoute, private sharedService: SharedService, private messageService: MessageService) {
     this.reportIndex = activateRoute.snapshot.params['id'];
@@ -275,8 +279,49 @@ export class ReportComponent implements OnInit {
     this.isImageVisible = false;
   }
 
-  imageClick(imageData: string){
+  imageClick(imageData: string, imageDetails: string, id: number) {
     this.imageUrl = imageData;
+    this.imageDetails = imageDetails;
+    this.customerId = id;
     this.isImageVisible = true;
+  }
+
+  async shareImage() {
+    this.loading = true;
+    const fileName = `${this.imageDetails?.replace(/\s+/g, '')}_${this.customerId?.toString()}.png`;
+    const requestPermissions = async () => {
+      const permissionStatus = await Filesystem.requestPermissions();
+      console.log('Permission requested:', permissionStatus);
+      return permissionStatus.publicStorage === 'granted';
+    };
+    Filesystem.writeFile({
+      path: fileName,
+      data: this.imageUrl?.split(',')[1] ?? '',
+      directory: Directory.Cache,//Directory.Documents, // Save to documents directory
+      //encoding: Encoding.UTF8,
+    })
+      .then(async (writeFileResult) => {
+        const fileUri = await Filesystem.getUri({
+          directory: Directory.Cache,
+          path: fileName,
+        });
+        // On success, share the PDF file
+        try {
+          await Share.share({
+            title: this.imageDetails ?? 'Image',
+            text: `${this.imageDetails} (Cust ID: ${this.customerId?.toString()})`,
+            url: fileUri.uri,
+            dialogTitle: 'Share Image',
+          });
+        } catch (err) {
+          console.error('Error sharing image:', err);
+          this.loading = false;
+        }
+      })
+      .catch((error) => {
+        console.error('Error writing file to device', error);
+        this.loading = false;
+      });
+    this.loading = false;
   }
 }

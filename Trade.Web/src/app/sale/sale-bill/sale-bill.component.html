@@ -1,4 +1,5 @@
-<app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName=""></app-header>
+<app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName="{{'pi pi-share-alt'}}" (onClickLeftIcon)="sharePDF();"></app-header>
+
 <p-toast [breakpoints]="{'920px': { right: '0', left: '50'}}"></p-toast>
 <div id="content-to-export" style="width: 297mm; height: 210mm; padding: 5mm; box-sizing: border-box;">
     <table border="1" class="table table-bordered" style="font-size: 12px;">
@@ -219,4 +220,6 @@
     </table>
 </div>
 
-<!-- <p-button label="Export To PDF" (onClick)="clickme()" icon="pi pi-search"></p-button> -->
+<div class="progress-spinner" *ngIf="loading">
+    <p-progressSpinner strokeWidth="4" styleClass="w-3rem h-3rem"></p-progressSpinner>
+</div>
