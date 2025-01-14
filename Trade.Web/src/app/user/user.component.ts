@@ -49,26 +49,30 @@ export class UserComponent {
 
       if (itemId) {
         this.isEditMode = true;
-        this.loadItem(itemId); // Fetch the item by ID if editing
+        //this.loadItem(itemId); // Fetch the item by ID if editing
 
         this.getUsers()
-        .then(() => {
-          this.loadItem(itemId);
-        })
-        .catch((error) => {
-          // Handle any errors in getItem
-          this.showMessage('Error occurred during initialization:', error);
-        });
+          .then(() => {
+            this.getPOS()
+              .then(() => {
+                this.loadItem(itemId);
+              })
+          })
+          .catch((error) => {
+            // Handle any errors in getItem
+            this.showMessage('Error occurred during initialization:', error);
+          });
       }
     });
   }
 
   loadItem(userId: string) {
     this.loading = true;
-    this.sharedService.customGetApi1<user[]>('UserMaster/GetUserMaster/' + userId).subscribe(
+    this.sharedService.customGetApi1<user>('UserMaster/GetUserMaster/' + userId).subscribe(
       (data: any) => {
         this.user = data;
         this.isEditMode = true;
+        this.selectedPosIds = this.user.posChilds.map((child: { userId: number; posId: number }) => child.posId);
         this.loading = false;
       },
       (error) => {
@@ -104,9 +108,9 @@ export class UserComponent {
     );
   }
 
-  getPOS() {
+  async getPOS() {
     this.loading = true;
-    this.sharedService.customGetApi1<pos[]>('POSMaster').subscribe(
+    await this.sharedService.customGetApi1<pos[]>('POSMaster').subscribe(
       (data: pos[]) => {
         this.posList = data;
         this.posList = this.posList.map(pos => ({
@@ -148,7 +152,7 @@ export class UserComponent {
       posId: id
     }));
     this.user.mobileNo = this.user.mobileNo.toString();
-    
+
     if (this.isEditMode) {
       this.updateItem();
     } else {
@@ -157,7 +161,7 @@ export class UserComponent {
     //this.showMessage('success','User details added successfully');
   }
 
-  createItem(){
+  createItem() {
     this.sharedService.customPostApi("UserMaster", this.user)
       .subscribe((data: any) => {
         if (data != null) {
@@ -174,7 +178,7 @@ export class UserComponent {
       });
   }
 
-  updateItem(){
+  updateItem() {
     this.sharedService.customPutApi("UserMaster", this.user)
       .subscribe((data: any) => {
         if (data != null) {

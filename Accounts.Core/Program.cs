@@ -4,6 +4,7 @@ using BaseClassLibrary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
     options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
     options.JsonSerializerOptions.MaxDepth = 10485760; // add your desired limit here
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; // add your desired limit here
 });
 
 builder.Services.AddCors(options =>
