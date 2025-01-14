@@ -10,7 +10,7 @@ namespace Accounts.Core.Repositories
         Task<List<AmountReceived>> GetAllAmountReceiveds();
         Task<AmountReceived> AddAmountReceivedAsync(AmountReceived amountReceived);
         Task<AmountReceived> UpdateAmountReceivedAsync(AmountReceived amountReceived);
-        Task<bool> DeleteAmountReceivedAsync(long amountReceivedId);
+        Task<bool> DeleteAmountReceivedAsync(long amountReceivedId, bool isHardDelete = false);
         Task<List<AmountReceived>> GetQuery(int pageIndex, int pageSize);
         Task<AmountReceived> GetQuery(long amountReceivedId, int pageIndex, int pageSize);
     }
@@ -46,9 +46,20 @@ namespace Accounts.Core.Repositories
             }
         }
 
-        public async Task<bool> DeleteAmountReceivedAsync(long amountReceivedId)
+        public async Task<bool> DeleteAmountReceivedAsync(long amountReceivedId, bool isHardDelete)
         {
-            await _amountReceivedRepo.DeleteAsync(amountReceivedId);
+            if (isHardDelete)
+            {
+                await _amountReceivedRepo.DeleteAsync(amountReceivedId);
+            }
+            else
+            {
+                await _amountReceivedRepo.CommitTransactionAsync();
+                var result = await _amountReceivedRepo.GetByIdAsync(amountReceivedId);
+                result.UpdatedDate = DateTime.Now;
+                result.IsDelete = true;
+                await _amountReceivedRepo.CommitTransactionAsync();
+            }
             return true;
         }
 

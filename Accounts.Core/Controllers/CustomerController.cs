@@ -67,11 +67,11 @@ namespace Accounts.Core.Controllers
         }
 
         [HttpDelete]
-        public async Task<bool> Delete(long customerId)
+        public async Task<bool> Delete(long customerId, bool isHardDelete = false)
         {
             try
             {
-                return await _customerMasterRepository.DeleteCustomerAsync(customerId);
+                return await _customerMasterRepository.DeleteCustomerAsync(customerId, isHardDelete);
             }
             catch (Exception)
             {

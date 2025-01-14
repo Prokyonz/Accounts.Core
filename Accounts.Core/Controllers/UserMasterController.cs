@@ -93,9 +93,9 @@ namespace Accounts.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpDelete]
-        public async Task<bool> Delete(long userMasterId)
+        public async Task<bool> Delete(long userMasterId, bool isHardDelete = false)
         {
-            return await _userMasterRepository.DeleteUserMasterAsync(userMasterId);
+            return await _userMasterRepository.DeleteUserMasterAsync(userMasterId, isHardDelete);
         }
 
         [HttpGet("UserReport")]

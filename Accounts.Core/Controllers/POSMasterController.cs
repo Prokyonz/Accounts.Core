@@ -75,9 +75,9 @@ namespace Accounts.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpDelete("{pOSMasterId}")]
-        public async Task<bool> Delete(long pOSMasterId)
+        public async Task<bool> Delete(long pOSMasterId, bool isHardDelete=false)
         {
-            return await _pOSMasterRepository.DeletePOSMasterAsync(pOSMasterId);
+            return await _pOSMasterRepository.DeletePOSMasterAsync(pOSMasterId, isHardDelete);
         }
 
         /// <summary>

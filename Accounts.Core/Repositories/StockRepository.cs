@@ -11,7 +11,7 @@ namespace Accounts.Core.Repositories
         Task<List<Stock>> GetAllStock();
         Task<Stock> AddStockAsync(Stock customer);
         Task<Stock> UpdateStockAsync(Stock stock);
-        Task<bool> DeleteStockAsync(long stockId);
+        Task<bool> DeleteStockAsync(long stockId, bool isHardDelete = false);
         Task<List<Stock>> GetQuery(int pageIndex, int pageSize);
         Task<Stock> GetQuery(long stockId, int pageIndex, int pageSize);
     }
@@ -75,9 +75,19 @@ namespace Accounts.Core.Repositories
             return stock;
         }
 
-        public async Task<bool> DeleteStockAsync(long stockId)
+        public async Task<bool> DeleteStockAsync(long stockId, bool isHardDelete = false)
         {
-            await _stockRepo.DeleteAsync(stockId);
+            if (isHardDelete)
+            {
+                await _stockRepo.DeleteAsync(stockId);
+            }else
+            {
+                await _stockRepo.BeginTransactionAsync();
+                var result = await _stockRepo.GetByIdAsync(stockId);
+                result.UpdatedDate = DateTime.Now;
+                result.IsDelete = true;
+                await _stockRepo.CommitTransactionAsync();
+            }
             return true;
         }
     }

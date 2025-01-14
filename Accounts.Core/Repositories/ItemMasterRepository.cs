@@ -10,7 +10,7 @@ namespace Accounts.Core.Repositories
         Task<List<ItemMaster>> GetAllItemMasters();
         Task<ItemMaster> AddItemMasterAsync(ItemMaster itemMaster);
         Task<ItemMaster> UpdateItemMasterAsync(ItemMaster itemMaster);
-        Task<bool> DeleteItemMasterAsync(long itemMasterId);
+        Task<bool> DeleteItemMasterAsync(long itemMasterId, bool isHardDelete = false);
         Task<List<ItemMaster>> GetQuery(int pageIndex, int pageSize);
         Task<ItemMaster> GetQuery(long itemMasterId, int pageIndex, int pageSize);
     }
@@ -46,9 +46,20 @@ namespace Accounts.Core.Repositories
             }
         }
 
-        public async Task<bool> DeleteItemMasterAsync(long itemMasterId)
+        public async Task<bool> DeleteItemMasterAsync(long itemMasterId, bool isHardDelete = false)
         {
-            await _itemMasterRepo.DeleteAsync(itemMasterId);
+            if (isHardDelete)
+            {
+                await _itemMasterRepo.DeleteAsync(itemMasterId);
+            }
+            else
+            {
+                await _itemMasterRepo.BeginTransactionAsync();
+                var result = await _itemMasterRepo.GetByIdAsync(itemMasterId);
+                result.UpdatedDate = DateTime.Now;
+                result.IsDelete = true;
+                await _itemMasterRepo.CommitTransactionAsync();
+            }
             return true;
         }
 

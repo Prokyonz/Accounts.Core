@@ -12,7 +12,7 @@ namespace Accounts.Core.Repositories
         Task<List<POSMaster>> GetAllPOSMasters();
         Task<POSMaster> AddPOSMasterAsync(POSMaster pOSMaster);
         Task<POSMaster> UpdatePOSMasterAsync(POSMaster pOSMaster);
-        Task<bool> DeletePOSMasterAsync(long pOSMasterId);
+        Task<bool> DeletePOSMasterAsync(long pOSMasterId, bool isHardDelete = false);
         Task<List<POSMaster>> GetQuery(int pageIndex, int pageSize);
         Task<POSMaster> GetQuery(long pOSMasterId, int pageIndex, int pageSize);
         Task<List<POSResponceModel>> GetPOSByUser(long UserId);
@@ -52,9 +52,19 @@ namespace Accounts.Core.Repositories
             }
         }
 
-        public async Task<bool> DeletePOSMasterAsync(long pOSMasterId)
+        public async Task<bool> DeletePOSMasterAsync(long pOSMasterId, bool isHardDelete = false)
         {
-            await _pOSMasterRepo.DeleteAsync(pOSMasterId);
+            if (isHardDelete)
+            {
+                await _pOSMasterRepo.DeleteAsync(pOSMasterId);
+            }else
+            {
+                await _pOSMasterRepo.BeginTransactionAsync();
+                var result = await _pOSMasterRepo.GetByIdAsync(pOSMasterId);
+                result.UpdatedDate = DateTime.Now;
+                result.IsDelete = true;
+                await _pOSMasterRepo.CommitTransactionAsync();
+            }
             return true;
         }
 

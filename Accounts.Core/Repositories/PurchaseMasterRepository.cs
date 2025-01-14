@@ -12,7 +12,7 @@ namespace Accounts.Core.Repositories
         Task<List<PurchaseMaster>> GetAllPurchaseMasters(bool includeDetails);
         Task<PurchaseMaster> AddPurchaseMasterAsync(PurchaseMaster purchaseMaster);
         Task<PurchaseMaster> UpdatePurchaseMasterAsync(PurchaseMaster purchaseMaster);
-        Task<bool> DeletePurchaseMasterAsync(long purchaseMasterId);
+        Task<bool> DeletePurchaseMasterAsync(long purchaseMasterId, bool isHardDelete = false);
         Task<List<PurchaseMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
         Task<PurchaseMaster> GetQuery(long purchaseMasterId, int pageIndex, int pageSize, bool includeDetails);
         Task<List<PurchaseReports>> PurchaseReport(long userId, DateTime? fromDate, DateTime? toDate, string? name);
@@ -103,9 +103,20 @@ namespace Accounts.Core.Repositories
             }
         }
 
-        public async Task<bool> DeletePurchaseMasterAsync(long purchaseMasterId)
+        public async Task<bool> DeletePurchaseMasterAsync(long purchaseMasterId, bool isHardDelete = false)
         {
-            await _purchaseMasterRepo.DeleteAsync(purchaseMasterId);
+            if (isHardDelete)
+            {
+                await _purchaseMasterRepo.DeleteAsync(purchaseMasterId);
+            }
+            else
+            {
+                await _purchaseMasterRepo.BeginTransactionAsync();
+                var result = await _purchaseMasterRepo.GetByIdAsync(purchaseMasterId);
+                result.UpdatedDate = DateTime.Now;
+                result.IsDelete = true;
+                await _purchaseMasterRepo.CommitTransactionAsync();
+            }
             return true;
         }
 

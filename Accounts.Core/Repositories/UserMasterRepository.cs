@@ -11,7 +11,7 @@ namespace Accounts.Core.Repositories
         Task<List<UserMaster>> GetAllUserMasters();
         Task<UserMaster> AddUserMasterAsync(UserMaster userMaster);
         Task<UserMaster> UpdateUserMasterAsync(UserMaster userMaster);
-        Task<bool> DeleteUserMasterAsync(long userMasterId);
+        Task<bool> DeleteUserMasterAsync(long userMasterId, bool isHardDelete = false);
         Task<List<UserMaster>> GetQuery(int pageIndex, int pageSize);
         Task<UserMaster> GetQuery(long userMasterId, int pageIndex, int pageSize);
         Task<List<PermissionMaster>> GetMasterPermissions();
@@ -66,9 +66,20 @@ namespace Accounts.Core.Repositories
             }
         }
 
-        public async Task<bool> DeleteUserMasterAsync(long userMasterId)
+        public async Task<bool> DeleteUserMasterAsync(long userMasterId, bool isHardDelete = false)
         {
-            await _userMasterRepo.DeleteAsync(userMasterId);
+            if (isHardDelete)
+            {
+                await _userMasterRepo.DeleteAsync(userMasterId);
+            }
+            else
+            {
+                await _userMasterRepo.BeginTransactionAsync();
+                var result = await _userMasterRepo.GetByIdAsync(userMasterId);
+                result.UpdatedDate = DateTime.Now;
+                result.IsDelete = true;
+                await _userMasterRepo.CommitTransactionAsync();
+            }
             return true;
         }
 

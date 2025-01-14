@@ -10,7 +10,7 @@ namespace Accounts.Core.Repositories
         Task<List<SalesDetails>> GetAllSalesDetails();
         Task<SalesDetails> AddSalesDetailsAsync(SalesDetails salesDetails);
         Task<SalesDetails> UpdateSalesDetailsAsync(SalesDetails salesDetails);
-        Task<bool> DeleteSalesDetailsAsync(long salesDetailsId);
+        Task<bool> DeleteSalesDetailsAsync(long salesDetailsId, bool isHardDelete = false);
         Task<List<SalesDetails>> GetQuery(int pageIndex, int pageSize);
         Task<SalesDetails> GetQuery(long stockDetailsId, int pageIndex, int pageSize);
     }
@@ -43,9 +43,20 @@ namespace Accounts.Core.Repositories
             }
         }
 
-        public async Task<bool> DeleteSalesDetailsAsync(long salesDetailsId)
+        public async Task<bool> DeleteSalesDetailsAsync(long salesDetailsId, bool isHardDelete = false)
         {
-            await _salesDetailsRepo.DeleteAsync(salesDetailsId);
+            if (isHardDelete)
+            {
+                await _salesDetailsRepo.DeleteAsync(salesDetailsId);
+            }
+            else
+            {
+                await _salesDetailsRepo.BeginTransactionAsync();
+                var result = await _salesDetailsRepo.GetByIdAsync(salesDetailsId);
+                result.UpdatedDate = DateTime.Now;
+                result.IsDelete = true;
+                await _salesDetailsRepo.CommitTransactionAsync();
+            }
             return true;
         }
 

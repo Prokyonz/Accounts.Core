@@ -81,9 +81,9 @@ namespace Accounts.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpDelete("{seriesMasterId}")]
-        public async Task<bool> Delete(long seriesMasterId)
+        public async Task<bool> Delete(long seriesMasterId, bool isHardDelete = false)
         {
-            return await _seriesMasterRepository.DeleteSeriesMasterAsync(seriesMasterId);
+            return await _seriesMasterRepository.DeleteSeriesMasterAsync(seriesMasterId, isHardDelete);
         }
     }
 }

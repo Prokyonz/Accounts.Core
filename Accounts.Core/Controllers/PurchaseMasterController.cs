@@ -85,9 +85,9 @@ namespace Accounts.Core.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpDelete]
-        public async Task<bool> Delete(long purchaseMasterId)
+        public async Task<bool> Delete(long purchaseMasterId, bool isHardDelete = false)
         {
-            return await _purchaseMasterRepository.DeletePurchaseMasterAsync(purchaseMasterId);
+            return await _purchaseMasterRepository.DeletePurchaseMasterAsync(purchaseMasterId, isHardDelete);
         }
 
         /// <summary>

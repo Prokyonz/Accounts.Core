@@ -11,7 +11,7 @@ namespace Accounts.Core.Repositories
         Task<List<Customer>> GetAllCustomers();
         Task<Customer> AddCustomerAsync(Customer customer);
         Task<Customer> UpdateCustomerAsync(Customer customer);
-        Task<bool> DeleteCustomerAsync(long customerId);
+        Task<bool> DeleteCustomerAsync(long customerId, bool isHardDelete = false);
         Task<List<Customer>> GetQuery(int pageIndex, int pageSize);
         Task<Customer> GetQuery(long customerId, int pageIndex, int pageSize);
         Task<List<CustomerReport>> CustomerReport(long userId, string? name);
@@ -76,9 +76,22 @@ namespace Accounts.Core.Repositories
             return customer;
         }
 
-        public async Task<bool> DeleteCustomerAsync(long customerId)
+        public async Task<bool> DeleteCustomerAsync(long customerId, bool isHardDelete = false)
         {
-            await _customerMasterRepo.DeleteAsync(customerId);
+            if (isHardDelete)
+            {
+                await _customerMasterRepo.DeleteAsync(customerId);
+            }
+            else
+            {
+                await _customerMasterRepo.BeginTransactionAsync();
+
+                var result = await _customerMasterRepo.GetByIdAsync(customerId);
+                result.UpdatedDate = DateTime.Now;
+                result.IsDelete = true;
+
+                await _customerMasterRepo.CommitTransactionAsync();
+            }
             return true;
         }
 

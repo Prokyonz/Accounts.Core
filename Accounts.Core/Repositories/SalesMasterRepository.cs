@@ -16,7 +16,7 @@ namespace Accounts.Core.Repositories
         Task<List<SalesMaster>> GetAllSales(bool includeDetails);
         Task<SalesMaster> AddSalesAsync(SalesMaster salesMaster);
         Task<SalesMaster> UpdateSalesAsync(SalesMaster salesMaster);
-        Task<bool> DeleteSalesAsync(long salesId);
+        Task<bool> DeleteSalesAsync(long salesId, bool isHardDelete = false);
         Task<List<SalesMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
         Task<SalesMaster> GetQuery(long salesId, int pageIndex, int pageSize, bool includeDetails);
         Task<List<SaleReport>> SalesReport(long userId, DateTime? fromDate, DateTime? toDate, string? name);
@@ -118,9 +118,20 @@ namespace Accounts.Core.Repositories
             }
         }
 
-        public async Task<bool> DeleteSalesAsync(long salesId)
+        public async Task<bool> DeleteSalesAsync(long salesId, bool isHardDelete = false)
         {
-            await _salesRepo.DeleteAsync(salesId);
+            if (isHardDelete)
+            {
+                await _salesRepo.DeleteAsync(salesId);
+            }
+            else
+            {
+                await _salesRepo.BeginTransactionAsync();
+                var result = await _salesRepo.GetByIdAsync(salesId);
+                result.UpdatedDate = DateTime.Now;
+                result.IsDelete = true;
+                await _salesRepo.CommitTransactionAsync();
+            }
             return true;
         }
 

@@ -11,7 +11,7 @@ namespace Accounts.Core.Repositories
         Task<SeriesMaster> AddSeriesMasterAsync(SeriesMaster seriesMaster);
         Task<SeriesMaster> UpdateSeriesMasterAsync(SeriesMaster seriesMaster);
         Task<bool> ActiveInActiveSeries(long seriesMasterId, long userId, bool status);
-        Task<bool> DeleteSeriesMasterAsync(long seriesMasterId);
+        Task<bool> DeleteSeriesMasterAsync(long seriesMasterId, bool isHardDelete = false);
         Task<List<SeriesMaster>> GetQuery(int pageIndex, int pageSize);
         Task<SeriesMaster> GetQuery(long seriesMasterId, int pageIndex, int pageSize);
     }
@@ -87,9 +87,20 @@ namespace Accounts.Core.Repositories
             }
         }
 
-        public async Task<bool> DeleteSeriesMasterAsync(long seriesMasterId)
+        public async Task<bool> DeleteSeriesMasterAsync(long seriesMasterId, bool isHardDelete = false)
         {
-            await _seriesMasterRepo.DeleteAsync(seriesMasterId);
+            if (isHardDelete)
+            {
+                await _seriesMasterRepo.DeleteAsync(seriesMasterId);
+            }
+            else
+            {
+                await _seriesMasterRepo.BeginTransactionAsync();
+                var result = await _seriesMasterRepo.GetByIdAsync(seriesMasterId);
+                result.UpdatedDate = DateTime.Now;
+                result.IsDelete = true;
+                await _seriesMasterRepo.CommitTransactionAsync();
+            }
             return true;
         }
 
