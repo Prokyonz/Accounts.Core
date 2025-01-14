@@ -2,7 +2,7 @@ import { Component, HostListener } from '@angular/core';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { Plugins } from '@capacitor/core';
-const { Permissions} = Plugins;
+const { Permissions } = Plugins;
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
@@ -118,7 +118,7 @@ export class SaleBillComponent {
   }
 
   //Final Method to pic & share image
-  shapePic(){
+  shapePic() {
     Camera.getPhoto({
       resultType: CameraResultType.Uri, // We will use the URI for the image
       source: CameraSource.Prompt, // Prompt user to choose between Camera or Gallery
@@ -148,6 +148,100 @@ export class SaleBillComponent {
     });
   }
 
+  async sharePDF1() {
+    const element = document.getElementById('content-to-export');
+    if (element) {
+      // Set the element's dimensions explicitly to ensure full capture
+      const originalWidth = element.offsetWidth;
+      const originalHeight = element.offsetHeight;
+
+      html2canvas(element, {
+        scale: 2, // Increases the resolution of the canvas
+        scrollY: 0, // Ensures no content is missed due to scrolling
+        scrollX: 0,
+        width: originalWidth, // Full width of the element
+        height: originalHeight, // Full height of the element
+      }).then(async (canvas) => {
+        // Create a new jsPDF instance
+        const pdf = new jsPDF('p', 'mm', 'a4'); // Portrait, millimeters, A4 size
+
+        // Get element dimensions in millimeters for PDF scaling
+        const pageWidth = 210; // A4 width in mm
+        const pageHeight = 297; // A4 height in mm
+        const imgWidth = pageWidth;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        let position = 0;
+
+        // If the content height exceeds the page height, paginate
+        if (imgHeight > pageHeight) {
+          let remainingHeight = imgHeight;
+          while (remainingHeight > 0) {
+            pdf.addImage(
+              canvas.toDataURL('image/png'),
+              'PNG',
+              0,
+              position,
+              imgWidth,
+              Math.min(remainingHeight, pageHeight)
+            );
+            remainingHeight -= pageHeight;
+            position -= pageHeight;
+            if (remainingHeight > 0) pdf.addPage();
+          }
+        } else {
+          // Single page
+          pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, imgWidth, imgHeight);
+        }
+
+        // Convert PDF to blob for mobile handling
+        const pdfBlob = pdf.output('blob');
+
+        // Use Capacitor Filesystem to save the PDF on the device
+        const fileName = 'invoice.pdf';
+        if (!this.isMobile) {
+          pdf.save(fileName);
+        }
+        else {
+          const requestPermissions = async () => {
+            const permissionStatus = await Filesystem.requestPermissions();
+            console.log('Permission requested:', permissionStatus);
+            return permissionStatus.publicStorage === 'granted';
+          };
+          Filesystem.writeFile({
+            path: fileName,
+            data: await this.convertBlobToBase64(pdfBlob),
+            directory: Directory.Cache,//Directory.Documents, // Save to documents directory
+            //encoding: Encoding.UTF8,
+          })
+            .then(async (writeFileResult) => {
+              const fileUri = await Filesystem.getUri({
+                directory: Directory.Cache,
+                path: fileName,
+              });
+              // On success, share the PDF file
+              try {
+                // Attempt to share the PDF file (this will open the native sharing options, including PDF viewer)
+                await Share.share({
+                  title: 'Invoice PDF',
+                  text: 'Here is your invoice.',
+                  url: fileUri.uri,//writeFileResult.uri,
+                  dialogTitle: 'Share PDF',
+                });
+              } catch (err) {
+                console.error('Error sharing PDF:', err);
+                this.loading = false;
+              }
+            })
+            .catch((error) => {
+              console.error('Error writing file to device', error);
+              this.loading = false;
+            });
+        }
+      });
+    }
+  }
+
   async sharePDF() {
     this.loading = true;
     const element = document.getElementById('content-to-export');
@@ -159,7 +253,7 @@ export class SaleBillComponent {
 
         // Convert the canvas to an image and add it to the PDF
         const imgData = canvas.toDataURL('image/png');
-        const imgWidth = 794; // Number(element.style.width); // A4 width in mm
+        const imgWidth = Number(element.style.width); // A4 width in mm
         const imgHeight = canvas.height * imgWidth / canvas.width; // Scale the height accordingly
         const scaleFactor = 2; //this.isMobile ? 0.75 : 2; 
         const scaledImgHeight = imgHeight * scaleFactor;
@@ -182,7 +276,7 @@ export class SaleBillComponent {
           Filesystem.writeFile({
             path: fileName,
             data: await this.convertBlobToBase64(pdfBlob),
-            directory:  Directory.Cache,//Directory.Documents, // Save to documents directory
+            directory: Directory.Cache,//Directory.Documents, // Save to documents directory
             //encoding: Encoding.UTF8,
           })
             .then(async (writeFileResult) => {

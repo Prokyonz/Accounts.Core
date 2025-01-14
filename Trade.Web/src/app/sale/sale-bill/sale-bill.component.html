@@ -1,223 +1,398 @@
-<app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName="{{'pi pi-share-alt'}}" (onClickLeftIcon)="sharePDF();"></app-header>
+<app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName="{{'pi pi-share-alt'}}"
+    (onClickLeftIcon)="sharePDF1();"></app-header>
 
 <p-toast [breakpoints]="{'920px': { right: '0', left: '50'}}"></p-toast>
-<div id="content-to-export" style="width: 297mm; height: 210mm; padding: 5mm; box-sizing: border-box;">
-    <table border="1" class="table table-bordered" style="font-size: 12px;">
-        <tr>
-            <table>
-                <tr>
-                    <td>
-                        <table>
-                            <tr>
-                                <td>
-                                    <h2>TAX INVOICE</h2>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Company Name
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Company Address
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    GST No: 0000
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td>
-                        <table>
-                            <tr>
-                                <td>
-                                    Invoice No: 0
-                                </td>
-                                <td>
-                                    Invoice Date: 0
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    Customer Details: Dhanani Aanand
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    Address:
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    Mobile No:
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    Pancard:
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </tr>
-        <tr>
-            <td>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Sr No</th>
-                            <th>Product Description</th>
-                            <th>HSN Code</th>
-                            <th>Qty</th>
-                            <th>OUM</th>
-                            <th>Rate</th>
-                            <th>Amount</th>
-                            <th>Discount</th>
-                            <th>Taxable Value</th>
-                            <th>CGST Rate</th>
-                            <th>CGST Amount</th>
-                            <th>SGST Rate</th>
-                            <th>SGST Amount</th>
-                            <th>IGST Rate</th>
-                            <th>IGST Amount</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Rows will go here -->
-                        <tr>
-                            <td>1</td>
-                            <td>Product A</td>
-                            <td>1234</td>
-                            <td>10</td>
-                            <td>Piece</td>
-                            <td>50</td>
-                            <td>500</td>
-                            <td>10</td>
-                            <td>490</td>
-                            <td>9%</td>
-                            <td>44.10</td>
-                            <td>9%</td>
-                            <td>44.10</td>
-                            <td>18%</td>
-                            <td>88.20</td>
-                            <td>578.20</td>
-                        </tr>
-                        <!-- You can add more rows as needed -->
-
-                        <!-- Summary Row -->
-                        <tr style="font-weight: bold; background-color: #f2f2f2;">
-                            <td colspan="3" style="text-align: center;">Total</td>
-                            <td>1000</td> <!-- Sum of Qty -->
-                            <td></td> <!-- Sum of OUM -->
-                            <td></td> <!-- Sum of Rate -->
-                            <td>10000</td> <!-- Sum of Amount -->
-                            <td>0</td> <!-- Sum of Discount -->
-                            <td>10000</td> <!-- Sum of Taxable Value -->
-                            <td></td> <!-- Sum of CGST Rate -->
-                            <td>1250</td> <!-- Sum of CGST Amount -->
-                            <td></td> <!-- Sum of SGST Rate -->
-                            <td>1250</td> <!-- Sum of SGST Amount -->
-                            <td></td> <!-- Sum of IGST Rate -->
-                            <td>0</td> <!-- Sum of IGST Amount -->
-                            <td>1002500</td> <!-- Total Sum -->
-                        </tr>
-
-                        <!-- Summary Row 1 -->
-                        <tr style="font-weight: bold; background-color: #f2f2f2;">
-                            <td colspan="9" style="text-align: center;">Total invoice amount in word</td>
-                            <td colspan="6" style="text-align: center;">Total Amount before tax</td> <!-- Sum of Qty -->
-                            <td>100000</td>
-                        </tr>
-
-                        <tr>
-                            <td rowspan="5" colspan="9">
-                                <table>
-                                    <tr>
-                                        <td colspan="3" style="text-align: center;">
-                                            Payment Details
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Credit card
-                                        </td>
-                                        <td>
-                                            Amount
-                                        </td>
-                                        <td>
-                                            Last 4 Digits
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            Cash
-                                        </td>
-                                        <td colspan="2">
-                                            Amount
-                                        </td>
-                                    </tr>
-                                </table>
-                            </td>
-                            <td colspan="6" style="font-weight: bold; background-color: #f2f2f2; text-align: center;">
-                                ADD: CGST
-                            </td>
-                            <td>
-                                1250
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="6" style="font-weight: bold; background-color: #f2f2f2; text-align: center;">
-                                ADD: SGST
-                            </td>
-                            <td>
-                                1250
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="6" style="font-weight: bold; background-color: #f2f2f2; text-align: center;">
-                                ADD: IGST
-                            </td>
-                            <td>
-                                1250
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="6" style="font-weight: bold; background-color: #f2f2f2; text-align: center;">
-                                Total Amount after Tax
-                            </td>
-                            <td>
-                                1002500
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="7" style="font-weight: bold; background-color: #f2f2f2; text-align: center;">
-                                Amount in words
-                            </td>
-                        </tr>
-
-                        <!-- Summary Row 2 -->
-                        <tr>
-                            <td rowspan="2" colspan="9" style="text-align: center;">Terms & Condition</td>
-                            <td colspan="7" style="text-align: center;">Certified That The Particulars Given Above Are
-                                True And Correct</td>
-                        </tr>
-
-                        <!-- Summary Row 3 -->
-                        <tr>
-                            <td colspan="7" style="font-weight: bold; background-color: #f2f2f2; text-align: center;">
-                                For SUNSPARKLE DIA PRIVATE LIMITED</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-    </table>
+<div class="container" style="width: 100%; height: 100vh; overflow: auto;">
+    <div id="content-to-export" style="width: 215mm; height: 280mm; padding: 1mm; box-sizing: border-box; overflow: auto;">
+        <table align="left" cellspacing="0" border="0">
+            <colgroup width="31"></colgroup>
+            <colgroup width="70"></colgroup>
+            <colgroup width="217"></colgroup>
+            <colgroup width="84"></colgroup>
+            <colgroup width="62"></colgroup>
+            <colgroup width="14"></colgroup>
+            <colgroup width="70"></colgroup>
+            <colgroup width="76"></colgroup>
+            <colgroup width="146"></colgroup>
+            <tr>
+                <td colspan=5 height="20" align="right" valign=bottom><b>
+                        <font face="Tahoma" size=3>TAX INVOICE</font>
+                    </b></td>
+                <td colspan=5 align="left" valign=bottom>
+                    <font face="Calibri">Original/Duplicate/Triplicate</font>
+                </td>
+            </tr>
+            <tr>
+                <td height="18" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=3 rowspan=5 align="left" valign=top>
+                    <font color="#000000">SOLD To,<br>SUNSPARKLE DIAM PRIVATE LIMITED<br>Office No.214, 2nd Floor,
+                        H.no.1843 to 1846, Sunstar Comm Soc, Bhojabhai Ni sheri,<br>Mahidharpura,Surat-395003</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000"
+                    colspan=3 align="left" valign=top><b>
+                        <font face="Tahoma">Sale Of :</font>
+                    </b></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top>
+                    <font face="Verdana">ROUGH DIAMOND</font>
+                </td>
+            </tr>
+            <tr>
+                <td height="18" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000"
+                    colspan=3 align="left" valign=top><b>
+                        <font face="Tahoma">GST Invoice No :</font>
+                    </b></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top>
+                    <font face="Verdana">20/RD/24-25</font>
+                </td>
+            </tr>
+            <tr>
+                <td height="20" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000"
+                    colspan=3 align="left" valign=top><b>
+                        <font face="Tahoma">Invoice Date :</font>
+                    </b></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top sdval="45901" sdnum="1033;0;MM.DD.YYYY;@">
+                    <font face="Verdana" color="#000000">09.01.2025</font>
+                </td>
+            </tr>
+            <tr>
+                <td height="16" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=5 align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+            </tr>
+            <tr>
+                <td height="18" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=3 align="center" valign=top><b>
+                        <font face="Tahoma">Terms</font>
+                    </b></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top><b>
+                        <font face="Tahoma">Due Date</font>
+                    </b></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top><b>
+                        <font face="Tahoma">Amount in INR</font>
+                    </b></td>
+            </tr>
+            <tr>
+                <td height="20" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=3 rowspan=2 align="left" valign=top>
+                    <font color="#000000">Phone :<br>Email :<br>GSTIN : 24ABLCS8146E1Z6 PAN No : ABLCS8146E</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=3 align="center" valign=top>
+                    <font face="Verdana">Cod</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="center" valign=top>
+                    <font face="Verdana">-</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top>
+                    <font color="#000000">&#8377; 70,29,881.00</font>
+                </td>
+            </tr>
+            <tr>
+                <td height="49" align="left" valign=top>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=5 align="left" valign=top>
+                    <font color="#000000"><br></font>
+                </td>
+            </tr>
+            <tr>
+                <td height="21" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="center" valign=top><b>
+                        <font face="Tahoma">Sr No.</font>
+                    </b></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top><b>
+                        <font face="Tahoma">Description ( HSN Code : 71023100 )</font>
+                    </b></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top><b>
+                        <font face="Tahoma">Carats</font>
+                    </b></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top><b>
+                        <font face="Tahoma">Rate Pr Carats</font>
+                    </b></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top><b>
+                        <font face="Tahoma">Total Amount</font>
+                    </b></td>
+            </tr>
+            <tr>
+                <td height="20" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="center" valign=top sdval="1" sdnum="1033;0;0">
+                    <font face="Verdana" color="#000000">1</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top>
+                    <font face="Verdana">Rough Diamond</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top sdval="7012.35" sdnum="1033;0;0.00">
+                    <font face="Verdana" color="#000000">7012.35</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000"
+                    align="left" valign=top>
+                    <font face="Microsoft Sans Serif">&#8377;</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top sdval="1000" sdnum="1033;0;#,##0.00">
+                    <font face="Verdana" color="#000000">1,000.00</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top>
+                    <font color="#000000">&#8377; 70,12,350.00</font>
+                </td>
+            </tr>
+            <tr>
+                <td height="80" align="left" valign=top>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top>
+                    <font color="#000000"><br></font>
+                </td>
+            </tr>
+            <tr>
+                <td height="20" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=3 align="right" valign=top><b>
+                        <font face="Tahoma">Total :</font>
+                    </b></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top sdval="7012.35" sdnum="1033;0;0.00"><b>
+                        <font face="Tahoma" color="#000000">7012.35</font>
+                    </b></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top>
+                    <font color="#000000">&#8377; 70,12,350.00</font>
+                </td>
+            </tr>
+            <tr>
+                <td height="20" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000"
+                    align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" colspan=3 align="left"
+                    valign=top>
+                    <font face="Verdana">CGST @</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top sdval="0.00125" sdnum="1033;0;0.000%">
+                    <font face="Verdana" color="#000000">0.125%</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top>
+                    <font color="#000000">&#8377; 8,765.44</font>
+                </td>
+            </tr>
+            <tr>
+                <td height="20" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000"
+                    align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" colspan=3 align="left"
+                    valign=top>
+                    <font face="Verdana">SGST @</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top sdval="0.00125" sdnum="1033;0;0.000%">
+                    <font face="Verdana" color="#000000">0.125%</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top>
+                    <font color="#000000">&#8377; 8,765.44</font>
+                </td>
+            </tr>
+            <tr>
+                <td height="20" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000"
+                    align="left" valign=bottom>
+                    <font color="#000000"><br><img src="result_htm_cfb545170fb9e932.png" width=3 height=1 hspace=33
+                            vspace=9>
+                    </font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000" colspan=3 align="left"
+                    valign=top>
+                    <font face="Verdana">IGST @</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top sdval="0.0025" sdnum="1033;0;0.000%">
+                    <font face="Verdana" color="#000000">0.250%</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top>
+                    <font color="#000000">&#8377; -</font>
+                </td>
+            </tr>
+            <tr>
+                <td height="20" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=7 align="right" valign=top>
+                    <font face="Verdana">Round Off</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top>
+                    <font color="#000000">&#8377; 0.12</font>
+                </td>
+            </tr>
+            <tr>
+                <td height="20" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=7 align="right" valign=top>
+                    <font face="Verdana">Total Invoice Value :</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    align="left" valign=top><b>
+                        <font face="Tahoma">70,29,881.00</font>
+                    </b></td>
+            </tr>
+            <tr>
+                <td height="18" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=8 align="left" valign=top><b>
+                        <font face="Tahoma">Total Rs in words : Rupees Seventy Lakh TwentyNine Thousand Eight Hundred
+                            EightyOne Only</font>
+                    </b></td>
+            </tr>
+            <tr>
+                <td height="139" align="left" valign=top>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=8 align="left" valign=top>
+                    <font color="#000000">Payment Instructions : INDUSIND BANK, Current A/C No : 259825607539, IFSC Code
+                        : INDB0001058<br>&quot; The diamonds herein invoiced have been purchased from legimate source
+                        not involved in conflict and in compliance with United Nations resolutions, the seller hereby
+                        gurantees these diamonds are conflict free based on personal knowledge and / or written
+                        gurantees provided by the supplier of these diamonds &quot;<br>to the best of our knowledge the
+                        diamonds herein invoiced have not been obtain in violation of applicable national laws and/or
+                        sanctions by the U.S. Department of treasury's office assets control ( OFAC ) and have not
+                        orginated from the marange region of Zimbabwe or from Russia.<br>The seller hereby gurantees
+                        that these diamonds are conflict free and are genuine and naturally occuring stones and have not
+                        been clarity enhances in any way.<br>We Certify above statements based on personal knowledge and
+                        / or gurantees provided by the supplier of these diamonds</font>
+                </td>
+            </tr>
+            <tr>
+                <td height="31" align="left" valign=middle>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top><b>
+                        <font face="Tahoma" size=1>Receiver's Signature</font>
+                    </b></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=4 rowspan=2 align="left" valign=top>
+                    <font color="#000000">GSTIN : 24ADGPP3590H1ZF STATE CODE : 24<br>PAN No : ADGPP3590H</font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 rowspan=2 align="center" valign=top>
+                    <font color="#000000">SHREE HARI GEMS<br>Proprietor/Authorised</font>
+                </td>
+            </tr>
+            <tr>
+                <td height="64" align="left" valign=top>
+                    <font color="#000000"><br></font>
+                </td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top>
+                    <font color="#000000"><br></font>
+                </td>
+            </tr>
+            <tr>
+                <td colspan=10 height="17" align="center" valign=top><b>
+                        <font face="Calibri" size=1>Subject to Surat Jurisdiction</font>
+                    </b></td>
+            </tr>
+        </table>
+    </div>
 </div>
 
 <div class="progress-spinner" *ngIf="loading">
