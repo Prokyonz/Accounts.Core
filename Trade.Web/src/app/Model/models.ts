@@ -186,6 +186,10 @@ export class pos {
     tidNumber: string = '';
     tidBankName: string = '';
     isActive: boolean = false;
+    createdDate: Date = new Date();
+    createdBy: number = 0;
+    updatedDate: Date = new Date();
+    updatedBy: number = 0;
 }
 
 export class series {

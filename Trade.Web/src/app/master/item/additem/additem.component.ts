@@ -17,9 +17,11 @@ export class AdditemComponent implements OnInit {
   isSaveButton: boolean = false;
   isEditMode = false;
   itemData: item[];
+  logInUserID: string;
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.item = new item();
+    this.logInUserID = localStorage.getItem('userid') ?? '0';
   }
 
 
@@ -159,5 +161,31 @@ export class AdditemComponent implements OnInit {
     this.isEditMode = false;
     this.isSaveButton = false;
     this.loading = false;
+  }
+
+  onCheckChange(event: any, item: any): void {
+    this.loading = true;
+    if (this.item) {
+      item.updatedBy = this.logInUserID;
+      item.updatedDate = new Date();
+      this.sharedService.customPutApi("ItemMaster/ActiveItem", item)
+        .subscribe((data: any) => {
+          if (data != null) {
+            if (event.checked) {
+              this.showMessage('success', `${item.name} is now active.`);
+            } else {
+              this.showMessage('success', `${item.name} is now inactive.`);
+            }
+            this.loading = false;
+          }
+          else {
+            this.loading = false;
+            this.showMessage('error', 'Something went wrong...');
+          }
+        }, (ex: any) => {
+          this.loading = false;
+          this.showMessage('error', ex);
+        });
+    }
   }
 }

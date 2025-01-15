@@ -81,10 +81,8 @@
 
 .action-icons {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 18px;
-  padding-top: 10px;
+  justify-content: flex-end; /* Align icons to the right */
+  gap: 10px;
 }
 
 .edit-icon, .delete-icon {

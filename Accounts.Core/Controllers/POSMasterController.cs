@@ -89,5 +89,11 @@ namespace Accounts.Core.Controllers
         {
             return await _pOSMasterRepository.GetPOSByUser(userId);
         }
+
+        [HttpPut("ActivePOS")]
+        public async Task<bool> ActivePOSAsync(POSMaster posMaster)
+        {
+            return await _pOSMasterRepository.ActiveInActivePOS(posMaster.Id, posMaster.UpdatedBy.Value, posMaster.IsActive);
+        }
     }
 }

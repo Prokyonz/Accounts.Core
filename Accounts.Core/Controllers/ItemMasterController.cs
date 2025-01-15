@@ -78,5 +78,11 @@ namespace Accounts.Core.Controllers
         {
             return await _itemMasterRepository.DeleteItemMasterAsync(itemMasterId, isHardDelete);
         }
+
+        [HttpPut("ActiveItem")]
+        public async Task<bool> ActiveItemAsync(ItemMaster itemMaster)
+        {
+            return await _itemMasterRepository.ActiveInActiveItem(itemMaster.Id, itemMaster.UpdatedBy.Value, itemMaster.IsActive);
+        }
     }
 }

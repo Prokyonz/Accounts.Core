@@ -1,4 +1,3 @@
-
 using Accounts.Core.DbContext;
 using Accounts.Core.Models;
 using Accounts.Core.Models.Response;
@@ -16,6 +15,7 @@ namespace Accounts.Core.Repositories
         Task<List<POSMaster>> GetQuery(int pageIndex, int pageSize);
         Task<POSMaster> GetQuery(long pOSMasterId, int pageIndex, int pageSize);
         Task<List<POSResponceModel>> GetPOSByUser(long UserId);
+        Task<bool> ActiveInActivePOS(long posMasterId, long userId, bool status);
     }
 }
 
@@ -106,6 +106,38 @@ namespace Accounts.Core.Repositories
             var result = await _pOSResponceModelRepo.ExecuteStoredProcedureAsync("GetPOSByUser "+ UserId);
 
             return result;
+        }
+
+        public async Task<bool> ActiveInActivePOS(long posMasterId, long userId, bool status)
+        {
+            try
+            {
+                await _pOSMasterRepo.BeginTransactionAsync();
+
+                var result = await _pOSMasterRepo.QueryAsync(
+                query => query.Id == posMasterId && query.IsDelete == false,
+                orderBy: c => c.CreatedDate,
+                0, 1);
+
+                if (result != null)
+                {
+                    var posData = result.FirstOrDefault();
+                    if (posData != null)
+                    {
+                        posData.IsActive = status;
+                        posData.UpdatedBy = userId;
+                        posData.UpdatedDate = DateTime.Now;
+                    }
+                }
+
+                await _pOSMasterRepo.CommitTransactionAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

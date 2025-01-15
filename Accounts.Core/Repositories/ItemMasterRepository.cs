@@ -13,6 +13,7 @@ namespace Accounts.Core.Repositories
         Task<bool> DeleteItemMasterAsync(long itemMasterId, bool isHardDelete = false);
         Task<List<ItemMaster>> GetQuery(int pageIndex, int pageSize);
         Task<ItemMaster> GetQuery(long itemMasterId, int pageIndex, int pageSize);
+        Task<bool> ActiveInActiveItem(long itemMasterId, long userId, bool status);
     }
 }
 
@@ -92,6 +93,38 @@ namespace Accounts.Core.Repositories
         {
             await _itemMasterRepo.UpdateAsync(itemMaster);
             return itemMaster;
+        }
+
+        public async Task<bool> ActiveInActiveItem(long itemMasterId, long userId, bool status)
+        {
+            try
+            {
+                await _itemMasterRepo.BeginTransactionAsync();
+
+                var result = await _itemMasterRepo.QueryAsync(
+                query => query.Id == itemMasterId && query.IsDelete == false,
+                orderBy: c => c.CreatedDate,
+                0, 1);
+
+                if (result != null)
+                {
+                    var itemData = result.FirstOrDefault();
+                    if (itemData != null)
+                    {
+                        itemData.IsActive = status;
+                        itemData.UpdatedBy = userId;
+                        itemData.UpdatedDate = DateTime.Now;
+                    }
+                }
+
+                await _itemMasterRepo.CommitTransactionAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

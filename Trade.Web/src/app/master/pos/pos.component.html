@@ -9,6 +9,8 @@
   
   <div *ngFor="let item of posItemData" class="customer-card">
     <div class="card-header">
+      <p-checkbox id="isActiveList" [(ngModel)]="item.isActive" name="isActiveList" 
+      [binary]="true" (onChange)="onCheckChange($event, item)"></p-checkbox>
       {{ item.tidNumber }}
     </div>
     <div class="card-body">

@@ -11,17 +11,18 @@ import { item, pos } from 'src/app/Model/models';
   styleUrls: ['./pos.component.scss']
 })
 export class PosComponent {
-PageTitle = 'POS Details';
+  PageTitle = 'POS Details';
   posItem: pos;
   loading: boolean = false;
   isSaveButton: boolean = false;
   isEditMode = false;
   posItemData: pos[];
+  logInUserID: string;
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.posItem = new pos();
+    this.logInUserID = localStorage.getItem('userid') ?? '0';
   }
-
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -159,5 +160,31 @@ PageTitle = 'POS Details';
     this.isEditMode = false;
     this.isSaveButton = false;
     this.loading = false;
+  }
+
+  onCheckChange(event: any, item: any): void {
+    this.loading = true;
+    if (this.posItem) {
+      item.updatedBy = this.logInUserID;
+      item.updatedDate = new Date();
+      this.sharedService.customPutApi("POSMaster/ActivePOS", item)
+        .subscribe((data: any) => {
+          if (data != null) {
+            if (event.checked) {
+              this.showMessage('success', `${item.tidNumber} is now active.`);
+            } else {
+              this.showMessage('success', `${item.tidNumber} is now inactive.`);
+            }
+            this.loading = false;
+          }
+          else {
+            this.loading = false;
+            this.showMessage('error', 'Something went wrong...');
+          }
+        }, (ex: any) => {
+          this.loading = false;
+          this.showMessage('error', ex);
+        });
+    }
   }
 }

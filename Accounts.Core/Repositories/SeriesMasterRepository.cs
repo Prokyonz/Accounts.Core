@@ -63,7 +63,6 @@ namespace Accounts.Core.Repositories
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
