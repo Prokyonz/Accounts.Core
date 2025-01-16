@@ -9,8 +9,9 @@ import { color } from 'html2canvas/dist/types/css/types/color';
 
 export class DashboardComponent implements OnInit {
   dashBoardReportItems: any[] = [];
+  loading: boolean = false;
 
-  constructor(){}
+  constructor() { }
 
   ngOnInit(): void {
     this.getDashBoardData();
@@ -24,6 +25,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getDashBoardData(): void {
+    this.loading = true;
     this.dashBoardReportItems.push(
       {
         label: '',  // Group label
@@ -123,6 +125,7 @@ export class DashboardComponent implements OnInit {
             index: 5
           }
         ]
-      });        
+      });
+    this.loading = false;
   }
 }

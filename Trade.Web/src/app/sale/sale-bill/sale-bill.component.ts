@@ -149,6 +149,7 @@ export class SaleBillComponent {
   }
 
   async sharePDF1() {
+    this.loading = true;
     const element = document.getElementById('content-to-export');
     if (element) {
       // Set the element's dimensions explicitly to ensure full capture
@@ -240,6 +241,7 @@ export class SaleBillComponent {
         }
       });
     }
+    this.loading = false;
   }
 
   async sharePDF() {

@@ -152,3 +152,7 @@
 </div>
 
 <input type="file" id="fileInput" (change)="onUpload(true)" accept="image/*" style="display: none;" />
+
+<div class="progress-spinner" *ngIf="loading">
+    <p-progressSpinner strokeWidth="4" styleClass="w-3rem h-3rem"></p-progressSpinner>
+</div>
