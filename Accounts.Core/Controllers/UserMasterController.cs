@@ -103,5 +103,11 @@ namespace Accounts.Core.Controllers
         {
             return await _userMasterRepository.UserReport(userId, name);
         }
+
+        [HttpPut("ActiveUser")]
+        public async Task<bool> ActiveUserAsync(UserMaster userMaster)
+        {
+            return await _userMasterRepository.ActiveInActiveUser(userMaster.Id.Value, userMaster.UpdatedBy.Value, userMaster.IsActive);
+        }
     }
 }

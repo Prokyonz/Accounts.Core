@@ -67,6 +67,7 @@ export class user {
     password: string = '';
     posChilds: posChild[];
     isAgent: boolean = false;
+    isActive: boolean = false;
     createdDate: Date = new Date();
     createdBy: number = 0;
     updatedDate: Date = new Date();

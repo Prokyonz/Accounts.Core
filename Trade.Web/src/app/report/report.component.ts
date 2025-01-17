@@ -324,4 +324,30 @@ export class ReportComponent implements OnInit {
       });
     this.loading = false;
   }
+
+  onCheckChange(event: any, item: any): void {
+    this.loading = true;
+    if (this.users) {
+      item.updatedBy = this.logInUserID;
+      item.updatedDate = new Date();
+      this.sharedService.customPutApi("UserMaster/ActiveUser", item)
+        .subscribe((data: any) => {
+          if (data != null) {
+            if (event.checked) {
+              this.showMessage('success', `${item.name} is now active.`);
+            } else {
+              this.showMessage('success', `${item.name} is now inactive.`);
+            }
+            this.loading = false;
+          }
+          else {
+            this.loading = false;
+            this.showMessage('error', 'Something went wrong...');
+          }
+        }, (ex: any) => {
+          this.loading = false;
+          this.showMessage('error', ex);
+        });
+    }
+  }
 }

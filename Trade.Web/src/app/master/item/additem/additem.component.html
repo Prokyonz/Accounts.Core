@@ -3,7 +3,7 @@
 <p-toast [breakpoints]="{'920px': { right: '0', left: '50'}}"></p-toast>
 
 <div class="full-screen-card-container" *ngIf="!isSaveButton">  <!-- Adjust the condition as needed -->
-  <div *ngIf="itemData.length === 0" class="no-data">
+  <div *ngIf="itemData?.length === 0" class="no-data">
     No item data found.
   </div>
   

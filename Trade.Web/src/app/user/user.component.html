@@ -74,8 +74,12 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2" class="input-field">
+                                <td class="input-field">
                                     <p-checkbox id="isAgent" [(ngModel)]="user.isAgent" name="isAgent" label="Agent"
+                                        [binary]="true"></p-checkbox>
+                                </td>
+                                <td class="input-field">
+                                    <p-checkbox id="isActive" [(ngModel)]="user.isActive" name="isActive" label="Is Active"
                                         [binary]="true"></p-checkbox>
                                 </td>
                             </tr>

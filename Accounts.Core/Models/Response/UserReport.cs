@@ -10,5 +10,6 @@
         public string? EmailId { get; set; }
         public bool? IsAgent { get; set; }
         public long? ParentUserId { get; set; }
+        public bool? IsActive { get; set; }
     }
 }

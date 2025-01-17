@@ -17,6 +17,7 @@ namespace Accounts.Core.Repositories
         Task<List<PermissionMaster>> GetMasterPermissions();
         Task<UserMaster> Login(string? mobileNo, string password, string? emailId);
         Task<List<UserReport>> UserReport(long userId, string? name);
+        Task<bool> ActiveInActiveUser(long userMasterId, long userId, bool status);
     }
 }
 
@@ -195,6 +196,38 @@ namespace Accounts.Core.Repositories
             var result = await _userReportRepo.ExecuteStoredProcedureAsync(spName);
 
             return result;
+        }
+
+        public async Task<bool> ActiveInActiveUser(long userMasterId, long userId, bool status)
+        {
+            try
+            {
+                await _userMasterRepo.BeginTransactionAsync();
+
+                var result = await _userMasterRepo.QueryAsync(
+                query => query.Id == userMasterId && query.IsDelete == false,
+                orderBy: c => c.CreatedDate,
+                0, 1);
+
+                if (result != null)
+                {
+                    var userData = result.FirstOrDefault();
+                    if (userData != null)
+                    {
+                        userData.IsActive = status;
+                        userData.UpdatedBy = userId;
+                        userData.UpdatedDate = DateTime.Now;
+                    }
+                }
+
+                await _userMasterRepo.CommitTransactionAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

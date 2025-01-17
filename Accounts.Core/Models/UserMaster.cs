@@ -19,6 +19,7 @@ namespace Accounts.Core.Models
         public long? ParentUserId { get; set; }
         public bool IsDelete { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsActive { get; set; }
         [Ignore]
         public List<POSChild>? POSChilds { get; set; }
 

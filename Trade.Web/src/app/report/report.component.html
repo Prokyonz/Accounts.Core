@@ -147,6 +147,8 @@
 
   <div *ngFor="let user of users" class="customer-card">
     <div class="card-header">
+      <p-checkbox id="isActiveList" [(ngModel)]="user.isActive" name="isActiveList" 
+      [binary]="true" (onChange)="onCheckChange($event, user)"></p-checkbox>
       <strong>User ID: </strong>{{ user.id }}
     </div>
     <div class="card-body">
