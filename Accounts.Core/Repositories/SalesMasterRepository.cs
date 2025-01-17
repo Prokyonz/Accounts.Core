@@ -20,7 +20,7 @@ namespace Accounts.Core.Repositories
         Task<List<SalesMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
         Task<SalesMaster> GetQuery(long salesId, int pageIndex, int pageSize, bool includeDetails);
         Task<List<SaleReport>> SalesReport(long userId, DateTime? fromDate, DateTime? toDate, string? name);
-        Task<long> GetMaxInvoiceNo();
+        Task<long> GetMaxInvoiceNo(string seriesName);
     }
 
     public class SalesMasterRepository : ISalesMasterRepository
@@ -67,12 +67,12 @@ namespace Accounts.Core.Repositories
             return result;
         }
 
-        public async Task<long> GetMaxInvoiceNo()
+        public async Task<long> GetMaxInvoiceNo(string seriesName)
         {
             try
             {
                 var result = await _salesRepo.QueryAsync(
-                           query => query.Id > 0 && query.IsDelete == false,
+                           query => query.Id > 0 && query.IsDelete == false && query.SeriesName == seriesName,
                            orderBy: c => c.InvoiceNo,
                            0, int.MaxValue);
 
@@ -95,13 +95,13 @@ namespace Accounts.Core.Repositories
             try
             {
                 var series = await _seriesMasterRepo.QueryAsync(
-                           query => query.Id > 0 && query.IsDelete == false,
+                           query => query.Id > 0 && query.IsDelete == false && query.IsActive == true,
                            orderBy: c => c.CreatedDate ?? DateTime.Now,
                            0, 10);
 
                 salesMaster.SeriesName = series[0].Name;
 
-                salesMaster.InvoiceNo = await GetMaxInvoiceNo();
+                salesMaster.InvoiceNo = await GetMaxInvoiceNo(salesMaster.SeriesName);
 
                 await _salesRepo.BeginTransactionAsync();
 

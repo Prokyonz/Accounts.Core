@@ -229,8 +229,10 @@
         <p><strong>Total Amount:</strong> {{ saleData.amount }}</p>
       </div>
 
-      <div class="form-group">
-        <p-button [label]="isEditMode ? 'Update' : 'Submit'" (onClick)="showDetails()" icon="pi pi-check"></p-button>
+      <div class="form-group  d-flex" style="display: flex;gap: 5px;">
+        <p-button class="col-6 back-button" label="Back" (onClick)="(currentStep = 1)" 
+         icon="pi pi-arrow-left"></p-button>
+        <p-button class="col-6" [label]="isEditMode ? 'Update' : 'Submit'" (onClick)="showDetails()" icon="pi pi-check"></p-button>
       </div>
     </div>
   </form>

@@ -291,3 +291,14 @@ button.btn-lg {
   pointer-events: none;
   /* Disable interactions */
 }
+
+.back-button {
+  background-color: #FFCCCC !important; /* Light red */
+  color: #000000 !important; /* Black text for contrast */
+  border: none !important; /* Optional: remove border */
+}
+
+.back-button:hover {
+  background-color: #FF9999 !important; /* Slightly darker red on hover */
+  color: #000000 !important;
+}
