@@ -3,6 +3,7 @@ using Accounts.Core.Models;
 using Accounts.Core.Models.Response;
 using BaseClassLibrary.Interface;
 using BaseClassLibrary.Repository;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Accounts.Core.Repositories
@@ -28,13 +29,17 @@ namespace Accounts.Core.Repositories
         private readonly IBaseRepository<PurchaseMaster, AppDbContext> _purchaseMasterRepo;
         private readonly IBaseRepository<PurchaseReports, AppDbContext> _purchaseReportRepo;
         private readonly IBaseRepository<StockReport, AppDbContext> _stockReportRepo;
+        private readonly AppDbContext _appDbContext;
 
-
-        public PurchaseMasterRepository(IBaseRepository<PurchaseMaster, AppDbContext> purchaseMasterRepo, IBaseRepository<PurchaseReports, AppDbContext> purchaseReportRepo, IBaseRepository<StockReport, AppDbContext> stockReportRepo)
+        public PurchaseMasterRepository(IBaseRepository<PurchaseMaster, AppDbContext> purchaseMasterRepo, 
+            IBaseRepository<PurchaseReports, AppDbContext> purchaseReportRepo, 
+            IBaseRepository<StockReport, AppDbContext> stockReportRepo,
+            AppDbContext appDbContext)
         {
             _purchaseMasterRepo = purchaseMasterRepo;
             _purchaseReportRepo = purchaseReportRepo;
             _stockReportRepo = stockReportRepo;
+            _appDbContext = appDbContext;
         }
 
         public async Task<List<PurchaseReports>> PurchaseReport(long userId, DateTime? fromDate, DateTime? toDate, string? name)
@@ -150,6 +155,17 @@ namespace Accounts.Core.Repositories
         public async Task<PurchaseMaster> UpdatePurchaseMasterAsync(PurchaseMaster purchaseMaster)
         {
             await _purchaseMasterRepo.UpdateAsync(purchaseMaster);
+
+            if (purchaseMaster.PurchaseDetails != null && purchaseMaster.PurchaseDetails.Any())
+            {
+                var purchaseDetails = await _appDbContext.PurchaseDetails.Where(x => x.PurchaseMasterId == purchaseMaster.Id).ToListAsync();
+
+                if(purchaseDetails.Any())
+                {
+                    _appDbContext.PurchaseDetails.RemoveRange(purchaseDetails);
+                }
+            }
+
             return purchaseMaster;
         }
 

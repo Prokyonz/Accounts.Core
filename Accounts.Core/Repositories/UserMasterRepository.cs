@@ -2,7 +2,9 @@ using Accounts.Core.DbContext;
 using Accounts.Core.Models;
 using Accounts.Core.Models.Response;
 using BaseClassLibrary.Interface;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 
 namespace Accounts.Core.Repositories
 {
@@ -30,18 +32,21 @@ namespace Accounts.Core.Repositories
         private readonly IBaseRepository<POSChild, AppDbContext> _posChild;
         private readonly IBaseRepository<PermissionMaster, AppDbContext> _permissionMaster;
         private readonly IBaseRepository<UserReport, AppDbContext> _userReportRepo;
+        private readonly AppDbContext _appDbContext;
 
         public UserMasterRepository(IBaseRepository<UserMaster, AppDbContext> userMasterRepo, 
             IBaseRepository<UserPermissionChild, AppDbContext> userPermisionChild,
             IBaseRepository<PermissionMaster, AppDbContext> permissionMaster,
             IBaseRepository<UserReport, AppDbContext> userReportRepo,
-            IBaseRepository<POSChild, AppDbContext> posChild)
+            IBaseRepository<POSChild, AppDbContext> posChild,
+            AppDbContext appDbContext)
         {
             _userMasterRepo = userMasterRepo;
             _userPermisionChild = userPermisionChild;
             _permissionMaster = permissionMaster;
             _userReportRepo = userReportRepo;
             _posChild = posChild;
+            _appDbContext = appDbContext;
         }
 
         public async Task<UserMaster> AddUserMasterAsync(UserMaster userMaster)
@@ -177,6 +182,37 @@ namespace Accounts.Core.Repositories
         public async Task<UserMaster> UpdateUserMasterAsync(UserMaster userMaster)
         {
             await _userMasterRepo.UpdateAsync(userMaster);
+
+            await _appDbContext.Database.BeginTransactionAsync();
+
+            if (userMaster.POSChilds != null && userMaster.POSChilds.Any())
+            {
+                var posChilds = await _appDbContext.POSChild.Where(x => x.UserId == userMaster.Id).ToListAsync();
+
+                if (posChilds.Any())
+                {
+                    _appDbContext.POSChild.RemoveRange(posChilds);
+                }
+
+                await _appDbContext.POSChild.AddRangeAsync(userMaster.POSChilds);
+            }
+
+            if (userMaster.Permissions != null && userMaster.Permissions.Any())
+            {
+                var permissions = await _appDbContext.UserPermissionChild.Where(x => x.UserId == userMaster.Id).ToListAsync();
+
+                if (permissions.Any())
+                {
+                    _appDbContext.UserPermissionChild.RemoveRange(permissions);
+                }
+
+                await _appDbContext.UserPermissionChild.AddRangeAsync(userMaster.Permissions);
+            }
+
+            await _appDbContext.SaveChangesAsync();
+
+            await _appDbContext.Database.CommitTransactionAsync();
+
             return userMaster;
         }
 
