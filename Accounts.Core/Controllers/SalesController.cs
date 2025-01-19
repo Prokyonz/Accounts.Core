@@ -90,5 +90,15 @@ namespace Accounts.Core.Controllers
         {
             return await _salesMasterRepository.SalesReport(userId, fromDate, toDate, name);
         }
+
+        /// <summary>
+        /// Read all Sale from table.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("SaleBillPrint/{saleMasterID}")]
+        public async Task<SaleBillPrint> SaleBillPrint(long saleMasterID)
+        {
+            return await _salesMasterRepository.SalesBillPrint(saleMasterID);
+        }
     }
 }

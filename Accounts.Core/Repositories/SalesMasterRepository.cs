@@ -5,8 +5,10 @@ using BaseClassLibrary.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Data;
 using System.Data.SqlTypes;
 using System.Linq.Expressions;
+using System.Text;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Accounts.Core.Repositories
@@ -20,6 +22,7 @@ namespace Accounts.Core.Repositories
         Task<List<SalesMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
         Task<SalesMaster> GetQuery(long salesId, int pageIndex, int pageSize, bool includeDetails);
         Task<List<SaleReport>> SalesReport(long userId, DateTime? fromDate, DateTime? toDate, string? name);
+        Task<SaleBillPrint> SalesBillPrint(long saleMasterID);
         Task<long> GetMaxInvoiceNo(string seriesName);
     }
 
@@ -65,6 +68,93 @@ namespace Accounts.Core.Repositories
             var result = await _salesReportRepo.ExecuteStoredProcedureAsync(spName);
 
             return result;
+        }
+
+        public async Task<SaleBillPrint> SalesBillPrint(long saleMasterID)
+        {
+            string spName = "SalesBillPrint";
+            var result = await _salesReportRepo.ExecuteStoredProcedureDSAsync(spName, "@salesId", saleMasterID);
+            return ConvertDataSetToModel(result);
+        }
+
+        public SaleBillPrint ConvertDataSetToModel(DataSet dataSet)
+        {
+            if (dataSet == null || dataSet.Tables.Count < 3)
+                throw new ArgumentException("Invalid DataSet. Ensure it contains at least three tables.");
+
+            // Extract tables
+            DataTable saleBillPrintTable = dataSet.Tables[0];
+            DataTable saleBillItemsTable = dataSet.Tables[1];
+            DataTable saleBillPaymentsTable = dataSet.Tables[2];
+
+            // Ensure each table has data
+            if (saleBillPrintTable.Rows.Count == 0)
+                throw new InvalidOperationException("SaleBillPrint table is empty.");
+
+            // Map SaleBillPrint
+            DataRow printRow = saleBillPrintTable.Rows[0];
+            var saleBillPrint = new SaleBillPrint
+            {
+                Id = Convert.ToInt64(printRow["Id"]),
+                InvoiceNo = Convert.ToString(printRow["InvoiceNo"]),
+                InvoiceDate = Convert.ToDateTime(printRow["InvoiceDate"]),
+                PartyName = printRow["PartyName"] as string,
+                BillAmount = Convert.ToDecimal(printRow["BillAmount"]),
+                BillAmountInWords = ConvertNumberToWords(Convert.ToDecimal(printRow["BillAmount"])),
+                Address = Convert.ToString(printRow["Address"]),
+                MobileNo = Convert.ToString(printRow["MobileNo"]),
+                EmailId = Convert.ToString(printRow["EmailId"]),
+                SaleBillItems = new List<SaleBillItems>(),
+                SaleBillPayments = new List<SaleBillPayments>()
+            };
+
+            decimal totalCGST = 0;
+            decimal totalSGST = 0;
+            decimal totalIGST = 0;
+            decimal totalCarratQty = 0;
+
+            // Map SaleBillItems
+            foreach (DataRow row in saleBillItemsTable.Rows)
+            {
+                saleBillPrint.SaleBillItems.Add(new SaleBillItems
+                {
+                    Id = Convert.ToInt64(row["Id"]),
+                    SerialNo = Convert.ToInt64(row["SerialNo"]),
+                    ItemName = Convert.ToString(row["ItemName"]),
+                    CarratQty = Convert.ToDecimal(row["CarratQty"]),
+                    Rate = Convert.ToDecimal(row["Rate"]),
+                    TotalAmount = Convert.ToDecimal(row["TotalAmount"]),
+                    SGST = Convert.ToDecimal(row["SGST"]),
+                    CGST = Convert.ToDecimal(row["CGST"]),
+                    IGST = Convert.ToDecimal(row["IGST"]),
+                });
+
+                totalCGST += Convert.ToDecimal(row["CGST"]);
+                totalSGST += Convert.ToDecimal(row["SGST"]);
+                totalIGST += Convert.ToDecimal(row["IGST"]);
+                totalCarratQty += Convert.ToDecimal(row["TotalAmount"]);
+            }
+
+            saleBillPrint.CGST = totalCGST;
+            saleBillPrint.SGST = totalSGST;
+            saleBillPrint.IGST = totalIGST;
+            saleBillPrint.TotalCarratQty = totalCarratQty;
+            saleBillPrint.BillAmountWithoutTax = saleBillPrint.BillAmount - saleBillPrint.IGST;
+
+            // Map SaleBillPayments
+            foreach (DataRow row in saleBillPaymentsTable.Rows)
+            {
+                saleBillPrint.SaleBillPayments.Add(new SaleBillPayments
+                {
+                    Id = Convert.ToInt64(row["Id"]),
+                    PaymentNo = Convert.ToString(row["PaymentNo"]),
+                    PaymentMode = Convert.ToString(row["PaymentMode"]),
+                    CardNo = Convert.ToString(row["CardNo"]),
+                    PaidAmount = Convert.ToDecimal(row["PaidAmount"]),
+                });
+            }
+
+            return saleBillPrint;
         }
 
         public async Task<long> GetMaxInvoiceNo(string seriesName)
@@ -224,6 +314,63 @@ namespace Accounts.Core.Repositories
             {
                 throw;
             }
+        }
+
+        private static string ConvertNumberToWords(decimal number)
+        {
+            if (number == 0)
+                return "zero";
+
+            var words = "";
+
+            // Split the number into integer and decimal parts
+            var integerPart = (int)Math.Floor(number);
+            var decimalPart = (int)((number - integerPart) * 100);
+
+            words += ConvertToWords(integerPart) + " rupees";
+
+            if (decimalPart > 0)
+            {
+                words += " and " + ConvertToWords(decimalPart) + " paise";
+            }
+
+            return ConvertToTitleCase(words.Trim());
+        }
+
+        private static string ConvertToWords(int number)
+        {
+            string[] unitsMap = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" };
+            string[] tensMap = { "zero", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
+
+            if (number == 0)
+                return "";
+
+            if (number < 20)
+                return unitsMap[number];
+
+            if (number < 100)
+                return tensMap[number / 10] + (number % 10 > 0 ? "-" + unitsMap[number % 10] : "");
+
+            if (number < 1000)
+                return unitsMap[number / 100] + " hundred" + (number % 100 > 0 ? " and " + ConvertToWords(number % 100) : "");
+
+            if (number < 100000)
+                return ConvertToWords(number / 1000) + " thousand" + (number % 1000 > 0 ? " " + ConvertToWords(number % 1000) : "");
+
+            if (number < 10000000)
+                return ConvertToWords(number / 100000) + " lakh" + (number % 100000 > 0 ? " " + ConvertToWords(number % 100000) : "");
+
+            return ConvertToWords(number / 10000000) + " crore" + (number % 10000000 > 0 ? " " + ConvertToWords(number % 10000000) : "");
+        }
+
+        private static string ConvertToTitleCase(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return string.Empty;
+
+            return string.Join(" ", input
+                .Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                .Select(word => char.ToUpper(word[0]) + word.Substring(1).ToLower()));
         }
     }
 }

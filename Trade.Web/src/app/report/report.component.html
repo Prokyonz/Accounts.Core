@@ -355,7 +355,7 @@
       </div>
 
       <div class="action-icons">
-        <i class="pi pi-eye view-icon" [routerLink]="['/salebill']" title="View" style="cursor: pointer;"></i>
+        <i class="pi pi-eye view-icon" [routerLink]="['/salebill', group.id]" title="View" style="cursor: pointer;"></i>
         <i class="pi pi-pencil edit-icon" [routerLink]="['/sale', group.id]" title="Edit" style="cursor: pointer;"></i>
         <i class="pi pi-times delete-icon" (click)="deleteItem(group.id)" title="Delete" style="cursor: pointer;"></i>
       </div>

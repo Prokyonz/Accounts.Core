@@ -204,3 +204,43 @@ export class filterCriteria{
     toDate: Date | null;
     name: string;
 }
+
+export class saleBillPrint{
+    id: number = 0;
+    invoiceNo: string = '';
+    invoiceDate: Date = new Date();
+    partyName: string = '';
+    roundupAmount: number = 0;
+    billAmount: number = 0;
+    totalQty: number = 0;
+    sgst: number = 0;
+    cgst: number = 0;
+    igst: number = 0;
+    billAmountInWords: string = '';
+    billAmountWithoutTax: number = 0;
+    address: string = '';
+    mobileNo: string = '';
+    emailId: string = '';
+    saleBillItems: saleBillItems[];
+    saleBillPayments:saleBillPayments[];
+}
+
+export class saleBillItems{
+    id: number = 0;
+    serialNo: number = 0;
+    itemName: string = '';
+    carratQty: number = 0;
+    rate: number = 0;
+    totalAmount: number = 0;
+    sgst: number = 0;
+    cgst: number = 0;
+    igst: number = 0;
+}
+
+export class saleBillPayments{
+    id: number = 0;
+    paymentNo: string = '';
+    paymentMode: string = '';
+    cardNo: string = '';
+    paidAmount: number = 0;
+}
