@@ -50,14 +50,14 @@ export class SaleComponent implements OnInit {
         // this.loadItem(this.salesId); // Fetch the item by ID if editing
 
         this.getItem()
-        .then(() => {
-          // Only call loadItem after getItem completes
-          this.loadItem(this.salesId);
-        })
-        .catch((error) => {
-          // Handle any errors in getItem
-          this.showMessage('Error occurred during initialization:', error);
-        });
+          .then(() => {
+            // Only call loadItem after getItem completes
+            this.loadItem(this.salesId);
+          })
+          .catch((error) => {
+            // Handle any errors in getItem
+            this.showMessage('Error occurred during initialization:', error);
+          });
       }
     });
   }
@@ -275,7 +275,6 @@ export class SaleComponent implements OnInit {
     } else {
       this.createItem();
     }
-    this.router.navigate(['salebill']);
   }
 
   createItem() {
@@ -288,6 +287,7 @@ export class SaleComponent implements OnInit {
         if (data != null) {
           this.showMessage('success', `Invoice No: ${data.seriesName + data.invoiceNo} - Sale details added successfully`);
           this.clearForm();
+          this.router.navigate(['salebill/' + data.id]);
         }
         else {
           this.loading = false;
@@ -307,6 +307,7 @@ export class SaleComponent implements OnInit {
         if (data != null) {
           this.showMessage('success', `Invoice No: ${data.seriesName + data.invoiceNo} - Sale details updated successfully`);
           this.clearForm();
+          this.router.navigate(['salebill/' + data.id]);
         }
         else {
           this.loading = false;

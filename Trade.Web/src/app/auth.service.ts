@@ -4,8 +4,8 @@ import { Observable, throwError } from "rxjs";
 import { catchError, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
-const apiUrl: string = "https://localhost:7261/UserMaster/Login"; //"http://192.168.29.223/calculator/api/Auth/login";
-//const apiUrl: string = "http://35.154.211.170/SunSparkal/UserMaster/Login";
+//const apiUrl: string = "https://localhost:7261/UserMaster/Login"; //"http://192.168.29.223/calculator/api/Auth/login";
+const apiUrl: string = "http://sunsparklediam.com/SunSparkal/UserMaster/Login";
 
 @Injectable({
     providedIn: 'root' // or specify a module where it should be provided
