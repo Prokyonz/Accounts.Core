@@ -24,7 +24,7 @@ export class UserComponent {
   posList: pos[];
   selectedPosIds: number[] = [];
   isEditMode = false;
-
+  logInUserID: string;
   // // Getter for selectedPosIds
   // get this.selectedPosIds(): number[] {
   //   return this.user.posId.map(child => child.posId);
@@ -38,6 +38,7 @@ export class UserComponent {
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.user = new user();
     this.user.permissions = [];
+    this.logInUserID = localStorage.getItem('userid') ?? '0';
     this.getPermission();
     this.getUsers();
     this.getPOS();
@@ -162,6 +163,10 @@ export class UserComponent {
   }
 
   createItem() {
+    this.user.createdBy = parseInt(this.logInUserID);
+    this.user.createdDate = new Date();
+    this.user.updatedBy = parseInt(this.logInUserID);
+    this.user.updatedDate = new Date();
     this.sharedService.customPostApi("UserMaster", this.user)
       .subscribe((data: any) => {
         if (data != null) {
@@ -179,6 +184,10 @@ export class UserComponent {
   }
 
   updateItem() {
+    this.user.updatedBy = parseInt(this.logInUserID);
+    this.user.updatedDate = new Date();
+    this.user.posChilds.forEach(pos => { pos.userId = Number.parseInt(this.logInUserID) });
+    this.user.permissions.forEach(permission => { permission.userId = Number.parseInt(this.logInUserID) });
     this.sharedService.customPutApi("UserMaster", this.user)
       .subscribe((data: any) => {
         if (data != null) {

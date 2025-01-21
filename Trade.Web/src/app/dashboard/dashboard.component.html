@@ -95,25 +95,28 @@
     <div class="dashboard-container">
         <!-- Loop through each group -->
         <ng-container *ngFor="let rowData of dashBoardReportItems">
-            <!-- Display Group Label -->
-            <div class="group-label">
-                {{ rowData.label }}
-            </div>
+            <div *ngIf="rowData?.visible">
+                <!-- Display Group Label -->
+                <div class="group-label">
+                    {{ rowData.label }}
+                </div>
 
-            <!-- Display Group Items in a Responsive Grid -->
-            <div class="dashboard-grid">
-                <ng-container *ngFor="let rowChildData of rowData.children">
-                    <div class="dashboard-card" [ngStyle]="{ 'background-color': rowChildData.color }">
-                        <a class="dashboard-item" [routerLink]="rowChildData.routerLink">
-                            <div class="dashboard-icon">
-                                <i [ngClass]="rowChildData.icon"></i>
-                            </div>
-                            <div class="dashboard-label">
-                                {{ rowChildData.label }}
-                            </div>
-                        </a>
-                    </div>
-                </ng-container>
+                <!-- Display Group Items in a Responsive Grid -->
+                <div class="dashboard-grid">
+                    <ng-container *ngFor="let rowChildData of rowData.children">
+                        <div class="dashboard-card" [ngStyle]="{ 'background-color': rowChildData.color }"
+                            *ngIf="rowChildData?.visible">
+                            <a class="dashboard-item" [routerLink]="rowChildData.routerLink">
+                                <div class="dashboard-icon">
+                                    <i [ngClass]="rowChildData.icon"></i>
+                                </div>
+                                <div class="dashboard-label">
+                                    {{ rowChildData.label }}
+                                </div>
+                            </a>
+                        </div>
+                    </ng-container>
+                </div>
             </div>
         </ng-container>
     </div>

@@ -67,6 +67,7 @@ export class user {
     password: string = '';
     posChilds: posChild[];
     isAgent: boolean = false;
+    isAdmin: boolean = false;
     isActive: boolean = false;
     createdDate: Date = new Date();
     createdBy: number = 0;
@@ -199,13 +200,13 @@ export class series {
     isActive: boolean = false;
 }
 
-export class filterCriteria{
+export class filterCriteria {
     fromDate: Date | null;
     toDate: Date | null;
     name: string;
 }
 
-export class saleBillPrint{
+export class saleBillPrint {
     id: number = 0;
     invoiceNo: string = '';
     invoiceDate: Date = new Date();
@@ -222,10 +223,10 @@ export class saleBillPrint{
     mobileNo: string = '';
     emailId: string = '';
     saleBillItems: saleBillItems[];
-    saleBillPayments:saleBillPayments[];
+    saleBillPayments: saleBillPayments[];
 }
 
-export class saleBillItems{
+export class saleBillItems {
     id: number = 0;
     serialNo: number = 0;
     itemName: string = '';
@@ -237,7 +238,7 @@ export class saleBillItems{
     igst: number = 0;
 }
 
-export class saleBillPayments{
+export class saleBillPayments {
     id: number = 0;
     paymentNo: string = '';
     paymentMode: string = '';

@@ -5,8 +5,8 @@ import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 //import {config} from '../../assets/config/app.config';
 
-//const apiUrl : string = "https://localhost:7261/"; //http://192.168.29.223/calculator/api/";
-const apiUrl: string = "http://sunsparklediam.com/SunSparkal/";
+const apiUrl: string = "https://localhost:7261/"; //http://192.168.29.223/calculator/api/";
+//const apiUrl: string = "http://sunsparklediam.com/SunSparkal/";
 
 //const apiKey = config.apiKey;
 @Injectable({

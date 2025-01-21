@@ -181,8 +181,6 @@ namespace Accounts.Core.Repositories
 
         public async Task<UserMaster> UpdateUserMasterAsync(UserMaster userMaster)
         {
-            await _userMasterRepo.UpdateAsync(userMaster);
-
             await _appDbContext.Database.BeginTransactionAsync();
 
             if (userMaster.POSChilds != null && userMaster.POSChilds.Any())
@@ -208,6 +206,8 @@ namespace Accounts.Core.Repositories
 
                 await _appDbContext.UserPermissionChild.AddRangeAsync(userMaster.Permissions);
             }
+
+            await _userMasterRepo.UpdateAsync(userMaster);
 
             await _appDbContext.SaveChangesAsync();
 

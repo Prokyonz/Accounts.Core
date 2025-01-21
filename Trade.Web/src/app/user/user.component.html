@@ -9,14 +9,14 @@
                 <div class="form-content">
                     <form #userForm="ngForm">
                         <table class="form-table" [cellSpacing]="5">
-                            <tr>
+                            <tr *ngIf="!user.isAdmin">
                                 <td colspan="2" class="input-field">
                                     <label for="name">Parent User</label>
                                     <p-dropdown id="party" [(ngModel)]="user.parentUserId" name="user"
                                         [options]="userList" optionLabel="fullName" optionValue="id"
                                         placeholder="Search and select a user" [filter]="true" [showClear]="true"
                                         filterBy="fullName" [required]="true" #party="ngModel"
-                                        [ngClass]="{'is-invalid': party.touched && party.invalid}">
+                                        [ngClass]="{'is-invalid': !user.isAdmin && (party.touched && party.invalid)}">
                                     </p-dropdown>
                                 </td>
                             </tr>
@@ -39,7 +39,7 @@
                                     <label for="mobile">Mobile</label>
                                     <input id="mobile" pInputText pKeyFilter="int" type="number" class="form-control"
                                         name="mobile" [(ngModel)]="user.mobileNo" required #mobileNo="ngModel"
-                                        [ngClass]="{'is-invalid': mobileNo.touched && mobileNo.invalid}"
+                                        [ngClass]="{'is-invalid': !user.isAdmin && (mobileNo.touched && mobileNo.invalid)}"
                                         pattern="^\d{10}$" minlength="10" maxlength="10" />
                                 </td>
                                 <td class="half-width">
@@ -79,12 +79,12 @@
                                         [binary]="true"></p-checkbox>
                                 </td>
                                 <td class="input-field">
-                                    <p-checkbox id="isActive" [(ngModel)]="user.isActive" name="isActive" label="Is Active"
-                                        [binary]="true"></p-checkbox>
+                                    <p-checkbox id="isActive" [(ngModel)]="user.isActive" name="isActive"
+                                        label="Is Active" [binary]="true"></p-checkbox>
                                 </td>
                             </tr>
                             <!-- Permissions Multiselect Dropdown -->
-                            <tr>
+                            <tr *ngIf="!user.isAdmin">
                                 <td colspan="2" class="input-field">
                                     <label for="permissions">Permissions</label>
                                     <div class="multi-select">

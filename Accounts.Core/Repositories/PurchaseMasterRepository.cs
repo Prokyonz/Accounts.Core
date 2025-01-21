@@ -154,8 +154,6 @@ namespace Accounts.Core.Repositories
 
         public async Task<PurchaseMaster> UpdatePurchaseMasterAsync(PurchaseMaster purchaseMaster)
         {
-            await _purchaseMasterRepo.UpdateAsync(purchaseMaster);
-
             if (purchaseMaster.PurchaseDetails != null && purchaseMaster.PurchaseDetails.Any())
             {
                 var purchaseDetails = await _appDbContext.PurchaseDetails.Where(x => x.PurchaseMasterId == purchaseMaster.Id).ToListAsync();
@@ -165,6 +163,8 @@ namespace Accounts.Core.Repositories
                     _appDbContext.PurchaseDetails.RemoveRange(purchaseDetails);
                 }
             }
+
+            await _purchaseMasterRepo.UpdateAsync(purchaseMaster);
 
             return purchaseMaster;
         }
