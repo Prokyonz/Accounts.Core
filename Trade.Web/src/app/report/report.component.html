@@ -68,28 +68,30 @@
       </div>
       <div class="icon-container">
         <div class="image-icons">
-          <i class="pi pi-image view-icon" (click)="imageClick(customer.aadharImageFrontData,'Aadharcard Front', customer.id)" title="Aadharcard Front"
+          <i class="pi pi-image view-icon"
+            (click)="imageClick(customer.aadharImageFrontData,'Aadharcard Front', customer.id)" title="Aadharcard Front"
             [ngClass]="{ 'disabled-icon': !customer.aadharImageFrontData }"
             [style.cursor]="customer.aadharImageFrontData ? 'pointer' : 'not-allowed'"
             [attr.aria-disabled]="!customer.aadharImageFrontData"
             [attr.tabindex]="customer.aadharImageFrontData ? '0' : '-1'" style="cursor: pointer;"></i>
-          <i class="pi pi-image view-icon" (click)="imageClick(customer.aadhbarImageBackData,'Aadharcard Back', customer.id)" title="Aadharcard Back"
+          <i class="pi pi-image view-icon"
+            (click)="imageClick(customer.aadhbarImageBackData,'Aadharcard Back', customer.id)" title="Aadharcard Back"
             [ngClass]="{ 'disabled-icon': !customer.aadhbarImageBackData }"
             [style.cursor]="customer.aadhbarImageBackData ? 'pointer' : 'not-allowed'"
             [attr.aria-disabled]="!customer.aadhbarImageBackData"
             [attr.tabindex]="customer.aadhbarImageBackData ? '0' : '-1'" style="cursor: pointer;"></i>
-          <i class="pi pi-image view-icon" (click)="imageClick(customer.panImageData,'Pancard', customer.id)" title="Pancard"
-            [ngClass]="{ 'disabled-icon': !customer.panImageData }"
+          <i class="pi pi-image view-icon" (click)="imageClick(customer.panImageData,'Pancard', customer.id)"
+            title="Pancard" [ngClass]="{ 'disabled-icon': !customer.panImageData }"
             [style.cursor]="customer.panImageData ? 'pointer' : 'not-allowed'"
             [attr.aria-disabled]="!customer.panImageData" [attr.tabindex]="customer.panImageData ? '0' : '-1'"
             style="cursor: pointer;"></i>
-          <i class="pi pi-image view-icon" (click)="imageClick(customer.signatureImageData,'Signature', customer.id)" title="Signature"
-            [ngClass]="{ 'disabled-icon': !customer.signatureImageData }"
+          <i class="pi pi-image view-icon" (click)="imageClick(customer.signatureImageData,'Signature', customer.id)"
+            title="Signature" [ngClass]="{ 'disabled-icon': !customer.signatureImageData }"
             [style.cursor]="customer.signatureImageData ? 'pointer' : 'not-allowed'"
             [attr.aria-disabled]="!customer.signatureImageData"
             [attr.tabindex]="customer.signatureImageData ? '0' : '-1'" style="cursor: pointer;"></i>
         </div>
-        <div class="action-icons">
+        <div class="action-icons" *ngIf="isAllowtoEditDelete">
           <i class="pi pi-pencil edit-icon" [routerLink]="['/addcustomer', customer.id ]" title="Edit"
             style="cursor: pointer;"></i>
           <!-- <i class="pi pi-times delete-icon" (click)="deleteItem(customer.id )" title="Delete"
@@ -147,8 +149,8 @@
 
   <div *ngFor="let user of users" class="customer-card">
     <div class="card-header">
-      <p-checkbox id="isActiveList" [(ngModel)]="user.isActive" name="isActiveList" 
-      [binary]="true" (onChange)="onCheckChange($event, user)"></p-checkbox>
+      <p-checkbox id="isActiveList" [(ngModel)]="user.isActive" name="isActiveList" [binary]="true"
+        (onChange)="onCheckChange($event, user)"></p-checkbox>
       <strong>User ID: </strong>{{ user.id }}
     </div>
     <div class="card-body">
@@ -166,7 +168,7 @@
         <span>{{ user.emailId }}</span>
       </div>
 
-      <div class="action-icons">
+      <div class="action-icons" *ngIf="isAllowtoEditDelete">
         <i class="pi pi-pencil edit-icon" [routerLink]="['/user', user.id ]" title="Edit" style="cursor: pointer;"></i>
         <i class="pi pi-times delete-icon" (click)="deleteItem(user.id )" title="Delete" style="cursor: pointer;"></i>
       </div>
@@ -356,8 +358,11 @@
 
       <div class="action-icons">
         <i class="pi pi-eye view-icon" [routerLink]="['/salebill', group.id]" title="View" style="cursor: pointer;"></i>
-        <i class="pi pi-pencil edit-icon" [routerLink]="['/sale', group.id]" title="Edit" style="cursor: pointer;"></i>
-        <i class="pi pi-times delete-icon" (click)="deleteItem(group.id)" title="Delete" style="cursor: pointer;"></i>
+        <div *ngIf="isAllowtoEditDelete">
+          <i class="pi pi-pencil edit-icon" [routerLink]="['/sale', group.id]" title="Edit"
+            style="cursor: pointer;"></i>
+          <i class="pi pi-times delete-icon" (click)="deleteItem(group.id)" title="Delete" style="cursor: pointer;"></i>
+        </div>
       </div>
     </div>
   </div>

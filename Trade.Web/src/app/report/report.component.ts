@@ -33,6 +33,8 @@ export class ReportComponent implements OnInit {
   imageUrl: string | null = null;
   imageDetails: string | null = null;
   customerId: number | null = 0;
+  user: user;
+  isAllowtoEditDelete: boolean = false;
 
   constructor(private rote: Router, private activateRoute: ActivatedRoute, private sharedService: SharedService, private messageService: MessageService) {
     this.reportIndex = activateRoute.snapshot.params['id'];
@@ -45,6 +47,11 @@ export class ReportComponent implements OnInit {
   }
 
   ngOnInit() {
+    var userDetail = localStorage.getItem('AuthorizeData');
+    if (userDetail) {
+      this.user = JSON.parse(userDetail);
+    }
+
     this.activateRoute.paramMap.subscribe(params => {
       const reportId = params.get('id'); // Assuming 'id' is the parameter name in your route
       if (reportId) {
@@ -53,18 +60,22 @@ export class ReportComponent implements OnInit {
         this.loading = false;
         if (this.reportIndex == 1) {
           this.PageTitle = "Customer Report";
+          this.isAllowtoEditDelete = this.hasPermission('CustomerManage');
           this.getCustomer();
         }
         else if (this.reportIndex == 2) {
           this.PageTitle = "User Report";
+          this.isAllowtoEditDelete = this.hasPermission('MasterManage');
           this.getUser();
         }
         else if (this.reportIndex == 3) {
           this.PageTitle = "Purchase Report";
+          this.isAllowtoEditDelete = this.hasPermission('MasterManage');
           this.getPurchase();
         }
         else if (this.reportIndex == 4) {
           this.PageTitle = "Sale Report";
+          this.isAllowtoEditDelete = this.hasPermission('SaleManage');
           this.getSale();
         }
         else if (this.reportIndex == 5) {
@@ -77,6 +88,15 @@ export class ReportComponent implements OnInit {
     //   this.PageTitle = "Item Report";
     //   this.getItem();
     // }
+  }
+
+  hasPermission(permissionKey: string): boolean {
+    if (this.user?.isAdmin) {
+      return true;
+    }
+    else {
+      return this.user.permissions.some(permission => permission.keyName === permissionKey);
+    }
   }
 
   getCustomer() {
@@ -181,7 +201,7 @@ export class ReportComponent implements OnInit {
 
   getStock() {
     this.loading = true;
-    this.sharedService.customGetApi1<stockReport[]>('PurchaseMaster/StockReport').subscribe(
+    this.sharedService.customGetApi1<stockReport[]>('PurchaseMaster/StockReport/0').subscribe(
       (data: stockReport[]) => {
         this.stockData = data; // Data is directly returned here as an array of User objects
         this.loading = false;
