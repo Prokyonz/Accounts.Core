@@ -157,7 +157,8 @@ namespace Accounts.Core.Repositories
                                query => (mobileNo != null 
                                     && query.MobileNo == mobileNo 
                                     && query.Password == password
-                                    && query.IsDelete == false),
+                                    && query.IsDelete == false
+                                    && query.IsActive == true),
                                orderBy: c => c.CreatedDate,
                                0, 10);
 
