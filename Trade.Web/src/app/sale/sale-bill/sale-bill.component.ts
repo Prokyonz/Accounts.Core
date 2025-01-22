@@ -83,7 +83,7 @@ export class SaleBillComponent {
     if (element) {
       html2canvas(element).then(canvas => {
         // Convert canvas to image
-        const imgData = canvas.toDataURL('image/png');
+        const imgData = canvas.toDataURL('image/png', 0.7);
         console.log("Captured Image Data URL:", imgData);
 
         // Create a new PDF document
@@ -194,14 +194,14 @@ export class SaleBillComponent {
         const originalHeight = element.offsetHeight;
 
         html2canvas(element, {
-          scale: 2, // Increases the resolution of the canvas
+          scale: 1.5, // Increases the resolution of the canvas
           scrollY: 0, // Ensures no content is missed due to scrolling
           scrollX: 0,
           width: originalWidth, // Full width of the element
           height: originalHeight, // Full height of the element
         }).then(async (canvas) => {
           // Create a new jsPDF instance
-          const pdf = new jsPDF('p', 'mm', 'a4'); // Portrait, millimeters, A4 size
+          const pdf = new jsPDF('p', 'mm', 'a4', true); // Portrait, millimeters, A4 size
 
           // Get element dimensions in millimeters for PDF scaling
           const pageWidth = 210; // A4 width in mm
@@ -216,7 +216,7 @@ export class SaleBillComponent {
             let remainingHeight = imgHeight;
             while (remainingHeight > 0) {
               pdf.addImage(
-                canvas.toDataURL('image/png'),
+                canvas.toDataURL('image/png', 0.7),
                 'PNG',
                 0,
                 position,
@@ -229,7 +229,7 @@ export class SaleBillComponent {
             }
           } else {
             // Single page
-            pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, imgWidth, imgHeight);
+            pdf.addImage(canvas.toDataURL('image/png', 0.7), 'PNG', 0, 0, imgWidth, imgHeight);
           }
 
           // Convert PDF to blob for mobile handling
@@ -290,13 +290,13 @@ export class SaleBillComponent {
       // Use html2canvas to capture the content of the div as a canvas
       html2canvas(element).then(async (canvas) => {
         // Create a new jsPDF instance
-        const pdf = new jsPDF('p', 'mm', 'a4'); // Portrait, millimeters, A4 size
+        const pdf = new jsPDF('p', 'mm', 'a4', true); // Portrait, millimeters, A4 size, compress
 
         // Convert the canvas to an image and add it to the PDF
         const imgData = canvas.toDataURL('image/png');
         const imgWidth = Number(element.style.width); // A4 width in mm
         const imgHeight = canvas.height * imgWidth / canvas.width; // Scale the height accordingly
-        const scaleFactor = 2; //this.isMobile ? 0.75 : 2; 
+        const scaleFactor = 0.75; //this.isMobile ? 0.75 : 2; 
         const scaledImgHeight = imgHeight * scaleFactor;
         pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, scaledImgHeight);
 
