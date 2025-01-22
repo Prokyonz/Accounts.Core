@@ -19,6 +19,7 @@ namespace Accounts.Core.Models
         public decimal Amount { get; set; }
         public long POSId { get; set; }
         public bool IsDelete { get; set; }
+        public string? SalesBillImage { get; set; }
 
         [Ignore]
         public virtual List<SalesDetails> SalesDetails { get; set; }
