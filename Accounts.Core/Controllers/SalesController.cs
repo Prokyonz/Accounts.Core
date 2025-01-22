@@ -68,6 +68,13 @@ namespace Accounts.Core.Controllers
             }
         }
 
+        [HttpPut("updatepdf")]
+        public async Task<bool> UpdatePDFOnly(long salesId, string pdf ="")
+        {
+            var result = await _salesMasterRepository.UpdatePDFOnly(salesId, pdf);
+            return result;
+        }
+
         [HttpDelete]
         public async Task<bool> Delete(long salesId, bool isHardDelete = false)
         {

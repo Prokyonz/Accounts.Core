@@ -24,6 +24,7 @@ namespace Accounts.Core.Repositories
         Task<List<SaleReport>> SalesReport(long userId, DateTime? fromDate, DateTime? toDate, string? name);
         Task<SaleBillPrint> SalesBillPrint(long saleMasterID);
         Task<long> GetMaxInvoiceNo(string seriesName);
+        Task<bool> UpdatePDFOnly(long salesId, string pdf = "");
     }
 
     public class SalesMasterRepository : ISalesMasterRepository
@@ -229,7 +230,7 @@ namespace Accounts.Core.Repositories
         {
             Expression<Func<SalesMaster, bool>> predicate = c => c.Id > 0 && c.IsDelete == false;
             Expression<Func<SalesMaster, object>> salesDetails = x => x.SalesDetails.Where(s => !s.IsDelete);
-            Expression<Func<SalesMaster, object>> amountReceived = m => m.AmountReceived.Where(s=>!s.IsDelete);
+            Expression<Func<SalesMaster, object>> amountReceived = m => m.AmountReceived.Where(s => !s.IsDelete);
 
             if (includeDetails)
                 return await _salesRepo.GetAllAsync(predicate, salesDetails, amountReceived);
@@ -282,7 +283,7 @@ namespace Accounts.Core.Repositories
                 // get the old amount received. 
 
                 var amountReceived = await _appDbContext.AmountReceived.Where(
-                    query => salesMaster.AmountReceived.Where(x=>!x.IsDelete).Select(s => s.Id).Contains(query.Id)).ToListAsync();
+                    query => salesMaster.AmountReceived.Where(x => !x.IsDelete).Select(s => s.Id).Contains(query.Id)).ToListAsync();
 
                 var salesDetails = await _appDbContext.SalesDetails.Where(
                     query => salesMaster.SalesDetails.Where(x => !x.IsDelete).Select(s => s.Id).Contains(query.Id)).ToListAsync();
@@ -371,6 +372,27 @@ namespace Accounts.Core.Repositories
             return string.Join(" ", input
                 .Split(' ', StringSplitOptions.RemoveEmptyEntries)
                 .Select(word => char.ToUpper(word[0]) + word.Substring(1).ToLower()));
+        }
+
+        public async Task<bool> UpdatePDFOnly(long salesId, string pdf = "")
+        {
+            try
+            {
+                var salesMaster = await _appDbContext.SalesMasters.Where(x => x.Id == salesId).FirstOrDefaultAsync();
+
+                if (salesMaster != null)
+                {
+                    salesMaster.SalesBillImage = pdf;
+                }
+
+                await _appDbContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }
