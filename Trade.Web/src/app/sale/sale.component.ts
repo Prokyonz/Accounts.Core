@@ -33,14 +33,15 @@ export class SaleComponent implements OnInit {
     cashAmount.paymentMode = "Cash"
     this.saleData.amountReceived.push(cashAmount);
     this.logInUserID = localStorage.getItem('userid') ?? '0';
+  }
 
+  ngOnInit(): void {
     this.getCustomer();
     this.getPOS();
     this.addItem();
     this.getItem();
-  }
 
-  ngOnInit(): void {
+    this.loading = true;
     this.route.paramMap.subscribe(params => {
       this.salesId = params.get('salesId') ?? ''; // Assuming 'id' is the parameter name in your route
 
@@ -66,6 +67,7 @@ export class SaleComponent implements OnInit {
     this.loading = true;
     this.sharedService.customGetApi1<sale[]>('Sales/GetSale/' + salesId).subscribe(
       (data: any) => {
+        this.loading = true;
         this.saleData = data; // Data is directly returned here as an array of User objects
         if (this.saleData.invoiceDate) {
           this.saleData.invoiceDate = new Date(this.saleData.invoiceDate);
@@ -78,6 +80,7 @@ export class SaleComponent implements OnInit {
             x.total = x.carratQty * x.rate;
           }
         });
+        this.saleData.amount = this.getBillAmount();
         this.isEditMode = true;
         this.loading = false;
       },

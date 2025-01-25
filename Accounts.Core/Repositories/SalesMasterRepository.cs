@@ -1,4 +1,5 @@
 ﻿using Accounts.Core.DbContext;
+using Accounts.Core.Migrations;
 using Accounts.Core.Models;
 using Accounts.Core.Models.Response;
 using BaseClassLibrary.Interface;
@@ -281,12 +282,21 @@ namespace Accounts.Core.Repositories
             try
             {
                 // get the old amount received. 
+                var salesMasterAmountIds = salesMaster.AmountReceived
+                .Where(x => x.IsDelete == false)
+                .Select(x => x.Id)
+                .ToList();
 
                 var amountReceived = await _appDbContext.AmountReceived.Where(
-                    query => salesMaster.AmountReceived.Where(x => !x.IsDelete).Select(s => s.Id).Contains(query.Id)).ToListAsync();
+                    query => salesMasterAmountIds.Contains(query.Id)).ToListAsync();
+
+                var salesMasterDetailsIds = salesMaster.SalesDetails
+                .Where(x => x.IsDelete == false)
+                .Select(x => x.Id)
+                .ToList();
 
                 var salesDetails = await _appDbContext.SalesDetails.Where(
-                    query => salesMaster.SalesDetails.Where(x => !x.IsDelete).Select(s => s.Id).Contains(query.Id)).ToListAsync();
+                    query => salesMasterDetailsIds.Contains(query.Id)).ToListAsync();
 
                 await _appDbContext.Database.BeginTransactionAsync();
 
@@ -303,6 +313,8 @@ namespace Accounts.Core.Repositories
 
                 if (salesMaster.SalesDetails.Any())
                     await _appDbContext.SalesDetails.AddRangeAsync(salesMaster.SalesDetails);
+
+                await _salesRepo.UpdateAsync(salesMaster);
 
                 await _appDbContext.SaveChangesAsync();
 

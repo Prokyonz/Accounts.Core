@@ -3,10 +3,10 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { environment } from '../environments';
 //import {config} from '../../assets/config/app.config';
 
-//const apiUrl: string = "https://localhost:7261/"; //http://192.168.29.223/calculator/api/";
-const apiUrl: string = "http://sunsparklediam.com/SunSparkal/";
+const apiUrl: string = environment.apiURL; //http://192.168.29.223/calculator/api/";
 
 //const apiKey = config.apiKey;
 @Injectable({
