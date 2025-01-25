@@ -102,6 +102,7 @@ export class ReportComponent implements OnInit {
   getCustomer() {
     this.loading = true;
     const params = {
+      userId: !this.user?.isAdmin ? Number.parseInt(this.logInUserID) : 0,
       name: this.filterCriteria.name,
     };
     this.sharedService.customGetApi1<Customer[]>('Customer/CustomerReport', params).subscribe(
@@ -157,7 +158,7 @@ export class ReportComponent implements OnInit {
   getSale() {
     this.loading = true;
     const params = {
-      //userId: this.logInUserID,
+      userId: !this.user?.isAdmin ? Number.parseInt(this.logInUserID) : 0,
       fromDate: this.filterCriteria.fromDate != null ? this.filterCriteria.fromDate.toISOString().split('T')[0] : null,
       toDate: this.filterCriteria.toDate != null ? this.filterCriteria.toDate.toISOString().split('T')[0] : null,
       name: this.filterCriteria.name,

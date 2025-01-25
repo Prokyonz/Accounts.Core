@@ -21,6 +21,7 @@ export class AddcustomerComponent implements OnInit {
   imageUrl: string | null = null;
   currentDocumentType: string = '';
   isEditMode = false;
+  logInUserID: string;
   // customerDetails = {
   //   name: '',
   //   address: '',
@@ -37,6 +38,7 @@ export class AddcustomerComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
     this.customerDetails = new Customer();
+    this.logInUserID = localStorage.getItem('userid') ?? '0';
   }
 
   ngOnInit(): void {
@@ -114,6 +116,10 @@ export class AddcustomerComponent implements OnInit {
     this.customerDetails.aadharNo = this.customerDetails.aadharNo.toString();
     this.customerDetails.panNo = this.customerDetails.panNo.toString();
     this.customerDetails.mobileNo = this.customerDetails.mobileNo.toString();
+    this.customerDetails.createdBy = parseInt(this.logInUserID);
+    this.customerDetails.createdDate = new Date();
+    this.customerDetails.updatedBy = parseInt(this.logInUserID);
+    this.customerDetails.updatedDate = new Date();
     this.sharedService.customPostApi("Customer", this.customerDetails)
       .subscribe((data: any) => {
         if (data != null) {
@@ -134,6 +140,8 @@ export class AddcustomerComponent implements OnInit {
     this.customerDetails.aadharNo = this.customerDetails.aadharNo.toString();
     this.customerDetails.panNo = this.customerDetails.panNo.toString();
     this.customerDetails.mobileNo = this.customerDetails.mobileNo.toString();
+    this.customerDetails.updatedBy = parseInt(this.logInUserID);
+    this.customerDetails.updatedDate = new Date();
     this.sharedService.customPutApi("Customer", this.customerDetails)
       .subscribe((data: any) => {
         if (data != null) {
