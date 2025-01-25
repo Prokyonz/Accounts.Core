@@ -65,7 +65,7 @@ export class DashboardComponent implements OnInit {
             routerLink: "/report/5",
             color: '#607D8B', // Cool gray-blue for data
             index: 1,
-            visible: this.hasPermission('SaleReportAccess')
+            visible: this.hasPermission('StockReport')
           },
           {
             label: 'Sale',

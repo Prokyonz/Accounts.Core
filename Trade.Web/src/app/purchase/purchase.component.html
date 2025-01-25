@@ -3,7 +3,7 @@
 <div class="container">
   <!-- Form Section -->
   <div class="form-container">
-    <form (ngSubmit)="onSubmit()" style="height: calc(82vh); overflow:scroll;">
+    <form (ngSubmit)="onSubmit()" #purchaseForm="ngForm" style="height: calc(82vh); overflow:scroll;">
       <!-- Sale Header Section -->
       <div class="form-group">
         <label for="date">Date</label>
@@ -13,12 +13,12 @@
       </div>
 
       <div class="form-group">
-        <label for="party">Select Party</label>
+        <label for="party">Party</label>
         <!-- <p-dropdown id="party" [(ngModel)]="purchase.customerId" name="party" [options]="parties" optionLabel="fullName"
           optionValue="id" placeholder="Search and select a party" [filter]="true" [showClear]="true" filterBy="fullName">
         </p-dropdown> -->
-        <input type="text" [(ngModel)]="purchase.dealerName" name="dealerName" class="form-control" placeholder="Party Name"
-                    required>
+        <input type="text" [(ngModel)]="purchase.dealerName" name="dealerName" placeholder="Party Name"
+                    required #partyInput="ngModel" [ngClass]="{'is-invalid': partyInput.touched && partyInput.invalid}">
       </div>
 
       <div class="form-group">
@@ -37,7 +37,8 @@
                 <!-- <input type="text" [(ngModel)]="item.itemName" name="itemName{{i}}" class="form-control" placeholder="Item Name" required> -->
                 <p-dropdown id="itemName{{i}}" [(ngModel)]="item.itemId" name="itemName{{i}}" [options]="itemsList"
                   optionLabel="name" optionValue="id" placeholder="Select Item" [filter]="true" [showClear]="true"
-                  filterBy="name" (onChange)="onItemSelect(item.itemId)">
+                  filterBy="name" (onChange)="onItemSelect(item.itemId); calculateTotal(item)" 
+                  [ngClass]="{'is-invalid': isFieldInvalid(item,'item')}">
                 </p-dropdown>
               </div>
 
@@ -52,12 +53,12 @@
                 <div class="col-6">
                   <label for="qty{{i}}">Quantity</label><br />
                   <input type="number" [(ngModel)]="item.quantity" name="qty{{i}}" class="form-control" placeholder="Qty"
-                    required (ngModelChange)="calculateTotal(item)">
+                    required min="1" [ngClass]="{'is-invalid': isFieldInvalid(item,'qty')}" (ngModelChange)="calculateTotal(item)">
                 </div>
                 <div class="col-6">
                   <label for="rate{{i}}">Rate</label><br />
                   <input type="number" [(ngModel)]="item.rate" name="rate{{i}}" class="form-control" placeholder="Rate"
-                    required (ngModelChange)="calculateTotal(item)">
+                    required min="1" [ngClass]="{'is-invalid': isFieldInvalid(item,'rate')}" (ngModelChange)="calculateTotal(item)">
                 </div>
               </div>
 
@@ -99,7 +100,7 @@
 
       <div class="form-group">
         <!-- <button type="submit" [disabled]="!isFormValid()" class="btn btn-primary btn-lg w-100">Submit</button> -->
-        <p-button label="Submit" (onClick)="showDetails()" icon="pi pi-check"></p-button>
+        <p-button label="Submit" [disabled]="purchaseForm.invalid ?? false" (onClick)="showDetails()" icon="pi pi-check"></p-button>
       </div>
     </form>
   </div>

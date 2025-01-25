@@ -173,4 +173,20 @@ export class PurchaseComponent {
       });
     }
   }
+
+  isFieldInvalid(item: any, field: string): boolean {
+    if (field == 'item') {
+      const selectedItem = item.id;
+      return selectedItem === null || selectedItem <= 0;
+    }
+    else if (field == 'qty') {
+      const qty = item.quantity;
+      return qty === null || qty <= 0;
+    }
+    else if (field == 'rate') {
+      const rate = item.rate;
+      return rate === null || rate <= 0;
+    }
+    return false;
+  }
 }

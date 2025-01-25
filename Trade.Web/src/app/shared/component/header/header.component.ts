@@ -70,7 +70,7 @@ export class HeaderComponent implements OnInit {
             command: () => {
               this.sidebarVisible = false;
             },
-            visible: this.hasPermission('SaleReportAccess')
+            visible: this.hasPermission('StockReport')
           },
           {
             label: 'Sale',
