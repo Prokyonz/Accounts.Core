@@ -222,6 +222,10 @@ export class saleBillPrint {
     address: string = '';
     mobileNo: string = '';
     emailId: string = '';
+    panNo: string = '';
+    pincode: number = 0;
+    brokerName: string = '';
+    creationDate: string = '';
     saleBillItems: saleBillItems[];
     saleBillPayments: saleBillPayments[];
 }

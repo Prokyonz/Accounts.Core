@@ -106,6 +106,10 @@ namespace Accounts.Core.Repositories
                 Address = Convert.ToString(printRow["Address"]),
                 MobileNo = Convert.ToString(printRow["MobileNo"]),
                 EmailId = Convert.ToString(printRow["EmailId"]),
+                PanNo = Convert.ToString(printRow["PanNo"]),
+                Pincode = Convert.ToInt64(printRow["Pincode"]),
+                BrokerName = Convert.ToString(printRow["BrokerName"]),
+                CreationDate = Convert.ToString(printRow["CreationDate"]),
                 SaleBillItems = new List<SaleBillItems>(),
                 SaleBillPayments = new List<SaleBillPayments>()
             };

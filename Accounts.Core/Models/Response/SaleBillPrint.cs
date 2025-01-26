@@ -16,6 +16,10 @@
         public string Address { get; set; }
         public string MobileNo { get; set; }
         public string EmailId { get; set; }
+        public string PanNo { get; set; }
+        public long Pincode { get; set; }
+        public string BrokerName { get; set; }
+        public string CreationDate { get; set; }
         public List<SaleBillItems> SaleBillItems { get; set; }
         public List<SaleBillPayments> SaleBillPayments { get; set; }
     }

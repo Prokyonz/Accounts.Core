@@ -2,9 +2,17 @@
     (onClickLeftIcon)="sharePDF1();"></app-header>
 
 <p-toast [breakpoints]="{'920px': { right: '0', left: '50'}}"></p-toast>
-<div class="container" style="width: 100%; height: 100vh; overflow: auto;" *ngIf="saleBillPrint">
+<div class="container" style="width: 100%; height: 95vh; overflow: auto;" *ngIf="saleBillPrint">
     <div id="content-to-export"
-        style="width: 215mm; height: 280mm; padding: 1mm; box-sizing: border-box; overflow: auto;">
+        style="width: 215mm; height: 297mm; padding: 1mm; box-sizing: border-box; overflow: auto;">
+        <div style="display: flex; align-items: center;">
+            <div style="padding-left: 20px; width: 18%;">
+                <img height="80px" src="../../assets/Logo1.png" />
+            </div>
+            <div style="width: 82%;">
+                <img height="80px" src="../../assets/FullNameLogo.png" />
+            </div>
+        </div>
         <table align="left" cellspacing="0" border="0">
             <colgroup width="31"></colgroup>
             <colgroup width="70"></colgroup>
@@ -16,9 +24,17 @@
             <colgroup width="76"></colgroup>
             <colgroup width="146"></colgroup>
             <tr>
-                <td colspan=10 height="20" align="center" valign=bottom>
+                <td height="20" align="left" valign=bottom>
+                    <font color="#000000"><br></font>
+                </td>
+                <td colspan=5 height="20" align="left" valign=bottom>
                     <b>
                         <font face="Tahoma" size=3>TAX INVOICE</font>
+                    </b>
+                </td>
+                <td colspan=4 height="20" align="right" valign=bottom>
+                    <b>
+                        <font face="Tahoma" size=3>GSTIN: 24ABLCS8146E1Z6</font>
                     </b>
                 </td>
             </tr>
@@ -28,7 +44,8 @@
                 </td>
                 <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
                     colspan=3 rowspan=5 align="left" valign=top>
-                    <font color="#000000">SOLD To,<br>{{saleBillPrint.partyName}}<br>{{saleBillPrint.address}}</font>
+                    <font color="#000000">SOLD To,<br>{{saleBillPrint.partyName}}<br>{{saleBillPrint.address}} -
+                        {{saleBillPrint.pincode}}<br>Mo: {{saleBillPrint.mobileNo}}</font>
                 </td>
                 <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000"
                     colspan=3 align="left" valign=top><b>
@@ -62,16 +79,21 @@
                     </b></td>
                 <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000"
                     colspan=2 align="left" valign=top sdval="45901" sdnum="1033;0;MM.DD.YYYY;@">
-                    <font face="Verdana" color="#000000">{{saleBillPrint.invoiceDate | date: 'shortDate'}}</font>
+                    <font face="Verdana" color="#000000">{{saleBillPrint.invoiceDate | date: 'dd/MM/yyyy'}}</font>
                 </td>
             </tr>
             <tr>
                 <td height="16" align="left" valign=bottom>
                     <font color="#000000"><br></font>
                 </td>
-                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                    colspan=5 align="left" valign=bottom>
-                    <font color="#000000"><br></font>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000"
+                    colspan=3 align="left" valign=top><b>
+                        <font face="Tahoma">Broker :</font>
+                    </b></td>
+                <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-right: 1px solid #000000"
+                    colspan=2 align="left" valign=top sdval="45901" sdnum="1033;0;MM.DD.YYYY;@">
+                    <font face="Verdana" color="#000000">{{saleBillPrint.brokerName}}-({{saleBillPrint.creationDate}})
+                    </font>
                 </td>
             </tr>
             <tr>
@@ -141,7 +163,7 @@
                 <td *ngIf="i == 0"
                     style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
                     colspan=3 [attr.rowspan]="paymentRowSpan" align="left" valign=top>
-                    <font color="#000000">Phone : {{saleBillPrint.mobileNo}}<br>
+                    <font color="#000000">Pancard : {{saleBillPrint.panNo}}<br>
                         Email : {{saleBillPrint.emailId}}</font>
                 </td>
                 <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
@@ -397,7 +419,7 @@
                 </td>
                 <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
                     align="left" valign=top><b>
-                        <font face="Tahoma">{{saleBillPrint.billAmount}}</font>
+                        <font face="Tahoma">&#8377; {{saleBillPrint.billAmount}}</font>
                     </b></td>
             </tr>
             <tr>
@@ -457,7 +479,7 @@
                     <font color="#000000"><br></font>
                 </td>
                 <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                    colspan=5 align="left" valign=top><b>
+                    colspan=4 align="left" valign=top><b>
                         <font face="Tahoma" size=1>Receiver's Signature</font>
                     </b></td>
                 <!-- <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
@@ -465,8 +487,8 @@
                     <font color="#000000"><br></font>
                 </td> -->
                 <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                    colspan=5 rowspan=2 align="center" valign=top>
-                    <font color="#000000">SUNSPARKLE DIAM PRIVATE LIMITED<br>Authorised Signatory</font>
+                    colspan=6 rowspan=2 align="center" valign=top>
+                    <font color="#000000"><b>SUNSPARKLE DIAM PRIVATE LIMITED</b><br>Authorised Signatory</font>
                 </td>
             </tr>
             <tr>
@@ -474,7 +496,7 @@
                     <font color="#000000"><br></font>
                 </td>
                 <td style="border-top: 1px solid #000000; border-bottom: 1px solid #000000; border-left: 1px solid #000000; border-right: 1px solid #000000"
-                    colspan=5 align="left" valign=top>
+                    colspan=4 align="left" valign=top>
                     <font color="#000000"><br></font>
                 </td>
             </tr>
