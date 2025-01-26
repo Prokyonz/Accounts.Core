@@ -314,57 +314,171 @@
     No sale data found.
   </div>
 
-  <div *ngFor="let group of groupedSaleData" class="customer-card">
-    <div class="sale-card-header d-flex justify-content-between align-items-center">
-      <strong>{{ group.partyName }}</strong>
-      <strong>{{ group.invoiceNo }}</strong>
-    </div>
-    <div class="card-body">
-      <!-- Bill Amount Section -->
-      <div class="details-section">
-        <span><strong>Bill Amount:</strong> {{ group.billAmount | currency: 'INR' }}</span>
+  <div *ngIf="!this.user?.isAdmin">
+    <div *ngFor="let group of groupedSaleData" class="customer-card">
+      <div class="sale-card-header d-flex justify-content-between align-items-center">
+        <strong>{{ group.partyName }}</strong>
+        <strong>{{ group.invoiceNo }}</strong>
       </div>
+      <div class="card-body">
+        <!-- Bill Amount Section -->
+        <div class="details-section">
+          <span><strong>Bill Amount:</strong> {{ group.billAmount | currency: 'INR' }}</span>
+        </div>
 
-      <!-- Invoice Date -->
-      <div class="details-section">
-        <span><strong>Date:</strong> {{ group.invoiceDate | date: 'shortDate' }}</span>
-      </div>
+        <!-- Invoice Date -->
+        <div class="details-section">
+          <span><strong>Date:</strong> {{ group.invoiceDate | date: 'shortDate' }}</span>
+        </div>
 
-      <!-- Payment Details -->
-      <div class="details-section">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th style="width: 12%;">Type</th>
-              <th style="width: 25%;">No</th>
-              <th style="width: 28%;">Card No</th>
-              <th style="width: 35%;">Paid Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let detail of group.details">
-              <td>
-                <i [class]="detail.paymentMode === 'Cash' ? 'fas fa-money-bill-wave' : 'fas fa-credit-card'"
-                  [style.color]="detail.paymentMode === 'Cash' ? 'green' : '#007bff'">
-                </i>
-              </td>
-              <td>{{ detail.paymentNo }}</td>
-              <td>{{ detail.cardNo ? detail.cardNo.slice(-4) : '-' }}</td>
-              <td>{{ detail.paidAmount | currency: 'INR' }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <!-- Payment Details -->
+        <div class="details-section">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th style="width: 12%;">Type</th>
+                <th style="width: 25%;">No</th>
+                <th style="width: 28%;">Card No</th>
+                <th style="width: 35%;">Paid Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let detail of group.details">
+                <td>
+                  <i [class]="detail.paymentMode === 'Cash' ? 'fas fa-money-bill-wave' : 'fas fa-credit-card'"
+                    [style.color]="detail.paymentMode === 'Cash' ? 'green' : '#007bff'">
+                  </i>
+                </td>
+                <td>{{ detail.paymentNo }}</td>
+                <td>{{ detail.cardNo ? detail.cardNo.slice(-4) : '-' }}</td>
+                <td>{{ detail.paidAmount | currency: 'INR' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <div class="action-icons">
-        <i class="pi pi-eye view-icon" [routerLink]="['/salebill', group.id]" title="View" style="cursor: pointer;"></i>
-        <div *ngIf="isAllowtoEditDelete">
-          <i class="pi pi-pencil edit-icon" [routerLink]="['/sale', group.id]" title="Edit"
+        <div class="action-icons">
+          <i class="pi pi-eye view-icon" [routerLink]="['/salebill', group.id]" title="View"
             style="cursor: pointer;"></i>
-          <i class="pi pi-times delete-icon" (click)="deleteItem(group.id)" title="Delete" style="cursor: pointer;"></i>
+          <div *ngIf="isAllowtoEditDelete">
+            <i class="pi pi-pencil edit-icon" [routerLink]="['/sale', group.id]" title="Edit"
+              style="cursor: pointer;"></i>
+            <i class="pi pi-times delete-icon" (click)="deleteItem(group.id)" title="Delete"
+              style="cursor: pointer;"></i>
+          </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div *ngIf="this.user?.isAdmin">
+    <p-table #dt1 [value]="PurchaseReportList" dataKey="id" [rows]="10" [showCurrentPageReport]="false"
+      [rowsPerPageOptions]="[5, 10, 25, 50]" [scrollable]="true" styleClass="p-datatable-gridlines"
+      [paginator]="true" [pageLinks]="3"  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [globalFilterFields]="filterColumn" scrollHeight="calc(65vh)" [tableStyle]="{'min-width': '40rem'}">
+
+      <ng-template pTemplate="caption">
+        <div class="flex">
+          <!-- <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"
+            class="p-button-success button-margin" pTooltip="XLS" tooltipPosition="bottom"></button>
+          <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()"
+            class="p-button-warning button-margin" pTooltip="PDF" tooltipPosition="bottom"></button> -->
+          <!-- <button pButton class="p-button-outlined" style="text-align: center; width: 2.5rem; margin-right: 0.5rem;"
+            icon="pi pi-filter-slash" (click)="clear()"></button> -->
+          <button pButton pRipple class="p-button-square" style="width: 3rem; margin-right: 0.5rem;"
+            [ngClass]="{'p-button-secondary': !isFilter, 'p-button-success': isFilter}" (click)="toggle()">
+            <i class="pi" [ngClass]="{'pi-eye': isFilter, 'pi-eye-slash': !isFilter}"></i>
+          </button>
+
+          <p-multiSelect [options]="columnArray" [(ngModel)]="selectedColumnArray" optionLabel="displayName"
+            [showToggleAll]="false" selectedItemsLabel="{0} columns selected"
+            placeholder="Choose Columns" (ngModelChange)="onSelectedColumnsChange($event)"></p-multiSelect>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <ng-container *ngFor="let item of selectedColumnArray">
+            <ng-container
+              *ngIf="!(item.displayName === 'Approve' || item.displayName === 'Reject' || item.dataType === 'icon')">
+              <th [ngStyle]="{'min-width': item.minWidth ? item.minWidth + 'rem' : '5rem'}"
+                pSortableColumn="{{item.fieldName}}" class="header-cell">
+                <div class="flex align-items-center">
+                  {{item.displayName}} <p-sortIcon
+                    *ngIf="item.displayName !== 'Approve' && item.displayName !== 'Reject' && isFilter"
+                    field="{{item.fieldName}}"></p-sortIcon>
+                  <p-columnFilter field="item.fieldName" matchMode="in" display="menu"
+                    *ngIf="item.displayName !== 'Approve' && item.displayName !== 'Reject' && isFilter"
+                    [showMatchModes]="false" [showOperator]="false" [showAddButton]="false">
+                    <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                      <p-multiSelect *ngIf="!item.hideFilter" [options]="getDistinctColumnValues(item.fieldName)"
+                        optionLabel="fieldValue" [(ngModel)]="PurchaseReportCloneList[item.fieldName]"
+                        [style]="{'min-width': '15rem'}" (onChange)="applyFilter($event, item.fieldName)"
+                        placeholder="Filter {{ item.displayName }}"
+                        [selectedItemsLabel]="getSelectedItemsLabel(item.fieldName)" appendTo="body"
+                        [showClear]="false">
+                      </p-multiSelect>
+                    </ng-template>
+                  </p-columnFilter>
+                </div>
+              </th>
+            </ng-container>
+          </ng-container>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-purchase let-rowIndex="rowIndex">
+        <tr>
+          <ng-container *ngFor="let item of selectedColumnArray">
+            <ng-container *ngIf="!(item.displayName === 'Approve' || item.displayName === 'Reject')">
+              <td>
+                <span *ngIf="item.dataType == 'Date'">{{ purchase[item.fieldName] | date:
+                  'dd-MM-yy'}}</span>
+                <span *ngIf="item.displayName === 'Total' && item.dataType == 'numeric'">
+                  {{ purchase[item.fieldName] | number: '1.2-2': 'en-IN' }}
+                </span>
+                <span *ngIf="item.dataType === 'icon'&& item.displayName === 'Export'">
+                  <button type="button" pButton pRipple icon="pi pi-file-excel" class="p-button-success mr-2"
+                    pTooltip="XLS" (click)="exportLedger('excel',purchase)" tooltipPosition="bottom"></button>
+                </span>
+                <span *ngIf="item.dataType === 'icon'&& item.displayName === 'Export Pdf'">
+                  <button type="button" pButton pRipple icon="pi pi-file-pdf" class="p-button-warning mr-2"
+                    pTooltip="PDF" (click)="exportLedger('pdf',purchase)" tooltipPosition="bottom"></button>
+                </span>
+                <span
+                  *ngIf="(item.displayName.indexOf('Amount') > 0 || item.displayName === 'Amount' || item.fieldName === 'closingBalance') && item.dataType == 'numeric'">
+                  {{ formatIndianNumber( purchase[item.fieldName]?.toFixed(2),false)}}
+                </span>
+                <span *ngIf="(item.displayName === 'Credit' || item.displayName === 'Debit')">{{
+                  purchase[item.fieldName] == 0 ? '' : purchase[item.fieldName] }} </span>
+                <span
+                  *ngIf="item.displayName !== 'Credit' && item.displayName !== 'Debit' && item.displayName !== 'Approve' && item.displayName !== 'Reject' && item.displayName !== 'Approval Status' && item.dataType !== 'Date' && item.dataType !== 'Decimal' && item.displayName !== 'Total' 
+                          && item.dataType !== 'icon' && item.displayName !== 'Amount' && item.fieldName !== 'closingBalance'  && item.displayName.indexOf('Amount') === -1">{{
+                  purchase[item.fieldName] }} </span>
+              </td>
+            </ng-container>
+          </ng-container>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="footer">
+        <tr>
+          <td *ngFor="let col of selectedColumnArray"
+            [ngStyle]="{'min-width': col.minWidth ? col.minWidth + 'rem' : '5rem'}" class="footer-td">
+            <span *ngIf="(col.fieldName === 'carratQty' || col.fieldName === 'amount' || col.fieldName === 'sgst' 
+                || col.fieldName === 'cgst' ||  col.fieldName === 'discount' || col.fieldName === 'billAmount' || col.fieldName === 'payment1_Amount'
+                || col.fieldName ===  'payment2_Amount' || col.fieldName ===  'payment3_Amount'|| col.fieldName ===  'payment4_Amount')">
+              {{ formatIndianNumber(calculateColumnSum(col.fieldName), false) }}
+            </span>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="7">No data found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
 </div>
 

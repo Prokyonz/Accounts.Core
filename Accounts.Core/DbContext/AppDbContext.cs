@@ -27,6 +27,7 @@ namespace Accounts.Core.DbContext
         public DbSet<UserPermissionChild> UserPermissionChild { get; set; }
         public DbSet<StockReport> StockReport { get; set; }
         public DbSet<SaleReport> SaleReport { get; set; }
+        public DbSet<SaleReportForAdmin> SaleReportForAdmin { get; set; }
         public DbSet<CustomerReport> CustomerReport { get; set; }
         public DbSet<UserReport> UserReport { get; set; }
         public DbSet<POSMaster> POSMaster { get; set; }
@@ -44,6 +45,7 @@ namespace Accounts.Core.DbContext
             modelBuilder.Entity<PurchaseReports>().HasNoKey();
             modelBuilder.Entity<StockReport>().HasNoKey();
             modelBuilder.Entity<SaleReport>().HasNoKey();
+            modelBuilder.Entity<SaleReportForAdmin>().HasNoKey();
             modelBuilder.Entity<POSResponceModel>().HasNoKey();
             modelBuilder.Entity<CustomerReport>().HasNoKey();
             modelBuilder.Entity<UserReport>().HasNoKey();

@@ -102,6 +102,16 @@ namespace Accounts.Core.Controllers
         /// Read all Sale from table.
         /// </summary>
         /// <returns></returns>
+        [HttpGet("SaleReportForAdmin")]
+        public async Task<List<SaleReportForAdmin>> GetSaleReportForAdmin([FromQuery] long userId, [FromQuery] DateTime? fromDate, [FromQuery] DateTime? toDate, [FromQuery] string? name)
+        {
+            return await _salesMasterRepository.SalesReportForAdmin(userId, fromDate, toDate, name);
+        }
+
+        /// <summary>
+        /// Read all Sale from table.
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("SaleBillPrint/{saleMasterID}")]
         public async Task<SaleBillPrint> SaleBillPrint(long saleMasterID)
         {

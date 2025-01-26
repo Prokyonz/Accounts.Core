@@ -23,6 +23,7 @@ namespace Accounts.Core.Repositories
         Task<List<SalesMaster>> GetQuery(int pageIndex, int pageSize, bool includeDetails);
         Task<SalesMaster> GetQuery(long salesId, int pageIndex, int pageSize, bool includeDetails);
         Task<List<SaleReport>> SalesReport(long userId, DateTime? fromDate, DateTime? toDate, string? name);
+        Task<List<SaleReportForAdmin>> SalesReportForAdmin(long userId, DateTime? fromDate, DateTime? toDate, string? name);
         Task<SaleBillPrint> SalesBillPrint(long saleMasterID);
         Task<long> GetMaxInvoiceNo(string seriesName);
         Task<bool> UpdatePDFOnly(long salesId, string pdf = "");
@@ -32,16 +33,19 @@ namespace Accounts.Core.Repositories
     {
         private readonly IBaseRepository<SalesMaster, AppDbContext> _salesRepo;
         private readonly IBaseRepository<SaleReport, AppDbContext> _salesReportRepo;
+        private readonly IBaseRepository<SaleReportForAdmin, AppDbContext> _salesReportForAdminRepo;
         private readonly IBaseRepository<SeriesMaster, AppDbContext> _seriesMasterRepo;
         private readonly AppDbContext _appDbContext;
 
         public SalesMasterRepository(IBaseRepository<SalesMaster, AppDbContext> salesRepo,
             IBaseRepository<SaleReport, AppDbContext> salesReportRepo,
+            IBaseRepository<SaleReportForAdmin, AppDbContext> salesReportForAdminRepo,
             IBaseRepository<SeriesMaster, AppDbContext> seriesMasterRepo,
             AppDbContext appDbContext)
         {
             _salesRepo = salesRepo;
             _salesReportRepo = salesReportRepo;
+            _salesReportForAdminRepo = salesReportForAdminRepo;
             _seriesMasterRepo = seriesMasterRepo;
             _appDbContext = appDbContext;
         }
@@ -68,6 +72,30 @@ namespace Accounts.Core.Repositories
             else
                 spName += " ," + "NULL";
             var result = await _salesReportRepo.ExecuteStoredProcedureAsync(spName);
+
+            return result;
+        }
+
+        public async Task<List<SaleReportForAdmin>> SalesReportForAdmin(long userId, DateTime? fromDate, DateTime? toDate, string? name)
+        {
+            string spName = "salesReportForAdmin";
+            if (userId > 0)
+                spName += " " + userId;
+            else
+                spName += " " + "NULL";
+            if (fromDate != null)
+                spName += " ,'" + fromDate?.ToString("yyyyMMdd") + "'";
+            else
+                spName += " ," + "NULL";
+            if (toDate != null)
+                spName += " ,'" + toDate?.ToString("yyyyMMdd") + "'";
+            else
+                spName += " ," + "NULL";
+            if (!string.IsNullOrWhiteSpace(name))
+                spName += " ,'" + name + "'";
+            else
+                spName += " ," + "NULL";
+            var result = await _salesReportForAdminRepo.ExecuteStoredProcedureAsync(spName);
 
             return result;
         }

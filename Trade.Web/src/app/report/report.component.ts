@@ -35,6 +35,12 @@ export class ReportComponent implements OnInit {
   customerId: number | null = 0;
   user: user;
   isAllowtoEditDelete: boolean = false;
+  columnArray: any[] = [];
+  selectedColumnArray: any[] = [];
+  isFilter: boolean = false;
+  PurchaseReportList: any[];
+  PurchaseReportCloneList: any[];
+  filterColumn: string[] = [];
 
   constructor(private rote: Router, private activateRoute: ActivatedRoute, private sharedService: SharedService, private messageService: MessageService) {
     this.reportIndex = activateRoute.snapshot.params['id'];
@@ -77,6 +83,40 @@ export class ReportComponent implements OnInit {
           this.PageTitle = "Sale Report";
           this.isAllowtoEditDelete = this.hasPermission('SaleManage');
           this.getSale();
+
+          this.columnArray = [
+            { "displayName": "Date", "dataType": "Date", "fieldName": "invoiceDate", "ishidefilter": true, "minWidth": "7", "sortIndex": "1" },
+            { "displayName": "Invoice No", "dataType": "text", "fieldName": "invoiceNo", "minWidth": "10", "sortIndex": "2" },
+            { "displayName": "Party", "dataType": "text", "fieldName": "partyName", "minWidth": "20", "sortIndex": "3" },
+            { "displayName": "Address", "dataType": "text", "fieldName": "address", "minWidth": "25", "sortIndex": "4" },
+            { "displayName": "Pincode", "dataType": "numeric", "fieldName": "pincode", "minWidth": "10", "sortIndex": "5" },
+            { "displayName": "Pancard/IT", "dataType": "text", "fieldName": "panNo", "minWidth": "10", "sortIndex": "6" },
+            { "displayName": "Item Name", "dataType": "text", "fieldName": "itemName", "minWidth": "15", "sortIndex": "7" },
+            { "displayName": "Item Qty", "dataType": "numeric", "fieldName": "carratQty", "minWidth": "15", "sortIndex": "8" },
+            { "displayName": "Item Rate", "dataType": "numeric", "fieldName": "rate", "minWidth": "15", "sortIndex": "9" },
+            { "displayName": "Item Amount", "dataType": "numeric", "fieldName": "amount", "minWidth": "15", "sortIndex": "10" },
+            { "displayName": "SGST", "dataType": "numeric", "fieldName": "sgst", "minWidth": "10", "sortIndex": "11" },
+            { "displayName": "CGST", "dataType": "numeric", "fieldName": "cgst", "minWidth": "10", "sortIndex": "12" },
+            { "displayName": "Discount", "dataType": "numeric", "fieldName": "discount", "minWidth": "10", "sortIndex": "13" },
+            { "displayName": "Bill Amount", "dataType": "numeric", "fieldName": "billAmount", "minWidth": "20", "sortIndex": "14" },
+            { "displayName": "Payment1_Mode", "dataType": "text", "fieldName": "payment1_Mode", "minWidth": "20", "sortIndex": "15" },
+            { "displayName": "Payment1_CardNo", "dataType": "numeric", "fieldName": "payment1_CardNo", "minWidth": "10", "sortIndex": "16" },
+            { "displayName": "Payment1_Amount", "dataType": "numeric", "fieldName": "payment1_Amount", "minWidth": "10", "sortIndex": "17" },
+
+            { "displayName": "Payment2_Mode", "dataType": "text", "fieldName": "payment2_Mode", "minWidth": "20", "sortIndex": "18" },
+            { "displayName": "Payment2_CardNo", "dataType": "numeric", "fieldName": "payment2_CardNo", "minWidth": "10", "sortIndex": "19" },
+            { "displayName": "Payment2_Amount", "dataType": "numeric", "fieldName": "payment2_Amount", "minWidth": "10", "sortIndex": "20" },
+
+            { "displayName": "Payment3_Mode", "dataType": "text", "fieldName": "payment3_Mode", "minWidth": "20", "sortIndex": "21" },
+            { "displayName": "Payment3_CardNo", "dataType": "numeric", "fieldName": "payment3_CardNo", "minWidth": "10", "sortIndex": "22" },
+            { "displayName": "Payment3_Amount", "dataType": "numeric", "fieldName": "payment3_Amount", "minWidth": "10", "sortIndex": "23" },
+
+            { "displayName": "Payment4_Mode", "dataType": "text", "fieldName": "payment4_Mode", "minWidth": "20", "sortIndex": "24" },
+            { "displayName": "Payment4_CardNo", "dataType": "numeric", "fieldName": "payment4_CardNo", "minWidth": "10", "sortIndex": "25" },
+            { "displayName": "Payment4_Amount", "dataType": "numeric", "fieldName": "payment4_Amount", "minWidth": "10", "sortIndex": "26" }
+          ];
+          this.selectedColumnArray = this.columnArray.map(item => ({ ...item }));
+          this.filterColumn = this.selectedColumnArray.filter(e => e.dataType == "text" || e.dataType == "numeric").map(column => column.fieldName).filter(Boolean);
         }
         else if (this.reportIndex == 5) {
           this.PageTitle = "Stock Report";
@@ -156,6 +196,11 @@ export class ReportComponent implements OnInit {
   }
 
   getSale() {
+    if (this.user?.isAdmin) {
+      this.getSaleForAdmin();
+      return;
+    }
+
     this.loading = true;
     const params = {
       userId: !this.user?.isAdmin ? Number.parseInt(this.logInUserID) : 0,
@@ -191,6 +236,28 @@ export class ReportComponent implements OnInit {
 
         this.groupedSaleData = Array.from(groupedMap.values());
 
+        this.loading = false;
+      },
+      (error) => {
+        this.loading = false;
+        this.showMessage('Error fetching sale details:', error);
+      }
+    );
+  }
+
+  getSaleForAdmin() {
+    this.loading = true;
+    const params = {
+      userId: !this.user?.isAdmin ? Number.parseInt(this.logInUserID) : 0,
+      fromDate: this.filterCriteria.fromDate != null ? this.filterCriteria.fromDate.toISOString().split('T')[0] : null,
+      toDate: this.filterCriteria.toDate != null ? this.filterCriteria.toDate.toISOString().split('T')[0] : null,
+      name: this.filterCriteria.name,
+    };
+
+    this.sharedService.customGetApi1<saleReport[]>('Sales/SaleReportForAdmin', params).subscribe(
+      (data: saleReport[]) => {
+        this.PurchaseReportList = data;
+        this.PurchaseReportCloneList = [...this.PurchaseReportList];
         this.loading = false;
       },
       (error) => {
@@ -370,5 +437,102 @@ export class ReportComponent implements OnInit {
           this.showMessage('error', ex);
         });
     }
+  }
+
+  exportExcel() {
+  }
+
+  exportPdf() {
+  }
+
+  toggle() {
+    this.isFilter = !this.isFilter;
+  }
+
+  onSelectedColumnsChange(selectedColumns: any[]) {
+    // Retrieve existing saved columns from localStorage
+    let savedColumns = localStorage.getItem('selectedColumns' + this.reportIndex);
+
+    if (savedColumns) {
+      // If saved columns exist, parse them and update the selection
+      let parsedColumns = JSON.parse(savedColumns);
+      parsedColumns = selectedColumns.sort((a, b) => a.sortIndex - b.sortIndex);
+      // Save the updated selection back to localStorage
+      localStorage.setItem('selectedColumns' + this.reportIndex, JSON.stringify(parsedColumns));
+    } else {
+      // If no saved columns exist, create a new entry with the current selection
+      localStorage.setItem('selectedColumns' + this.reportIndex, JSON.stringify(selectedColumns));
+    }
+  }
+
+  getDistinctColumnValues(fieldName: string): { fieldName: string, fieldValue: any }[] {
+    const data = this.PurchaseReportCloneList;
+    const distinctArray = Array.from(new Set(data.map(item => item[fieldName])))
+      .filter(fieldValue => fieldValue !== undefined) // Filter out undefined values
+      .map(fieldValue => ({ fieldName: fieldName, fieldValue: fieldValue }));
+    return distinctArray;
+  }
+
+  applyFilter(event: any, fieldName: string) {
+    if (!event || !event.value || event.value.length === 0) {
+      this.PurchaseReportList = [...this.PurchaseReportCloneList];
+      return;
+    }
+
+    const selectedValues = event?.value.map((item: any) => item.fieldValue);
+    if (selectedValues != null) {
+      this.PurchaseReportList = this.PurchaseReportCloneList.filter(row => {
+        return selectedValues.includes(row[fieldName]);
+      });
+    }
+    else {
+      this.PurchaseReportList = [...this.PurchaseReportCloneList];
+    }
+  }
+
+  getSelectedItemsLabel(fieldName: any): string {
+    const selectedValues = this.PurchaseReportCloneList[fieldName];
+    if (selectedValues && selectedValues.length > 0) {
+      // Change the label format as needed
+      return `${selectedValues.length} selected`;
+    } else {
+      return 'Select';
+    }
+  }
+
+  formatIndianNumber(amount: number, isSymbol: boolean = true): string {
+    const formatter = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 2 });
+    return isSymbol ? '₹' + formatter.format(amount) : formatter.format(amount);
+  }
+
+  calculateColumnSum(columnName: string): number {
+    let sum = 0;
+    let count = 0;
+    // Use the filteredValue directly without reassigning it to PurchaseReportList
+    // if (this.dataTable != undefined && this.dataTable.filteredValue !== undefined && this.dataTable.filteredValue !== null) {
+    //   this.PurchaseReportList = this.dataTable.filteredValue;
+    // }
+
+    if (this.PurchaseReportList === undefined) {
+      return 0;
+    }
+
+    try {
+      for (const item of this.PurchaseReportList) {
+        // Check if the property exists before summing
+        if (item.hasOwnProperty(columnName) && !isNaN(parseFloat(item[columnName]))) {
+          sum += parseFloat(item[columnName]);
+          count++;
+        }
+      }
+    } catch (ex) {
+      this.loading = false;
+      alert(ex);
+    }
+    return sum;
+  }
+
+  exportLedger(type: string, itemData: any) {
+
   }
 }
