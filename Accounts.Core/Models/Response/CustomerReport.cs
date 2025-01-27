@@ -18,5 +18,6 @@
         public string? PanImageData { get; set; }
         public string? SignatureFileName { get; set; }
         public string? SignatureImageData { get; set; }
+        public string? UserName { get; set; }
     }
 }

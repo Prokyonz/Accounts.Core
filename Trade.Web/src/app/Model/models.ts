@@ -19,6 +19,7 @@ export class Customer {
     createdBy: number = 0;
     updatedDate: Date = new Date();
     updatedBy: number = 0;
+    userName: string = '';
 }
 
 export class purchase {
@@ -166,6 +167,7 @@ export class saleReport {
     id: number = 0;
     invoiceNo: string = '';
     invoiceDate: Date = new Date();
+    userName: string = '';
     partyName: string = '';
     billAmount: number = 0;
     paymentNo: string = '';

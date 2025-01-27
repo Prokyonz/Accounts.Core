@@ -69,7 +69,9 @@
                                     <p-multiSelect id="pos" [(ngModel)]="selectedPosIds" name="user" [options]="posList"
                                         optionLabel="posName" optionValue="id" placeholder="Search and select POS"
                                         [filter]="true" [showClear]="true" filterBy="posName" #posField="ngModel"
-                                        [ngClass]="{'is-invalid': posField.touched && posField.invalid}">
+                                        [ngClass]="{'is-invalid': posField.touched && posField.invalid}"
+                                        [maxSelectedLabels]="2"
+                                        [selectedItemsLabel]="selectedPosIds.length >= 2 ? (selectedPosIds.length + 1) + ' items selected' : ''">
                                     </p-multiSelect>
                                 </td>
                             </tr>

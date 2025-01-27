@@ -194,7 +194,7 @@ export class SaleBillComponent {
         const originalHeight = element.offsetHeight;
 
         html2canvas(element, {
-          scale: 1.5, // Increases the resolution of the canvas
+          scale: 2, // Increases the resolution of the canvas
           scrollY: 0, // Ensures no content is missed due to scrolling
           scrollX: 0,
           width: originalWidth, // Full width of the element

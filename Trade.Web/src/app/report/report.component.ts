@@ -41,6 +41,7 @@ export class ReportComponent implements OnInit {
   PurchaseReportList: any[];
   PurchaseReportCloneList: any[];
   filterColumn: string[] = [];
+  isAdminView: boolean = false;
 
   constructor(private rote: Router, private activateRoute: ActivatedRoute, private sharedService: SharedService, private messageService: MessageService) {
     this.reportIndex = activateRoute.snapshot.params['id'];
@@ -85,6 +86,7 @@ export class ReportComponent implements OnInit {
           this.getSale();
 
           this.columnArray = [
+            { "displayName": "User", "dataType": "text", "fieldName": "userName", "minWidth": "10", "sortIndex": "0" },
             { "displayName": "Date", "dataType": "Date", "fieldName": "invoiceDate", "ishidefilter": true, "minWidth": "7", "sortIndex": "1" },
             { "displayName": "Invoice No", "dataType": "text", "fieldName": "invoiceNo", "minWidth": "10", "sortIndex": "2" },
             { "displayName": "Party", "dataType": "text", "fieldName": "partyName", "minWidth": "20", "sortIndex": "3" },
@@ -196,7 +198,7 @@ export class ReportComponent implements OnInit {
   }
 
   getSale() {
-    if (this.user?.isAdmin) {
+    if (this.isAdminView) {
       this.getSaleForAdmin();
       return;
     }
@@ -222,6 +224,7 @@ export class ReportComponent implements OnInit {
               invoiceNo: sale.invoiceNo,
               invoiceDate: sale.invoiceDate,
               partyName: sale.partyName,
+              userName: sale.userName,
               billAmount: sale.billAmount,
               details: [],
             });

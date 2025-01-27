@@ -5,6 +5,7 @@
         public long Id { get; set; }
         public string InvoiceNo { get; set; }
         public DateTime InvoiceDate { get; set; }
+        public string? UserName { get; set; }
         public string? PartyName { get; set; }
         public decimal BillAmount { get; set; }
         public string PaymentNo { get; set; }
@@ -18,6 +19,7 @@
         public long Id { get; set; }
         public string InvoiceNo { get; set; }
         public DateTime InvoiceDate { get; set; }
+        public string? UserName { get; set; }
         public string? PartyName { get; set; }
         public string? Address { get; set; }
         public long Pincode { get; set; }

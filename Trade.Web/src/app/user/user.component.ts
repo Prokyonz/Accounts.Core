@@ -25,6 +25,7 @@ export class UserComponent {
   selectedPosIds: number[] = [];
   isEditMode = false;
   logInUserID: string;
+  itemId: string;
   // // Getter for selectedPosIds
   // get this.selectedPosIds(): number[] {
   //   return this.user.posId.map(child => child.posId);
@@ -39,16 +40,13 @@ export class UserComponent {
     this.user = new user();
     this.user.permissions = [];
     this.logInUserID = localStorage.getItem('userid') ?? '0';
-    this.getPermission();
-    this.getUsers();
-    this.getPOS();
   }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const itemId = params.get('id'); // Assuming 'id' is the parameter name in your route
+      this.itemId = params.get('id') ?? ''; // Assuming 'id' is the parameter name in your route
 
-      if (itemId) {
+      if (this.itemId) {
         this.isEditMode = true;
         //this.loadItem(itemId); // Fetch the item by ID if editing
 
@@ -56,7 +54,7 @@ export class UserComponent {
           .then(() => {
             this.getPOS()
               .then(() => {
-                this.loadItem(itemId);
+                this.loadItem(this.itemId);
               })
           })
           .catch((error) => {
@@ -65,6 +63,12 @@ export class UserComponent {
           });
       }
     });
+
+    if (!this.isEditMode) {
+      this.getPermission();
+      this.getUsers();
+      this.getPOS();
+    }
   }
 
   loadItem(userId: string) {
@@ -118,6 +122,10 @@ export class UserComponent {
           ...pos,
           posName: `${pos.tidNumber} (${pos.tidBankName})` // Concatenate first and last name
         }));
+
+        if(this.isEditMode){
+          this.loadItem(this.itemId);
+        }
         this.loading = false;
       },
       (error) => {

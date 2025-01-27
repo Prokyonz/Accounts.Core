@@ -91,11 +91,16 @@
             [attr.aria-disabled]="!customer.signatureImageData"
             [attr.tabindex]="customer.signatureImageData ? '0' : '-1'" style="cursor: pointer;"></i>
         </div>
-        <div class="action-icons" *ngIf="isAllowtoEditDelete">
-          <i class="pi pi-pencil edit-icon" [routerLink]="['/addcustomer', customer.id ]" title="Edit"
-            style="cursor: pointer;"></i>
-          <!-- <i class="pi pi-times delete-icon" (click)="deleteItem(customer.id )" title="Delete"
+      </div>
+      <div>
+        <div class="action-icons" >
+          <span class="username">-{{ customer.userName }}</span>
+          <div *ngIf="isAllowtoEditDelete">
+            <i class="pi pi-pencil edit-icon" [routerLink]="['/addcustomer', customer.id ]" title="Edit"
+              style="cursor: pointer;"></i>
+            <!-- <i class="pi pi-times delete-icon" (click)="deleteItem(customer.id )" title="Delete"
             style="cursor: pointer;"></i> -->
+          </div>
         </div>
       </div>
     </div>
@@ -314,7 +319,7 @@
     No sale data found.
   </div>
 
-  <div *ngIf="!this.user?.isAdmin">
+  <div *ngIf="!isAdminView">
     <div *ngFor="let group of groupedSaleData" class="customer-card">
       <div class="sale-card-header d-flex justify-content-between align-items-center">
         <strong>{{ group.partyName }}</strong>
@@ -358,6 +363,7 @@
         </div>
 
         <div class="action-icons">
+          <span class="username">-{{ group.userName }}</span>
           <i class="pi pi-eye view-icon" [routerLink]="['/salebill', group.id]" title="View"
             style="cursor: pointer;"></i>
           <div *ngIf="isAllowtoEditDelete">
@@ -371,10 +377,10 @@
     </div>
   </div>
 
-  <div *ngIf="this.user?.isAdmin">
+  <div *ngIf="isAdminView">
     <p-table #dt1 [value]="PurchaseReportList" dataKey="id" [rows]="10" [showCurrentPageReport]="false"
-      [rowsPerPageOptions]="[5, 10, 25, 50]" [scrollable]="true" styleClass="p-datatable-gridlines"
-      [paginator]="true" [pageLinks]="3"  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [rowsPerPageOptions]="[5, 10, 25, 50]" [scrollable]="true" styleClass="p-datatable-gridlines" [paginator]="true"
+      [pageLinks]="3" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
       [globalFilterFields]="filterColumn" scrollHeight="calc(65vh)" [tableStyle]="{'min-width': '40rem'}">
 
       <ng-template pTemplate="caption">
@@ -391,8 +397,8 @@
           </button>
 
           <p-multiSelect [options]="columnArray" [(ngModel)]="selectedColumnArray" optionLabel="displayName"
-            [showToggleAll]="false" selectedItemsLabel="{0} columns selected"
-            placeholder="Choose Columns" (ngModelChange)="onSelectedColumnsChange($event)"></p-multiSelect>
+            [showToggleAll]="false" selectedItemsLabel="{0} columns selected" placeholder="Choose Columns"
+            (ngModelChange)="onSelectedColumnsChange($event)"></p-multiSelect>
         </div>
       </ng-template>
 
@@ -465,7 +471,8 @@
         <tr>
           <td *ngFor="let col of selectedColumnArray"
             [ngStyle]="{'min-width': col.minWidth ? col.minWidth + 'rem' : '5rem'}" class="footer-td">
-            <span *ngIf="(col.fieldName === 'carratQty' || col.fieldName === 'amount' || col.fieldName === 'sgst' 
+            <span
+              *ngIf="(col.fieldName === 'carratQty' || col.fieldName === 'amount' || col.fieldName === 'sgst' 
                 || col.fieldName === 'cgst' ||  col.fieldName === 'discount' || col.fieldName === 'billAmount' || col.fieldName === 'payment1_Amount'
                 || col.fieldName ===  'payment2_Amount' || col.fieldName ===  'payment3_Amount'|| col.fieldName ===  'payment4_Amount')">
               {{ formatIndianNumber(calculateColumnSum(col.fieldName), false) }}
