@@ -127,7 +127,7 @@
                   <select [(ngModel)]="payment.paymentMode" name="paymentMode{{i}}" class="form-control"
                     (change)="onPaymentModeChange(payment, i)" required [disabled]="payment.paymentMode === 'Cash'">
                     <option value="Creditcard">Creditcard</option>
-                    <option value="Cash">Cash</option>
+                    <option *ngIf="payment.paymentMode === 'Cash'" value="Cash">Cash</option>
                     <option value="Debitcard">Debitcard</option>
                   </select>
                 </div>
@@ -152,7 +152,8 @@
                   <label for="amount{{i}}">Amount</label>
                   <input type="number" [(ngModel)]="payment.amount" name="amount{{i}}" class="form-control"
                     placeholder="Enter amount" required [disabled]="payment.paymentMode === 'Cash'"
-                    (ngModelChange)="onAmountChange(payment, i)">
+                    (ngModelChange)="onAmountChange(payment, i)"
+                    [ngClass]="{'is-invalid': isFieldInvalid(payment,'payAmount')}">
                 </div>
               </div>
 

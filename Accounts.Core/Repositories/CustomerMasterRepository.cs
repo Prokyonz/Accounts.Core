@@ -9,6 +9,7 @@ namespace Accounts.Core.Repositories
     public interface ICustomerMasterRepository
     {
         Task<List<Customer>> GetAllCustomers();
+        Task<List<Customer>> GetCustomerByUser(long UserId);
         Task<Customer> AddCustomerAsync(Customer customer);
         Task<Customer> UpdateCustomerAsync(Customer customer);
         Task<bool> DeleteCustomerAsync(long customerId, bool isHardDelete = false);
@@ -68,6 +69,13 @@ namespace Accounts.Core.Repositories
             Expression<Func<Customer, bool>> predicate = c => c.Id > 0 && c.IsDelete == false;
 
             return await _customerMasterRepo.GetAllAsync(predicate);
+        }
+
+        public async Task<List<Customer>> GetCustomerByUser(long UserId)
+        {
+            var result = await _customerMasterRepo.ExecuteStoredProcedureAsync("GetCustomerByUser " + UserId);
+
+            return result;
         }
 
         public async Task<Customer> UpdateCustomerAsync(Customer customer)

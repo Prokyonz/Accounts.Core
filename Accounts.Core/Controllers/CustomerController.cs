@@ -26,6 +26,16 @@ namespace Accounts.Core.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Read all Sale from table.
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetCustomerByUser/{userId}")]
+        public async Task<List<Customer>> GetPOSByUser(long userId)
+        {
+            return await _customerMasterRepository.GetCustomerByUser(userId);
+        }
+
         [HttpGet("GetCustomer/{customerId}")]
         public async Task<Customer> GetRow(long customerId, int pageIndex, int pageSize)
         {

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { SharedService } from '../common/shared.service';
-import { amountReceived, Customer, pos, sale, salesDetails, stockReport } from '../Model/models';
+import { amountReceived, Customer, pos, sale, salesDetails, stockReport, user } from '../Model/models';
 
 @Component({
   selector: 'app-sale',
@@ -18,7 +18,7 @@ export class SaleComponent implements OnInit {
   isEditMode = false;
   salesId: string = '0';
   currentStep: number = 1; // Step 1: Form, Step 2: Preview
-
+  user: user;
   parties: Customer[];
   itemsList: stockReport[];
   posList: pos[];
@@ -36,6 +36,10 @@ export class SaleComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    var userDetail = localStorage.getItem('AuthorizeData');
+    if (userDetail) {
+      this.user = JSON.parse(userDetail);
+    }
     this.getCustomer();
     this.getPOS();
     this.addItem();
@@ -93,7 +97,11 @@ export class SaleComponent implements OnInit {
 
   getCustomer() {
     this.loading = true;
-    this.sharedService.customGetApi1<Customer[]>('Customer').subscribe(
+    let url = 'Customer';
+    if (!this.user?.isAdmin) {
+      url = 'Customer/GetCustomerByUser/' + this.logInUserID
+    }
+    this.sharedService.customGetApi1<Customer[]>(url).subscribe(
       (data: Customer[]) => {
         this.parties = data; // Data is directly returned here as an array of User objects
         this.parties = this.parties.map(user => ({
@@ -400,5 +408,13 @@ export class SaleComponent implements OnInit {
   getItemName(rowNum: any): string {
     var result = this.itemsList.find((item) => item.rowNum === rowNum);
     return `${result?.name}`;
+  }
+
+  isFieldInvalid(item: any, field: string): boolean {
+    if (field == 'payAmount') {
+      const selectedItem = item.amount;
+      return selectedItem === null || selectedItem <= 0;
+    }
+    return false;
   }
 }
