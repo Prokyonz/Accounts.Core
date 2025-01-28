@@ -236,7 +236,7 @@ export class SaleBillComponent {
           const pdfBlob = pdf.output('blob');
 
           // Use Capacitor Filesystem to save the PDF on the device
-          const fileName = 'invoice.pdf';
+          const fileName = this.saleBillPrint.invoiceNo + '.pdf';
           if (!this.isMobile) {
             pdf.save(fileName);
             this.loading = false;
