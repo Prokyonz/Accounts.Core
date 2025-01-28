@@ -19,9 +19,9 @@ export class UserComponent {
   //   { id: 2, name: 'Dhanani Monika' },
   //   { id: 3, name: 'Sharma Mayur' },
   // ];
-  userList: user[];
+  userList: user[] = [];
   permissionList: permission[];
-  posList: pos[];
+  posList: pos[] = [];
   selectedPosIds: number[] = [];
   isEditMode = false;
   logInUserID: string;
@@ -48,8 +48,7 @@ export class UserComponent {
 
       if (this.itemId) {
         this.isEditMode = true;
-        //this.loadItem(itemId); // Fetch the item by ID if editing
-
+        this.getPermission();
         this.getUsers()
           .then(() => {
             this.getPOS()
@@ -122,10 +121,6 @@ export class UserComponent {
           ...pos,
           posName: `${pos.tidNumber} (${pos.tidBankName})` // Concatenate first and last name
         }));
-
-        if(this.isEditMode){
-          this.loadItem(this.itemId);
-        }
         this.loading = false;
       },
       (error) => {
