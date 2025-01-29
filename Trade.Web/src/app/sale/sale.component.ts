@@ -159,30 +159,32 @@ export class SaleComponent implements OnInit {
 
   // Method to calculate totals
   calculateTotal(item: any): void {
-    var selectedStock = this.itemsList.find(x => x.rowNum === item.rowNum);
-    if (selectedStock != null && selectedStock.quantity < item.carratQty) {
-      this.showMessage('error', `Quantity can not be more then available quantity. Available quantity is ${selectedStock.quantity}.`);
-      setTimeout(() => {
-        item.carratQty = '';  // Reset quantity if invalid
-        item.total = 0;       // Reset total as well
-        item.sgst = 0;        // Reset SGST
-        item.cgst = 0;        // Reset CGST
-        item.igst = 0;        // Reset IGST
-        item.totalAmount = 0; // Reset totalAmount
-        this.saleData.amount = this.getBillAmount();
-        this.calculateCashAmount(true); // Recalculate Cash if needed
-      }, 500);
-      return;
-    }
+    setTimeout(() => {
+      var selectedStock = this.itemsList.find(x => x.rowNum === item.rowNum);
+      if (selectedStock != null && selectedStock.quantity < item.carratQty) {
+        this.showMessage('error', `Quantity can not be more then available quantity. Available quantity is ${selectedStock.quantity}.`);
+        setTimeout(() => {
+          item.carratQty = '';  // Reset quantity if invalid
+          item.total = 0;       // Reset total as well
+          item.sgst = 0;        // Reset SGST
+          item.cgst = 0;        // Reset CGST
+          item.igst = 0;        // Reset IGST
+          item.totalAmount = 0; // Reset totalAmount
+          this.saleData.amount = this.getBillAmount();
+          this.calculateCashAmount(true); // Recalculate Cash if needed
+        }, 500);
+        return;
+      }
 
-    item.total = item.carratQty * item.rate;
-    let gSTAmount = (item.total * item.gstper) / 100;
-    item.sgst = parseFloat((gSTAmount / 2).toFixed(2));
-    item.cgst = parseFloat((gSTAmount / 2).toFixed(2));
-    item.igst = parseFloat(gSTAmount.toFixed(2));
-    item.totalAmount = Math.ceil(item.total + item.sgst + item.cgst);
-    this.saleData.amount = this.getBillAmount();
-    this.calculateCashAmount(this.isEditMode ? false : true);
+      item.total = item.carratQty * item.rate;
+      let gSTAmount = (item.total * item.gstper) / 100;
+      item.sgst = parseFloat((gSTAmount / 2).toFixed(2));
+      item.cgst = parseFloat((gSTAmount / 2).toFixed(2));
+      item.igst = parseFloat(gSTAmount.toFixed(2));
+      item.totalAmount = Math.ceil(item.total + item.sgst + item.cgst);
+      this.saleData.amount = this.getBillAmount();
+      this.calculateCashAmount(this.isEditMode ? false : true);
+    }, 1000);
   }
 
   getBillAmount(): number {
@@ -416,5 +418,21 @@ export class SaleComponent implements OnInit {
       return selectedItem === null || selectedItem <= 0;
     }
     return false;
+  }
+
+  restrictDecimalInput(event: any, item: any) {
+    let value = event.target.value;
+
+    // Allow only numbers and a decimal point with up to two decimal places
+    let regex = /^\d*\.?\d{0,2}$/;
+
+    if (!regex.test(value)) {
+      // If the input doesn't match, revert to the last valid value
+      event.target.value = value.slice(0, -1);
+      item.carratQty = event.target.value;
+    } else {
+      // Update the model
+      item.carratQty = value;
+    }
   }
 }
