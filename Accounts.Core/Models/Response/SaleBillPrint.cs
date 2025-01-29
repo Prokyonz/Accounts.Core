@@ -12,6 +12,7 @@
         public decimal IGST { get; set; }
         public decimal BillAmount { get; set; }
         public decimal BillAmountWithoutTax { get; set; }
+        public decimal RoundupAmount { get; set; }
         public string BillAmountInWords { get; set; }
         public string Address { get; set; }
         public string MobileNo { get; set; }

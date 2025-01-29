@@ -173,7 +173,8 @@ namespace Accounts.Core.Repositories
             saleBillPrint.SGST = totalSGST;
             saleBillPrint.IGST = totalIGST;
             saleBillPrint.TotalCarratQty = totalCarratQty;
-            saleBillPrint.BillAmountWithoutTax = saleBillPrint.BillAmount - saleBillPrint.IGST;
+            saleBillPrint.BillAmountWithoutTax = saleBillPrint.BillAmount - (totalSGST + totalCGST);
+            saleBillPrint.RoundupAmount = 0;
 
             // Map SaleBillPayments
             foreach (DataRow row in saleBillPaymentsTable.Rows)
