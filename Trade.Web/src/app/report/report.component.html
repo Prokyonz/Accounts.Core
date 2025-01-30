@@ -369,7 +369,7 @@
           <div *ngIf="isAllowtoEditDelete">
             <i class="pi pi-pencil edit-icon" [routerLink]="['/sale', group.id]" title="Edit"
               style="cursor: pointer;"></i>
-            <i class="pi pi-times delete-icon" (click)="deleteItem(group.id)" title="Delete"
+            <i *ngIf="this.user?.isAdmin" class="pi pi-times delete-icon" (click)="deleteItem(group.id)" title="Delete"
               style="cursor: pointer;"></i>
           </div>
         </div>

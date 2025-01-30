@@ -75,7 +75,7 @@ namespace Accounts.Core.Controllers
             return result;
         }
 
-        [HttpDelete]
+        [HttpDelete("{salesId}")]
         public async Task<bool> Delete(long salesId, bool isHardDelete = false)
         {
             try

@@ -361,9 +361,21 @@ export class ReportComponent implements OnInit {
         this.getPurchase();
       }
       else if (this.reportIndex == 4) {
-        this.getSale();
+        this.deleteSale(Id);
       }
     }
+  }
+
+  deleteSale(Id: number){
+    this.sharedService.customDeleteApi('Sales/' + Id).subscribe(
+      (response: any) => {
+        this.showMessage('success', 'Sales Deleted Successfully');
+        this.getSale();
+      },
+      (error) => {
+        this.showMessage('error', 'Something went wrong...');
+      }
+    );
   }
 
   onDialogClose() {
