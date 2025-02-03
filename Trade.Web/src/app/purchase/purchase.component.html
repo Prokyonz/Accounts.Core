@@ -9,7 +9,7 @@
         <label for="date">Date</label>
         <!-- <input type="date" id="date" [(ngModel)]="saleData.date" name="date" class="form-control" required> -->
         <p-calendar name="date" [(ngModel)]="purchase.invoiceDate" [showIcon]="true" [touchUI]="true"
-          [readonlyInput]="true"></p-calendar>
+          [readonlyInput]="true" dateFormat="dd/mm/yy"></p-calendar>
       </div>
 
       <div class="form-group">

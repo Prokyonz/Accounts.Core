@@ -3,11 +3,11 @@
         <tr>                        
             <td>   
                 <span style="bottom: 5px; position: relative;">Start Date</span><br/>                         
-                <p-calendar [(ngModel)]="startDate" [showIcon]="true" [touchUI]="true" [readonlyInput]="true"></p-calendar>
+                <p-calendar [(ngModel)]="startDate" [showIcon]="true" [touchUI]="true" [readonlyInput]="true" dateFormat="dd/mm/yy"></p-calendar>
             </td>    
             <td>
                 <span style="bottom: 5px; position: relative;">End Date</span><br/>                                                       
-                <p-calendar [(ngModel)]="endDate" [minDate]="startDate" [touchUI]="true" [readonlyInput]="true" [showIcon]="true"></p-calendar>
+                <p-calendar [(ngModel)]="endDate" [minDate]="startDate" [touchUI]="true" [readonlyInput]="true" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
             </td>
             <td style="padding: 10px; text-align: center;">
                 <span style="bottom: 5px; position: relative;"></span><br/>

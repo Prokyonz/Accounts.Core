@@ -295,6 +295,13 @@ export class SaleComponent implements OnInit {
     this.saleData.createdDate = new Date();
     this.saleData.updatedBy = parseInt(this.logInUserID);
     this.saleData.updatedDate = new Date();
+    const localDate = new Date(this.saleData.invoiceDate);
+    this.saleData.invoiceDate = new Date(Date.UTC(
+      localDate.getFullYear(),
+      localDate.getMonth(),
+      localDate.getDate(), // Keep the same date in UTC
+      0, 0, 0, 0 // Midnight UTC
+    ));
     this.sharedService.customPostApi("Sales", this.saleData)
       .subscribe((data: any) => {
         if (data != null) {
@@ -315,6 +322,13 @@ export class SaleComponent implements OnInit {
   updateItem() {
     this.saleData.updatedBy = parseInt(this.logInUserID);
     this.saleData.updatedDate = new Date();
+    const localDate = new Date(this.saleData.invoiceDate);
+    this.saleData.invoiceDate = new Date(Date.UTC(
+      localDate.getFullYear(),
+      localDate.getMonth(),
+      localDate.getDate(), // Keep the same date in UTC
+      0, 0, 0, 0 // Midnight UTC
+    ));
     this.sharedService.customPutApi("Sales", this.saleData)
       .subscribe((data: any) => {
         if (data != null) {

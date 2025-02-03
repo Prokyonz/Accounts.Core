@@ -202,12 +202,12 @@
                     <td class="half-width">
                       <label for="frmdate">From Date</label>
                       <p-calendar name="fromDate" [(ngModel)]="filterCriteria.fromDate" [showIcon]="true"
-                        [touchUI]="true" [readonlyInput]="true"></p-calendar>
+                        [touchUI]="true" [readonlyInput]="true" dateFormat="dd/mm/yy"></p-calendar>
                     </td>
                     <td class="half-width">
                       <label for="todate">To Date</label>
                       <p-calendar name="toDate" [(ngModel)]="filterCriteria.toDate" [showIcon]="true" [touchUI]="true"
-                        [readonlyInput]="true"></p-calendar>
+                        [readonlyInput]="true" dateFormat="dd/mm/yy"></p-calendar>
                     </td>
                   </tr>
                   <tr>
@@ -251,7 +251,7 @@
       </div>
 
       <div class="details-section">
-        <span>{{ purchase.invoiceDate | date }}</span> <!-- Currency pipe for formatting -->
+        <span>{{ purchase.invoiceDate | date: 'dd/MM/yyyy' }}</span> <!-- Currency pipe for formatting -->
       </div>
 
       <!-- <div class="action-icons">
@@ -283,12 +283,12 @@
                     <td class="half-width">
                       <label for="frmdate">From Date</label>
                       <p-calendar name="fromDate" [(ngModel)]="filterCriteria.fromDate" [showIcon]="true"
-                        [touchUI]="true" [readonlyInput]="true"></p-calendar>
+                        [touchUI]="true" [readonlyInput]="true" dateFormat="dd/mm/yy"></p-calendar>
                     </td>
                     <td class="half-width">
                       <label for="todate">To Date</label>
                       <p-calendar name="toDate" [(ngModel)]="filterCriteria.toDate" [showIcon]="true" [touchUI]="true"
-                        [readonlyInput]="true"></p-calendar>
+                        [readonlyInput]="true" dateFormat="dd/mm/yy"></p-calendar>
                     </td>
                   </tr>
                   <tr>
@@ -333,7 +333,7 @@
 
         <!-- Invoice Date -->
         <div class="details-section">
-          <span><strong>Date:</strong> {{ group.invoiceDate | date: 'shortDate' }}</span>
+          <span><strong>Date:</strong> {{ group.invoiceDate | date: 'dd/MM/yyyy' }}</span>
         </div>
 
         <!-- Payment Details -->
@@ -438,8 +438,7 @@
           <ng-container *ngFor="let item of selectedColumnArray">
             <ng-container *ngIf="!(item.displayName === 'Approve' || item.displayName === 'Reject')">
               <td>
-                <span *ngIf="item.dataType == 'Date'">{{ purchase[item.fieldName] | date:
-                  'dd-MM-yy'}}</span>
+                <span *ngIf="item.dataType == 'Date'">{{ purchase[item.fieldName] | date: 'dd/MM/yyyy'}}</span>
                 <span *ngIf="item.displayName === 'Total' && item.dataType == 'numeric'">
                   {{ purchase[item.fieldName] | number: '1.2-2': 'en-IN' }}
                 </span>
