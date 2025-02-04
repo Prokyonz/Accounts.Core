@@ -150,6 +150,7 @@ export class ReportComponent implements OnInit {
     this.sharedService.customGetApi1<Customer[]>('Customer/CustomerReport', params).subscribe(
       (data: Customer[]) => {
         this.customers = data; // Data is directly returned here as an array of User objects
+        this.customers = data.sort((a, b) => b.id - a.id);
         this.loading = false;
       },
       (error) => {
@@ -168,6 +169,7 @@ export class ReportComponent implements OnInit {
     this.sharedService.customGetApi1<user[]>('UserMaster/UserReport', params).subscribe(
       (data: user[]) => {
         this.users = data; // Data is directly returned here as an array of User objects
+        this.users = data.sort((a, b) => b.id - a.id);
         this.loading = false;
       },
       (error) => {
@@ -188,6 +190,18 @@ export class ReportComponent implements OnInit {
     this.sharedService.customGetApi1<purchaseReport[]>('PurchaseMaster/PurchaseReport', params).subscribe(
       (data: purchaseReport[]) => {
         this.purchaseData = data; // Data is directly returned here as an array of User objects
+        this.purchaseData = data.sort((a, b) => {
+          const dateA = new Date(a.invoiceDate);  // Convert to Date object
+          const dateB = new Date(b.invoiceDate);  // Convert to Date object
+        
+          const dateComparison = dateB.getTime() - dateA.getTime();
+          
+          if (dateComparison !== 0) {
+            return dateComparison;  // If dates are different, return the result
+          }
+      
+          return b.id - a.id; 
+        });
         this.loading = false;
       },
       (error) => {
@@ -214,6 +228,18 @@ export class ReportComponent implements OnInit {
     this.sharedService.customGetApi1<saleReport[]>('Sales/SaleReport', params).subscribe(
       (data: saleReport[]) => {
         this.saleData = data; // Data is directly returned here as an array of User objects
+        this.saleData = data.sort((a, b) => {
+          const dateA = new Date(a.invoiceDate);  // Convert to Date object
+          const dateB = new Date(b.invoiceDate);  // Convert to Date object
+        
+          const dateComparison = dateB.getTime() - dateA.getTime();
+          
+          if (dateComparison !== 0) {
+            return dateComparison;  // If dates are different, return the result
+          }
+      
+          return b.id - a.id; 
+        });
         const groupedMap = new Map<string, any>();
 
         this.saleData.forEach((sale) => {

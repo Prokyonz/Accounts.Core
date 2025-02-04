@@ -35,7 +35,7 @@ namespace Accounts.Core.Models
         [ForeignKey("PurchaseMasterId")]
         public long PurchaseMasterId { get; set; }
         public string? ItemDescription { get; set; }
-        public long Quantity { get; set; }
+        public decimal Quantity { get; set; }
         public decimal Rate { get; set; }
         public decimal GSTPer { get; set; }
         public decimal SGST { get; set; }
