@@ -17,10 +17,11 @@ export class AuthService {
     }
     private isUserLoggedIn = this.hasToken();
 
-    public login(user: string, password: string): Observable<any> {
+    public login(user: string, password: string, isPinLogin: boolean): Observable<any> {
 
         const reqParam = '?mobileNo=' + user
-            + '&password=' + password;
+            + '&password=' + password
+            + '&isPinLogin=' + isPinLogin;
 
         const data = {
             UserName: user,

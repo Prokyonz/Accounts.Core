@@ -30,9 +30,9 @@ namespace Accounts.Core.Controllers
         }
 
         [HttpGet("Login")]
-        public async Task<UserMaster> Login(string? mobileNo, string password, string? emailId)
+        public async Task<UserMaster> Login(string? mobileNo, string password, string? emailId, bool isPinLogin)
         {
-            return await _userMasterRepository.Login(mobileNo, password, emailId);
+            return await _userMasterRepository.Login(mobileNo, password, emailId, isPinLogin);
         }
 
         /// <summary>

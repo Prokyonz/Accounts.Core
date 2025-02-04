@@ -17,7 +17,7 @@ namespace Accounts.Core.Repositories
         Task<List<UserMaster>> GetQuery(int pageIndex, int pageSize);
         Task<UserMaster> GetQuery(long userMasterId, int pageIndex, int pageSize);
         Task<List<PermissionMaster>> GetMasterPermissions();
-        Task<UserMaster> Login(string? mobileNo, string password, string? emailId);
+        Task<UserMaster> Login(string? mobileNo, string password, string? emailId, bool isPinLogin);
         Task<List<UserReport>> UserReport(long userId, string? name);
         Task<bool> ActiveInActiveUser(long userMasterId, long userId, bool status);
     }
@@ -149,14 +149,15 @@ namespace Accounts.Core.Repositories
             }
         }
 
-        public async Task<UserMaster> Login(string? mobileNo, string password, string? emailId)
+        public async Task<UserMaster> Login(string? mobileNo, string password, string? emailId, bool isPinLogin)
         {
             try
             {
                 var users = await _userMasterRepo.QueryAsync(
                                query => (mobileNo != null 
                                     && query.MobileNo == mobileNo 
-                                    && query.Password == password
+                                    && ((!isPinLogin && query.Password == password)
+                                    || (isPinLogin && query.Pin == Convert.ToInt32(password)))
                                     && query.IsDelete == false
                                     && query.IsActive == true),
                                orderBy: c => c.CreatedDate,
@@ -172,7 +173,7 @@ namespace Accounts.Core.Repositories
 
                     return users[0];
                 }
-                throw new Exception("MobileNo/EmailId or Password is incorrect");
+                throw new Exception("MobileNo/Pin or Password is incorrect");
             }
             catch (Exception ex)
             {

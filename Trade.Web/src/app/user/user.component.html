@@ -60,6 +60,16 @@
                             </tr>
                             <tr>
                                 <td colspan="2" class="input-field">
+                                    <label for="password">Pin</label>
+                                    <input id="pin" pInputText pKeyFilter="int" type="number" class="form-control" name="pin"
+                                        [(ngModel)]="user.pin" 
+                                        pattern="^\d{4}$" minlength="4" maxlength="4"
+                                        required #pin="ngModel"
+                                        [ngClass]="{'is-invalid': pin.touched && pin.invalid}" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="input-field">
                                     <label for="name">POS</label><br />
                                     <!-- <p-dropdown id="pos" [(ngModel)]="user.posId" name="user"
                                         [options]="posList" optionLabel="posName" optionValue="id"

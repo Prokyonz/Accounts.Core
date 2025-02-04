@@ -66,6 +66,7 @@ export class user {
     mobileNo: string = '';
     emailId: string = '';
     password: string = '';
+    pin: number;
     posChilds: posChild[];
     isAgent: boolean = false;
     isAdmin: boolean = false;

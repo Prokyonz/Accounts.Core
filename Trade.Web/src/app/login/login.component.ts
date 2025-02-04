@@ -8,6 +8,7 @@ export class RememberLogin {
   username: string;
   password: string;
   rememberme: string;
+  isPinLogin: boolean = false;
 }
 
 @Component({
@@ -23,12 +24,22 @@ export class LoginComponent implements OnInit {
   loading = false;
   rememberMe: boolean = false;
   RememberLogin: RememberLogin = new RememberLogin;
+  loginType: 'password' | 'pin' = 'password';
+  pin1: number;
+  pin2: number;
+  pin3: number;
+  pin4: number;
+
   constructor(private fb: FormBuilder, private router: Router, private shared: SharedService, private authService: AuthService) {
     this.isLoggedIn = false;
     this.loginForm = fb.group({
       username: ['', Validators.required],
-      password: ['', Validators.required],
-      rememberMe: [null, null]
+      password: [''],
+      rememberMe: [null, null],
+      pin1: [''],
+      pin2: [''],
+      pin3: [''],
+      pin4: [''],
     });
   }
 
@@ -44,22 +55,45 @@ export class LoginComponent implements OnInit {
       else {
         this.rememberMe = false
       }
+
+      if (loginData?.username?.length > 0 && loginData.isPinLogin) {
+        this.loginForm.get("username")?.setValue(loginData.username);
+        this.loginType = 'pin';
+      }
     }
   }
 
   onLogin() {
     if (this.loginForm.valid) {
       this.loading = true;
-      this.authService.login(this.loginForm.get("username")?.value, this.loginForm.get("password")?.value)
+      let isPinLogin = false;
+      let password = this.loginForm.get("password")?.value;
+      if (this.loginType === 'pin') {
+        isPinLogin = true;
+        password = [
+          this.loginForm.get("pin1")?.value,
+          this.loginForm.get("pin2")?.value,
+          this.loginForm.get("pin3")?.value,
+          this.loginForm.get("pin4")?.value
+        ].join('');
+      }
+      this.authService.login(this.loginForm.get("username")?.value, password, isPinLogin)
         .subscribe((response: any) => {
           // if (response.success == true){
           if (response != null) {
             localStorage.setItem('AuthorizeData', JSON.stringify(response));
             localStorage.setItem("userid", response.id);
-            if (this.rememberMe) {
-              this.RememberLogin.username = this.loginForm.get("username")?.value;
-              this.RememberLogin.password = this.loginForm.get("password")?.value;
-              this.RememberLogin.rememberme = this.rememberMe.toString();
+            if (this.rememberMe || this.loginType === 'pin') {
+              if (this.loginType === 'pin') {
+                this.RememberLogin.username = this.loginForm.get("username")?.value;
+                this.RememberLogin.isPinLogin = true;
+              }
+              else {
+                this.RememberLogin.username = this.loginForm.get("username")?.value;
+                this.RememberLogin.password = this.loginForm.get("password")?.value;
+                this.RememberLogin.rememberme = this.rememberMe.toString();
+                this.RememberLogin.isPinLogin = false;
+              }
               localStorage.setItem("loginremember", JSON.stringify(this.RememberLogin))
             }
             else {
@@ -79,5 +113,18 @@ export class LoginComponent implements OnInit {
           alert('Invalid Username/Password.');
         });
     }
+  }
+
+  onPinInput(event: any, nextField: string) {
+    const currentValue = event.target.value;
+    if (currentValue && nextField) {
+      // Focus on the next input field
+      const nextInput = document.querySelector(`[formControlName="${nextField}"]`) as HTMLInputElement;
+      if (nextInput) nextInput.focus();
+    }
+  }
+
+  selectLoginType(type: 'password' | 'pin') {
+    this.loginType = type;
   }
 }

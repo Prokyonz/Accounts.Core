@@ -14,6 +14,7 @@ namespace Accounts.Core.Models
         public string? LastName { get; set; }
         public string? MobileNo { get; set; }
         public string? Password { get; set; }
+        public long? Pin { get; set; }
         public string? EmailId { get; set; }
         public bool? IsAgent { get; set; }
         public long? ParentUserId { get; set; }
