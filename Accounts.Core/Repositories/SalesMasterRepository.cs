@@ -145,6 +145,7 @@ namespace Accounts.Core.Repositories
             decimal totalCGST = 0;
             decimal totalSGST = 0;
             decimal totalIGST = 0;
+            decimal totalAmountWithoutTax = 0;
             decimal totalCarratQty = 0;
 
             // Map SaleBillItems
@@ -167,14 +168,15 @@ namespace Accounts.Core.Repositories
                 totalSGST += Convert.ToDecimal(row["SGST"]);
                 totalIGST += Convert.ToDecimal(row["IGST"]);
                 totalCarratQty += Convert.ToDecimal(row["TotalAmount"]);
+                totalAmountWithoutTax += Math.Ceiling((Convert.ToDecimal(row["CarratQty"]) * Convert.ToDecimal(row["Rate"])) * 100) / 100;
             }
 
             saleBillPrint.CGST = totalCGST;
             saleBillPrint.SGST = totalSGST;
             saleBillPrint.IGST = totalIGST;
             saleBillPrint.TotalCarratQty = totalCarratQty;
-            saleBillPrint.BillAmountWithoutTax = saleBillPrint.BillAmount - (totalSGST + totalCGST);
-            saleBillPrint.RoundupAmount = 0;
+            saleBillPrint.BillAmountWithoutTax = totalAmountWithoutTax;
+            saleBillPrint.RoundupAmount = saleBillPrint.BillAmount - (totalAmountWithoutTax + (totalSGST + totalCGST));
 
             // Map SaleBillPayments
             foreach (DataRow row in saleBillPaymentsTable.Rows)
