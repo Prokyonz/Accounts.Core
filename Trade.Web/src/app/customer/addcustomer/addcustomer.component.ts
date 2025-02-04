@@ -213,7 +213,7 @@ export class AddcustomerComponent implements OnInit {
     Camera.getPhoto({
       resultType: CameraResultType.Uri, // We will use the URI for the image
       source: CameraSource.Prompt, // Prompt user to choose between Camera or Gallery
-      quality: 90, // Optional: Adjust image quality
+      quality: 100, // Optional: Adjust image quality
       allowEditing: false, // Optional: Set to true if you want users to edit the image
       width: 600, // Optional: Set image width
       height: 600, // Optional: Set image height
