@@ -113,6 +113,7 @@ export class AddcustomerComponent implements OnInit {
   }
 
   createItem() {
+    this.loading = true;
     this.customerDetails.aadharNo = this.customerDetails.aadharNo.toString();
     this.customerDetails.panNo = this.customerDetails.panNo.toString();
     this.customerDetails.mobileNo = this.customerDetails.mobileNo.toString();
@@ -123,6 +124,7 @@ export class AddcustomerComponent implements OnInit {
     this.sharedService.customPostApi("Customer", this.customerDetails)
       .subscribe((data: any) => {
         if (data != null) {
+          this.loading = false;
           this.showMessage('success', 'Customer details added successfully');
           this.clearForm();
         }
@@ -137,6 +139,7 @@ export class AddcustomerComponent implements OnInit {
   }
 
   updateItem() {
+    this.loading = true;
     this.customerDetails.aadharNo = this.customerDetails.aadharNo.toString();
     this.customerDetails.panNo = this.customerDetails.panNo.toString();
     this.customerDetails.mobileNo = this.customerDetails.mobileNo.toString();
@@ -145,6 +148,7 @@ export class AddcustomerComponent implements OnInit {
     this.sharedService.customPutApi("Customer", this.customerDetails)
       .subscribe((data: any) => {
         if (data != null) {
+          this.loading = false;
           this.showMessage('success', 'Customer details updated successfully');
           this.clearForm();
         }
