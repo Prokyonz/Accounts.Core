@@ -11,12 +11,12 @@
             <div
               style="display: flex; justify-content: space-between; align-items: center; margin-left: 20px; margin-right: 20px;">
               <h1>Login</h1> <!-- Title on the left -->
-              <div *ngIf="loginForm.controls['username'].value" style="display: flex; gap: 10px;">
-                <p-button icon="pi pi-key" (click)="selectLoginType('password')"
+              <div *ngIf="loginForm?.controls?.['username']?.value" style="display: flex; gap: 10px;">
+                <p-button icon="pi pi-key" (click)="selectLoginType('password')" name="key"
                   [class]="(loginType === 'password' ? 'p-button-success' : 'p-button-secondary')"
                   style="width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem;">
                 </p-button>
-                <p-button icon="pi pi-lock" (click)="selectLoginType('pin')"
+                <p-button icon="pi pi-lock" (click)="selectLoginType('pin')" name="pin"
                   [class]="(loginType === 'pin' ? 'p-button-success' : 'p-button-secondary')"
                   style="width: 40px; height: 40px; border-radius: 50%; font-size: 1.5rem;">
                 </p-button>
@@ -39,7 +39,7 @@
                     </p-button>
                   </td>
                 </tr> -->
-                <tr *ngIf="loginType === 'pin'">
+                <!-- <tr *ngIf="loginType === 'pin'">
                   <td style="text-align: center; padding-bottom: 50px;">
                     <div style="position: relative;">
                       <span *ngIf="loginForm.controls['username'].value"
@@ -48,7 +48,7 @@
                       </span>
                     </div>
                   </td>
-                </tr>
+                </tr> -->
                 <tr *ngIf="loginType === 'password'">
                   <td>
                     <span style="bottom: 5px; position: relative;">Username</span><br />
@@ -58,7 +58,8 @@
                 <tr *ngIf="loginType === 'password'">
                   <td>
                     <span style="bottom: 5px; position: relative;">Password</span><br />
-                    <input type="password" pPassword [feedback]="false" formControlName="password" style="width: 100%;"/>
+                    <input type="password" pPassword [feedback]="false" formControlName="password"
+                      style="width: 100%;" />
                   </td>
                 </tr>
                 <tr *ngIf="loginType === 'pin'">
@@ -66,14 +67,11 @@
                     <span style="bottom: 5px; position: relative;">PIN</span><br />
                     <div style="display: flex; justify-content: space-between; gap: 10px;">
                       <input pInputText pKeyFilter="int" type="number" formControlName="pin1" maxlength="1"
-                        (input)="onPinInput($event, 'pin2')"
-                        style="width: 40px; text-align: center;" />
+                        (input)="onPinInput($event, 'pin2')" style="width: 40px; text-align: center;" />
                       <input pInputText pKeyFilter="int" type="number" formControlName="pin2" maxlength="1"
-                        (input)="onPinInput($event, 'pin3')"
-                        style="width: 40px; text-align: center;" />
+                        (input)="onPinInput($event, 'pin3')" style="width: 40px; text-align: center;" />
                       <input pInputText pKeyFilter="int" type="number" formControlName="pin3" maxlength="1"
-                        (input)="onPinInput($event, 'pin4')"
-                        style="width: 40px; text-align: center;" />
+                        (input)="onPinInput($event, 'pin4')" style="width: 40px; text-align: center;" />
                       <input pInputText pKeyFilter="int" type="number" formControlName="pin4" maxlength="1"
                         style="width: 40px; text-align: center;" />
                     </div>

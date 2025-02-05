@@ -181,7 +181,8 @@ export class SaleComponent implements OnInit {
       item.sgst = parseFloat((gSTAmount / 2).toFixed(2));
       item.cgst = parseFloat((gSTAmount / 2).toFixed(2));
       item.igst = parseFloat(gSTAmount.toFixed(2));
-      item.totalAmount = Math.ceil(item.total + item.sgst + item.cgst);
+      let totalvalue = item.total + item.sgst + item.cgst;
+      item.totalAmount = totalvalue - Math.floor(totalvalue) > 0.5 ? Math.ceil(totalvalue) : Math.floor(totalvalue);
       this.saleData.amount = this.getBillAmount();
       this.calculateCashAmount(this.isEditMode ? false : true);
     }, 1000);

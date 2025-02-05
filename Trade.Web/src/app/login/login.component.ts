@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   loading = false;
   rememberMe: boolean = false;
   RememberLogin: RememberLogin = new RememberLogin;
-  loginType: 'password' | 'pin' = 'password';
+  loginType: string = 'password';
   pin1: number;
   pin2: number;
   pin3: number;
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
     var data = localStorage.getItem('loginremember');
     if (data != null) {
       var loginData = JSON.parse(data);
-      if (loginData.rememberme == "true") {
+      if (loginData?.rememberme == "true") {
         this.loginForm.get("username")?.setValue(loginData.username);
         this.loginForm.get("password")?.setValue(loginData.password);
         this.rememberMe = true
