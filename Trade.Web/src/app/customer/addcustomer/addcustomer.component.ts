@@ -219,8 +219,8 @@ export class AddcustomerComponent implements OnInit {
       source: CameraSource.Prompt, // Prompt user to choose between Camera or Gallery
       quality: 100, // Optional: Adjust image quality
       allowEditing: false, // Optional: Set to true if you want users to edit the image
-      width: 600, // Optional: Set image width
-      height: 600, // Optional: Set image height
+      // width: 600, // Optional: Set image width
+      // height: 600, // Optional: Set image height
     }).then((photo) => {
       // Convert the image URI to base64
       this.convertUriToBase64(photo.webPath!).then(base64Data => {
