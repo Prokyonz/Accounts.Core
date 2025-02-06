@@ -11,6 +11,7 @@ import { SharedService } from 'src/app/common/shared.service';
 import { MessageService } from 'primeng/api';
 import { FormBuilder } from '@angular/forms';
 import { saleBillPrint } from 'src/app/Model/models';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-sale-bill',
@@ -24,7 +25,7 @@ export class SaleBillComponent {
   saleBillPrint: saleBillPrint;
   paymentRowSpan: number = 1;
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService) {
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService, private location: Location) {
     this.checkIfMobile();
   }
 
@@ -36,6 +37,10 @@ export class SaleBillComponent {
         this.getSaleBillPrint(itemId);
       }
     });
+  }
+
+  onBack(){
+    this.location.back();
   }
 
   getSaleBillPrint(salesId: string) {

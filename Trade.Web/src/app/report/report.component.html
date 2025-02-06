@@ -93,7 +93,7 @@
         </div>
       </div>
       <div>
-        <div class="action-icons" >
+        <div class="action-icons">
           <span class="username">-{{ customer.userName }}</span>
           <div *ngIf="isAllowtoEditDelete">
             <i class="pi pi-pencil edit-icon" [routerLink]="['/addcustomer', customer.id ]" title="Edit"
@@ -405,8 +405,7 @@
       <ng-template pTemplate="header">
         <tr>
           <ng-container *ngFor="let item of selectedColumnArray">
-            <ng-container
-              *ngIf="!(item.displayName === 'Approve' || item.displayName === 'Reject' || item.dataType === 'icon')">
+            <ng-container *ngIf="!(item.displayName === 'View' && item.dataType === 'button')">
               <th [ngStyle]="{'min-width': item.minWidth ? item.minWidth + 'rem' : '5rem'}"
                 pSortableColumn="{{item.fieldName}}" class="header-cell">
                 <div class="flex align-items-center">
@@ -429,6 +428,12 @@
                 </div>
               </th>
             </ng-container>
+            <ng-container *ngIf="item.dataType === 'button'">
+              <th [ngStyle]="{'min-width': item.minWidth ? item.minWidth + 'rem' : '5rem'}"
+                pSortableColumn="{{item.fieldName}}" class="header-cell">
+              </th>
+              <!-- <button (click)="viewDetails(item)">View</button> -->
+            </ng-container>
           </ng-container>
         </tr>
       </ng-template>
@@ -436,7 +441,7 @@
       <ng-template pTemplate="body" let-purchase let-rowIndex="rowIndex">
         <tr>
           <ng-container *ngFor="let item of selectedColumnArray">
-            <ng-container *ngIf="!(item.displayName === 'Approve' || item.displayName === 'Reject')">
+            <ng-container *ngIf="!(item.displayName === 'View')">
               <td>
                 <span *ngIf="item.dataType == 'Date'">{{ purchase[item.fieldName] | date: 'dd/MM/yyyy'}}</span>
                 <span *ngIf="item.displayName === 'Total' && item.dataType == 'numeric'">
@@ -460,6 +465,13 @@
                   *ngIf="item.displayName !== 'Credit' && item.displayName !== 'Debit' && item.displayName !== 'Approve' && item.displayName !== 'Reject' && item.displayName !== 'Approval Status' && item.dataType !== 'Date' && item.dataType !== 'Decimal' && item.displayName !== 'Total' 
                           && item.dataType !== 'icon' && item.displayName !== 'Amount' && item.fieldName !== 'closingBalance'  && item.displayName.indexOf('Amount') === -1">{{
                   purchase[item.fieldName] }} </span>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="item.dataType === 'button'">
+              <td>
+                <!-- <button (click)="viewDetails(item)">View</button> -->
+                <i class="pi pi-eye view-icon" [routerLink]="['/salebill', purchase[item.fieldName]]" title="View"
+                  style="cursor: pointer;"></i>
               </td>
             </ng-container>
           </ng-container>

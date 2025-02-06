@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Table } from 'primeng/table';
 import { SharedService } from '../common/shared.service';
@@ -42,8 +42,10 @@ export class ReportComponent implements OnInit {
   PurchaseReportCloneList: any[];
   filterColumn: string[] = [];
   isAdminView: boolean = false;
+  isMobile: boolean = false;
 
   constructor(private rote: Router, private activateRoute: ActivatedRoute, private sharedService: SharedService, private messageService: MessageService) {
+    this.checkIfMobile();
     this.reportIndex = activateRoute.snapshot.params['id'];
     this.logInUserID = localStorage.getItem('userid') ?? '0';
     this.filterCriteria = {
@@ -58,7 +60,9 @@ export class ReportComponent implements OnInit {
     if (userDetail) {
       this.user = JSON.parse(userDetail);
     }
-
+    if (this.user?.isAdmin && !this.isMobile) {
+      this.isAdminView = true;
+    }
     this.activateRoute.paramMap.subscribe(params => {
       const reportId = params.get('id'); // Assuming 'id' is the parameter name in your route
       if (reportId) {
@@ -86,6 +90,7 @@ export class ReportComponent implements OnInit {
           this.getSale();
 
           this.columnArray = [
+            { "displayName": "View", "dataType": "button", "fieldName": "id", "ishidefilter": true, "minWidth": "2", "sortIndex": "-1" },
             { "displayName": "User", "dataType": "text", "fieldName": "userName", "minWidth": "10", "sortIndex": "0" },
             { "displayName": "Date", "dataType": "Date", "fieldName": "invoiceDate", "ishidefilter": true, "minWidth": "7", "sortIndex": "1" },
             { "displayName": "Invoice No", "dataType": "text", "fieldName": "invoiceNo", "minWidth": "10", "sortIndex": "2" },
@@ -130,6 +135,10 @@ export class ReportComponent implements OnInit {
     //   this.PageTitle = "Item Report";
     //   this.getItem();
     // }
+  }
+
+  checkIfMobile() {
+    this.isMobile = window.innerWidth <= 768;  // Adjust the width as needed
   }
 
   hasPermission(permissionKey: string): boolean {
@@ -193,14 +202,14 @@ export class ReportComponent implements OnInit {
         this.purchaseData = data.sort((a, b) => {
           const dateA = new Date(a.invoiceDate);  // Convert to Date object
           const dateB = new Date(b.invoiceDate);  // Convert to Date object
-        
+
           const dateComparison = dateB.getTime() - dateA.getTime();
-          
+
           if (dateComparison !== 0) {
             return dateComparison;  // If dates are different, return the result
           }
-      
-          return b.id - a.id; 
+
+          return b.id - a.id;
         });
         this.loading = false;
       },
@@ -231,14 +240,14 @@ export class ReportComponent implements OnInit {
         this.saleData = data.sort((a, b) => {
           const dateA = new Date(a.invoiceDate);  // Convert to Date object
           const dateB = new Date(b.invoiceDate);  // Convert to Date object
-        
+
           const dateComparison = dateB.getTime() - dateA.getTime();
-          
+
           if (dateComparison !== 0) {
             return dateComparison;  // If dates are different, return the result
           }
-      
-          return b.id - a.id; 
+
+          return b.id - a.id;
         });
         const groupedMap = new Map<string, any>();
 
@@ -286,6 +295,18 @@ export class ReportComponent implements OnInit {
     this.sharedService.customGetApi1<saleReport[]>('Sales/SaleReportForAdmin', params).subscribe(
       (data: saleReport[]) => {
         this.PurchaseReportList = data;
+        this.PurchaseReportList = data.sort((a, b) => {
+          const dateA = new Date(a.invoiceDate);  // Convert to Date object
+          const dateB = new Date(b.invoiceDate);  // Convert to Date object
+
+          const dateComparison = dateB.getTime() - dateA.getTime();
+
+          if (dateComparison !== 0) {
+            return dateComparison;  // If dates are different, return the result
+          }
+
+          return b.id - a.id;
+        });
         this.PurchaseReportCloneList = [...this.PurchaseReportList];
         this.loading = false;
       },
@@ -392,7 +413,7 @@ export class ReportComponent implements OnInit {
     }
   }
 
-  deleteSale(Id: number){
+  deleteSale(Id: number) {
     this.sharedService.customDeleteApi('Sales/' + Id).subscribe(
       (response: any) => {
         this.showMessage('success', 'Sales Deleted Successfully');
@@ -575,5 +596,15 @@ export class ReportComponent implements OnInit {
 
   exportLedger(type: string, itemData: any) {
 
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkIfMobile();
+  }
+
+  viewDetails(row: any) {
+    console.log('Viewing details for: ', row);
+    // You can add logic to display a modal, navigate, or show details
   }
 }

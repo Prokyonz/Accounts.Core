@@ -1,4 +1,4 @@
-<app-header [showSideBar]="true" title="{{ PageTitle }}" iconName="pi-arrow-left" leftIconName="{{'pi pi-share-alt'}}"
+<app-header [showSideBar]="true" title="{{ PageTitle }}" (onClickMainIcon) = "onBack()" iconName="pi-arrow-left" leftIconName="{{'pi pi-share-alt'}}"
     (onClickLeftIcon)="sharePDF1();"></app-header>
 
 <p-toast [breakpoints]="{'920px': { right: '0', left: '50'}}"></p-toast>
