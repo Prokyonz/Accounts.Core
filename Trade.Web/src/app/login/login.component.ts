@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
   pin2: number;
   pin3: number;
   pin4: number;
+  isButtonDisabled: boolean = false;
 
   constructor(private fb: FormBuilder, private router: Router, private shared: SharedService, private authService: AuthService) {
     this.isLoggedIn = false;
@@ -61,6 +62,15 @@ export class LoginComponent implements OnInit {
         this.loginType = 'pin';
       }
     }
+
+    this.loginForm.get('username')?.valueChanges.subscribe((value) => {
+      if (value.length > 0) {
+        this.isButtonDisabled = false; // Disable button if the username input is empty
+      }
+      else{
+        this.isButtonDisabled = true;
+      }
+    });
   }
 
   onLogin() {
