@@ -249,3 +249,50 @@
   font-weight: bold; /* Optional: Style the username */
   margin-right: auto; /* Push it to the left */
 }
+
+.custom-dialog .p-dialog-mask {
+  background-color: rgba(0, 0, 0, 0.6); /* Darken the overlay */
+}
+
+/* Custom styles for the p-field */
+.p-field {
+  display: flex;
+  align-items: center; /* Align checkbox and label horizontally */
+  margin-bottom: 1.5rem; /* Space between form elements */
+}
+
+.p-field label {
+  font-weight: 600; /* Make labels bold */
+  font-size: 1rem;
+  color: #333;
+  margin-right: 10px; /* Space between label and checkbox */
+}
+
+.p-field input {
+  width: 20px;
+  height: 20px;
+}
+
+/* Add hover effect for the checkbox label */
+.p-field label:hover {
+  color: #007bff;
+}
+
+/* Custom dialog footer to align buttons to the bottom right */
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 10px; /* Space between buttons */
+  padding: 10px; /* Padding around buttons */
+}
+
+/* Optionally, you can add more styles for the buttons */
+.dialog-footer button {
+  min-width: 6rem; /* Set a minimum width for the buttons */
+}
+
+/* Ensure dialog content area doesn't overlap with footer */
+.p-dialog .p-dialog-content {
+  padding-bottom: 50px; /* Give some space for footer */
+}
+

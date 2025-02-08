@@ -49,6 +49,7 @@ import { UserComponent } from './user/user.component';
 import { SaleBillComponent } from './sale/sale-bill/sale-bill.component';
 import { PosComponent } from './master/pos/pos.component';
 import { SeriesComponent } from './master/series/series.component';
+import { SalePrintComponent } from './sale/sale-print/sale-print.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { SeriesComponent } from './master/series/series.component';
     SaleBillComponent,
     PosComponent,
     SeriesComponent,
+    SalePrintComponent,
   ],
   imports: [
     BrowserModule,

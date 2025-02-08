@@ -7,6 +7,10 @@ import { Message, MessageService } from 'primeng/api';
 import { Customer, filterCriteria, item, purchase, purchaseReport, saleReport, stockReport, user } from '../Model/models';
 import { Directory, Filesystem } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { interval, takeWhile } from 'rxjs';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-report',
@@ -43,6 +47,10 @@ export class ReportComponent implements OnInit {
   filterColumn: string[] = [];
   isAdminView: boolean = false;
   isMobile: boolean = false;
+  selectedPurchases: any[] = [];
+  exportDialogVisible: boolean = false;
+  includeMobile: boolean = true;
+  includeEmail: boolean = true;
 
   constructor(private rote: Router, private activateRoute: ActivatedRoute, private sharedService: SharedService, private messageService: MessageService) {
     this.checkIfMobile();
@@ -90,6 +98,7 @@ export class ReportComponent implements OnInit {
           this.getSale();
 
           this.columnArray = [
+            { "displayName": "Checkbox", "dataType": "Checkbox", "fieldName": "id", "ishidefilter": true, "minWidth": "3", "sortIndex": "-2" },
             { "displayName": "View", "dataType": "button", "fieldName": "id", "ishidefilter": true, "minWidth": "2", "sortIndex": "-1" },
             { "displayName": "User", "dataType": "text", "fieldName": "userName", "minWidth": "10", "sortIndex": "0" },
             { "displayName": "Date", "dataType": "Date", "fieldName": "invoiceDate", "ishidefilter": true, "minWidth": "7", "sortIndex": "1" },
@@ -501,10 +510,31 @@ export class ReportComponent implements OnInit {
     }
   }
 
-  exportExcel() {
+  exportExcel(table: any) {
+    // const filteredData = this.PurchaseReportList.map(item => ({
+    //   column1: item.column1,  // Include only selected columns
+    //   column2: item.column2
+    // }));
+    this.loading = true;
+    const timestamp = new Date().toISOString().replace(/[-:T.]/g, '_'); // Example: "2025_02_08_14_30_00"
+    const fileName = `Sunsparkle_Sale_report_${timestamp}.xlsx`;
+
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.PurchaseReportList);
+    const workbook: XLSX.WorkBook = {
+      Sheets: { 'data': worksheet },
+      SheetNames: ['data'],
+    };
+    XLSX.writeFile(workbook, fileName);
+    this.loading = false;
   }
 
   exportPdf() {
+    if (this.selectedPurchases && this.selectedPurchases.length > 0) {
+      this.selectedPurchases.forEach(element => {
+        this.sharePDF(element.id);
+      });
+    }
+    this.exportDialogVisible = false;
   }
 
   toggle() {
@@ -606,5 +636,110 @@ export class ReportComponent implements OnInit {
   viewDetails(row: any) {
     console.log('Viewing details for: ', row);
     // You can add logic to display a modal, navigate, or show details
+  }
+
+  async sharePDF(billId: number) {
+    this.loading = true;
+    this.waitForElement('bill-' + billId)
+      .then(element => {
+        console.log('Element found:', element);
+      })
+      .catch(error => {
+        console.error(error.message);
+      });
+    const element = document.getElementById('bill-' + billId);
+    if (element) {
+      // Set the element's dimensions explicitly to ensure full capture
+      const originalWidth = element.offsetWidth;
+      const originalHeight = element.offsetHeight;
+
+      html2canvas(element, {
+        scale: 2, // Increases the resolution of the canvas
+        scrollY: 0, // Ensures no content is missed due to scrolling
+        scrollX: 0,
+        width: originalWidth, // Full width of the element
+        height: originalHeight, // Full height of the element
+      }).then(async (canvas) => {
+        // Create a new jsPDF instance
+        const pdf = new jsPDF('p', 'mm', 'a4', true); // Portrait, millimeters, A4 size
+
+        // Get element dimensions in millimeters for PDF scaling
+        const pageWidth = 210; // A4 width in mm
+        const pageHeight = 297; // A4 height in mm
+        const imgWidth = pageWidth;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        let position = 0;
+
+        // If the content height exceeds the page height, paginate
+        if (imgHeight > pageHeight) {
+          let remainingHeight = imgHeight;
+          while (remainingHeight > 0) {
+            pdf.addImage(
+              canvas.toDataURL('image/png', 0.7),
+              'PNG',
+              0,
+              position,
+              imgWidth,
+              Math.min(remainingHeight, pageHeight)
+            );
+            remainingHeight -= pageHeight;
+            position -= pageHeight;
+            if (remainingHeight > 0) pdf.addPage();
+          }
+        } else {
+          // Single page
+          pdf.addImage(canvas.toDataURL('image/png', 0.7), 'PNG', 0, 0, imgWidth, imgHeight);
+        }
+
+        // Convert PDF to blob for mobile handling
+        //const pdfBlob = pdf.output('blob');
+
+        // Use Capacitor Filesystem to save the PDF on the device
+        const fileName = billId + '.pdf';
+        pdf.save(fileName);
+
+        // const downloadLink = document.createElement('a');
+        // downloadLink.href = URL.createObjectURL(pdfBlob);
+        // downloadLink.download = `${billId}.pdf`; // Automatically set the file name
+
+        // // Trigger the download programmatically
+        // downloadLink.style.display = 'none'; // Make sure the link is not visible
+        // document.body.appendChild(downloadLink); // Append the link to the document body
+        // downloadLink.click(); // Programmatically trigger the download
+
+        // Clean up by removing the link element
+        //document.body.removeChild(downloadLink);
+        this.loading = false;
+      });
+    }
+  }
+
+  waitForElement(billId: string, maxRetries: number = 10, intervalTime: number = 500): Promise<HTMLElement | null> {
+    return new Promise((resolve, reject) => {
+      let retries = 0;
+
+      // Create an observable that emits every `intervalTime` milliseconds
+      interval(intervalTime)
+        .pipe(
+          takeWhile(() => retries < maxRetries) // Retry until maxRetries
+        )
+        .subscribe(() => {
+          const element = document.getElementById('bill-' + billId);
+
+          if (element) {
+            resolve(element); // Element found, resolve the promise
+          } else {
+            retries++;
+            if (retries >= maxRetries) {
+              reject(new Error('Element not found after ' + maxRetries + ' retries'));
+            }
+          }
+        });
+    });
+  }
+
+  openExportDialog() {
+    this.exportDialogVisible = true;
   }
 }

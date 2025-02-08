@@ -15,6 +15,7 @@ import { UserComponent } from './user/user.component';
 import { SaleBillComponent } from './sale/sale-bill/sale-bill.component';
 import { PosComponent } from './master/pos/pos.component';
 import { SeriesComponent } from './master/series/series.component';
+import { SalePrintComponent } from './sale/sale-print/sale-print.component';
 
 const routes: Routes = [
   {path:'',component:LoginComponent},
@@ -31,6 +32,7 @@ const routes: Routes = [
   {path:'sale', component:SaleComponent},
   {path:'sale/:salesId', component:SaleComponent},
   {path:'salebill/:salesId', component:SaleBillComponent},
+  {path:'salebillprint/:salesId', component:SalePrintComponent},
   {path:'purchase', component:PurchaseComponent},
   {path:'purchase/:purchaseId', component:PurchaseComponent},
   {path:'user', component:UserComponent},

@@ -381,16 +381,15 @@
     <p-table #dt1 [value]="PurchaseReportList" dataKey="id" [rows]="10" [showCurrentPageReport]="false"
       [rowsPerPageOptions]="[5, 10, 25, 50]" [scrollable]="true" styleClass="p-datatable-gridlines" [paginator]="true"
       [pageLinks]="3" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-      [globalFilterFields]="filterColumn" scrollHeight="calc(65vh)" [tableStyle]="{'min-width': '40rem'}">
+      [globalFilterFields]="filterColumn" scrollHeight="calc(65vh)" [tableStyle]="{'min-width': '40rem'}"
+      [(selection)]="selectedPurchases" selectionMode="multiple">
 
       <ng-template pTemplate="caption">
         <div class="flex">
-          <!-- <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"
+          <button type="button" pButton pRipple icon="pi pi-file-excel" style="width: 3rem; margin-right: 0.5rem;" (click)="exportExcel(dt1)"
             class="p-button-success button-margin" pTooltip="XLS" tooltipPosition="bottom"></button>
-          <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()"
-            class="p-button-warning button-margin" pTooltip="PDF" tooltipPosition="bottom"></button> -->
-          <!-- <button pButton class="p-button-outlined" style="text-align: center; width: 2.5rem; margin-right: 0.5rem;"
-            icon="pi pi-filter-slash" (click)="clear()"></button> -->
+          <button *ngIf="selectedPurchases && selectedPurchases.length > 0" type="button" pButton pRipple icon="pi pi-file-pdf" style="width: 3rem; margin-right: 0.5rem;" (click)="openExportDialog()"
+            class="p-button-warning button-margin" pTooltip="PDF" tooltipPosition="bottom"></button>
           <button pButton pRipple class="p-button-square" style="width: 3rem; margin-right: 0.5rem;"
             [ngClass]="{'p-button-secondary': !isFilter, 'p-button-success': isFilter}" (click)="toggle()">
             <i class="pi" [ngClass]="{'pi-eye': isFilter, 'pi-eye-slash': !isFilter}"></i>
@@ -405,7 +404,13 @@
       <ng-template pTemplate="header">
         <tr>
           <ng-container *ngFor="let item of selectedColumnArray">
-            <ng-container *ngIf="!(item.displayName === 'View' && item.dataType === 'button')">
+            <ng-container *ngIf="item.dataType === 'Checkbox'">
+              <th [ngStyle]="{'min-width': item.minWidth ? item.minWidth + 'rem' : '5rem'}">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
+            </ng-container>
+            <ng-container *ngIf="!((item.displayName === 'View' || item.displayName === 'Checkbox') 
+            && (item.dataType === 'button' || item.dataType === 'Checkbox'))">
               <th [ngStyle]="{'min-width': item.minWidth ? item.minWidth + 'rem' : '5rem'}"
                 pSortableColumn="{{item.fieldName}}" class="header-cell">
                 <div class="flex align-items-center">
@@ -441,7 +446,12 @@
       <ng-template pTemplate="body" let-purchase let-rowIndex="rowIndex">
         <tr>
           <ng-container *ngFor="let item of selectedColumnArray">
-            <ng-container *ngIf="!(item.displayName === 'View')">
+            <ng-container *ngIf="item.dataType === 'Checkbox'">
+              <td>
+                <p-tableCheckbox [value]="purchase"></p-tableCheckbox>
+              </td>
+            </ng-container>
+            <ng-container *ngIf="!(item.displayName === 'View' || item.displayName === 'Checkbox')">
               <td>
                 <span *ngIf="item.dataType == 'Date'">{{ purchase[item.fieldName] | date: 'dd/MM/yyyy'}}</span>
                 <span *ngIf="item.displayName === 'Total' && item.dataType == 'numeric'">
@@ -554,3 +564,26 @@
 <div class="progress-spinner" *ngIf="loading">
   <p-progressSpinner strokeWidth="4" styleClass="w-3rem h-3rem"></p-progressSpinner>
 </div>
+
+<div *ngIf="isAdminView && selectedPurchases && selectedPurchases.length > 0" style="margin-top: 1000px;">
+  <div *ngFor="let bill of selectedPurchases" id="bill-{{bill.id}}"
+    style="width: 215mm; height: 303mm; box-sizing: border-box; overflow: auto;">
+    <app-sale-print [billId]="bill.id"
+    [includeMobile]="includeMobile"
+    [includeEmail]="includeEmail"></app-sale-print>
+  </div>
+</div>
+
+<p-dialog header="Export Settings" [(visible)]="exportDialogVisible" [closable]="false" [modal]="true" class="custom-dialog">
+  <div class="p-field">
+    <p-checkbox label="Include Mobile No" [(ngModel)]="includeMobile" [binary]="true"></p-checkbox>
+  </div>
+  <div class="p-field">
+    <p-checkbox label="Include Email ID" [(ngModel)]="includeEmail" [binary]="true"></p-checkbox>
+  </div>
+
+  <div class="dialog-footer">
+    <button pButton label="Export" icon="pi pi-check" (click)="exportPdf()"></button>
+    <button pButton label="Cancel" icon="pi pi-times" (click)="exportDialogVisible = false"></button>
+  </div>
+</p-dialog>

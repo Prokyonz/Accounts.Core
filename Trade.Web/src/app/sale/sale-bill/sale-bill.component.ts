@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, Input, ViewChild } from '@angular/core';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
 import { Plugins } from '@capacitor/core';
@@ -12,6 +12,7 @@ import { MessageService } from 'primeng/api';
 import { FormBuilder } from '@angular/forms';
 import { saleBillPrint } from 'src/app/Model/models';
 import { Location } from '@angular/common';
+import { SalePrintComponent } from '../sale-print/sale-print.component';
 
 @Component({
   selector: 'app-sale-bill',
@@ -24,6 +25,8 @@ export class SaleBillComponent {
   loading = false;
   saleBillPrint: saleBillPrint;
   paymentRowSpan: number = 1;
+  billId: number = 0;
+  @ViewChild(SalePrintComponent) salePrintComponent!: SalePrintComponent;
 
   constructor(private route: ActivatedRoute, private fb: FormBuilder, private router: Router, private messageService: MessageService, private sharedService: SharedService, private location: Location) {
     this.checkIfMobile();
@@ -34,12 +37,12 @@ export class SaleBillComponent {
       const itemId = params.get('salesId'); // Assuming 'id' is the parameter name in your route
 
       if (itemId) {
-        this.getSaleBillPrint(itemId);
+        this.billId = Number.parseInt(itemId);
       }
     });
   }
 
-  onBack(){
+  onBack() {
     this.location.back();
   }
 
@@ -192,7 +195,7 @@ export class SaleBillComponent {
   async sharePDF1() {
     this.loading = true;
     setTimeout(async () => {
-      const element = document.getElementById('content-to-export');
+      const element = document.getElementById('content-to-print');
       if (element) {
         // Set the element's dimensions explicitly to ensure full capture
         const originalWidth = element.offsetWidth;
@@ -241,7 +244,8 @@ export class SaleBillComponent {
           const pdfBlob = pdf.output('blob');
 
           // Use Capacitor Filesystem to save the PDF on the device
-          const fileName = this.saleBillPrint.invoiceNo + '.pdf';
+          const fileName = this.billId + '.pdf';
+          pdf.save(fileName);
           if (!this.isMobile) {
             pdf.save(fileName);
             this.loading = false;
