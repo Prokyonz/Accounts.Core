@@ -9,6 +9,8 @@ using System.Diagnostics;
 using Microsoft.Data.SqlClient;
 using Accounts.Core.DbContext;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Imaging;
+using Ghostscript.NET.Rasterizer;
 
 namespace Accounts.Core.Controllers
 {
@@ -217,14 +219,14 @@ namespace Accounts.Core.Controllers
                             var panUrl = worksheet.Cells[row, 7].Text;
                             var AdaharFUrl = worksheet.Cells[row, 8].Text;
                             var AdharBUrl = worksheet.Cells[row, 9].Text;
-                            
+
 
                             var panBase64 = DownlaodFileFromGoodle(panUrl);
 
                             Thread.Sleep(3000);
-                            
+
                             var adaharFUrlBase64 = DownlaodFileFromGoodle(AdaharFUrl);
-                            
+
                             Thread.Sleep(3000);
 
                             var adaharBUrlBase64 = DownlaodFileFromGoodle(AdharBUrl);
@@ -258,20 +260,43 @@ namespace Accounts.Core.Controllers
             {
                 FileName = downloadUrl,
                 UseShellExecute = true, // Ensures the URL is opened in the browser
-            });            
+            });
 
             var list = new DirectoryInfo(@"C:\Users\abhis\Downloads").GetFiles().OrderByDescending(x => x.LastWriteTime).ToList().FirstOrDefault();
             string filePath = list?.FullName;
+            string base64 = "";
 
-            if (System.IO.File.Exists(filePath))
+            if (list.FullName.ToLower().Contains("pdf"))
             {
-                byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
-                string base64String = Convert.ToBase64String(fileBytes);
+                using (var rasterizer = new GhostscriptRasterizer())
+                {
+                    rasterizer.Open(filePath);
 
-                Console.WriteLine("Base64 String:");
-                Console.WriteLine(base64String);
+                    // Render first page as an image (600 DPI for good quality)
+                    using (var image = rasterizer.GetPage(600, 1))
+                    {
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            image.Save(ms, ImageFormat.Png);
+                            base64 = "data:image/png;base64," + Convert.ToBase64String(ms.ToArray());
+                        }
+                    }
+                }
+
                 System.IO.File.Delete(filePath);
-                return base64String;
+
+                return base64;
+            }
+            else
+            {
+                if (System.IO.File.Exists(filePath))
+                {
+                    byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+                    string base64String = Convert.ToBase64String(fileBytes);
+
+                    System.IO.File.Delete(filePath);
+                    return "data:image/"+ Path.GetExtension(filePath).ToLower() + ";base64," + base64String;
+                } 
             }
 
             return "";
