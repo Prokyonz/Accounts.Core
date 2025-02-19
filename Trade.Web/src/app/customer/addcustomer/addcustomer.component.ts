@@ -95,9 +95,9 @@ export class AddcustomerComponent implements OnInit {
     if (this.customerDetails.panImageData === '') {
       msg += ' Pancard Image,';
     }
-    if (this.customerDetails.signatureImageData === '') {
-      msg += ' Signature Image,';
-    }
+    // if (this.customerDetails.signatureImageData === '') {
+    //   msg += ' Signature Image,';
+    // }
 
     if (msg.length > 0) {
       msg = msg.substring(0, msg.length - 1) + ' is required.';

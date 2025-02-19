@@ -178,6 +178,52 @@ export class ReportComponent implements OnInit {
     );
   }
 
+  getCustomerImage(id: number, isPan: boolean, isAdharFront: boolean, isAdharBack: boolean, isSign: boolean, imageDetails: string) {
+    this.loading = true;
+    const params = {
+      id: id,
+      isPan: isPan,
+      isAdharFront: isAdharFront,
+      isAdharBack: isAdharBack,
+      isSign: isSign
+    };
+    this.sharedService.customGetApi1<Customer[]>('Customer/image-data', params).subscribe(
+      (data: Customer[]) => {
+        if (data) {
+          if (isPan && data[0].panImageData != '') {
+            this.imageUrl = data[0].panImageData;
+          }
+          else if (isAdharFront && data[0].aadharImageFrontData != '') {
+            this.imageUrl = data[0].aadharImageFrontData;
+          }
+          else if (isAdharBack && data[0].aadhbarImageBackData != '') {
+            this.imageUrl = data[0].aadhbarImageBackData;
+          }
+          else if (isSign && data[0].signatureImageData != '') {
+            this.imageUrl = data[0].signatureImageData;
+          }
+          else{
+            this.loading = false;
+            this.showMessage('Error','No Image Found'); 
+            return; 
+          }
+
+          this.imageDetails = imageDetails;
+          this.customerId = id;
+          this.isImageVisible = true;
+        }
+        else{
+          this.showMessage('Error','No Image Found');  
+        }
+        this.loading = false;
+      },
+      (error) => {
+        this.loading = false;
+        this.showMessage('Error fetching customers:', error);
+      }
+    );
+  }
+
   getUser() {
     this.loading = true;
     this.loading = true;
@@ -439,10 +485,25 @@ export class ReportComponent implements OnInit {
   }
 
   imageClick(imageData: string, imageDetails: string, id: number) {
-    this.imageUrl = imageData;
-    this.imageDetails = imageDetails;
-    this.customerId = id;
-    this.isImageVisible = true;
+    let isPan: boolean = false;
+    let isAdharFront: boolean = false;
+    let isAdharBack: boolean = false;
+    let isSign: boolean = false;
+
+    if (imageDetails == 'Pancard') {
+      isPan = true;
+    }
+    else if (imageDetails == 'Aadharcard Front') {
+      isAdharFront = true;
+    }
+    else if (imageDetails == 'Aadharcard Back') {
+      isAdharBack = true;
+    }
+    else if (imageDetails == 'Signature') {
+      isSign = true;
+    }
+
+    this.getCustomerImage(id, isPan, isAdharFront, isAdharBack, isSign, imageDetails);
   }
 
   async shareImage() {

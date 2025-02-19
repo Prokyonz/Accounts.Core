@@ -221,7 +221,7 @@ namespace Accounts.Core.Controllers
         async Task ReadExcelFile()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            string filePath = "D:\\Sunsparkle - Copy.xlsx";
+            string filePath = "D:\\Book1.xlsx";
 
             DataTable dt = new DataTable();
             dt.Columns.AddRange(new DataColumn[] {
@@ -261,21 +261,21 @@ namespace Accounts.Core.Controllers
                             var AdharBUrl = worksheet.Cells[row, 9].Text;
 
 
-                            var panBase64 = DownlaodFileFromGoodle(panUrl);
+                            //var panBase64 = DownlaodFileFromGoodle(panUrl);
 
                             //Thread.Sleep(3000);
 
-                            var adaharFUrlBase64 = DownlaodFileFromGoodle(AdaharFUrl);
+                            //var adaharFUrlBase64 = DownlaodFileFromGoodle(AdaharFUrl);
 
                             //Thread.Sleep(3000);
 
-                            var adaharBUrlBase64 = DownlaodFileFromGoodle(AdharBUrl);
+                            //var adaharBUrlBase64 = DownlaodFileFromGoodle(AdharBUrl);
 
                             //Thread.Sleep(3000);
 
-                            dr["PanCardPdfBase64"] = panBase64;
-                            dr["AdharFrontPdfBase64"] = adaharFUrlBase64;
-                            dr["AdharBackPdfBase64"] = adaharBUrlBase64;
+                            dr["PanCardPdfBase64"] = null;
+                            dr["AdharFrontPdfBase64"] = null;
+                            dr["AdharBackPdfBase64"] = null;
                             dr["UserId"] = worksheet.Cells[row, 10].Text; // worksheet.Cells[row, 10].Text
 
                             dt.Rows.Add(dr);
@@ -352,7 +352,7 @@ namespace Accounts.Core.Controllers
             string id = url.Split("?id=")[1].ToString();
 
             //string downloadUrl = $"https://drive.usercontent.google.com/u/1/uc?id="+id+"&export=download";
-            string downloadUrl = "https://drive.usercontent.google.com/download?id=" + id + "&export=download";
+            string downloadUrl = "https://drive.usercontent.google.com/u/1/uc?id=" + id + "&export=download";
 
             Process.Start(new ProcessStartInfo
             {
@@ -361,7 +361,7 @@ namespace Accounts.Core.Controllers
             });
 
             rtry:
-            var list = new DirectoryInfo(@"C:\Users\admin\Downloads").GetFiles().OrderByDescending(x => x.LastWriteTime).ToList().FirstOrDefault();
+            var list = new DirectoryInfo(@"C:\Users\asus\Downloads").GetFiles().OrderByDescending(x => x.LastWriteTime).ToList().FirstOrDefault();
             if(list == null)
             {
                 Thread.Sleep(500);
@@ -370,8 +370,8 @@ namespace Accounts.Core.Controllers
             string filePath = list?.FullName;
             string base64 = "";
 
-            Thread.Sleep(5000);
-            if (list.FullName.ToLower().Contains("pdf"))
+            //Thread.Sleep(5000);
+            if (filePath.ToLower().Contains(".pdf"))
             {
                 using (var rasterizer = new GhostscriptRasterizer())
                 {

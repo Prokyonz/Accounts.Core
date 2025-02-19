@@ -70,26 +70,14 @@
         <div class="image-icons">
           <i class="pi pi-image view-icon"
             (click)="imageClick(customer.aadharImageFrontData,'Aadharcard Front', customer.id)" title="Aadharcard Front"
-            [ngClass]="{ 'disabled-icon': !customer.aadharImageFrontData }"
-            [style.cursor]="customer.aadharImageFrontData ? 'pointer' : 'not-allowed'"
-            [attr.aria-disabled]="!customer.aadharImageFrontData"
-            [attr.tabindex]="customer.aadharImageFrontData ? '0' : '-1'" style="cursor: pointer;"></i>
+            style="cursor: pointer;"></i>
           <i class="pi pi-image view-icon"
             (click)="imageClick(customer.aadhbarImageBackData,'Aadharcard Back', customer.id)" title="Aadharcard Back"
-            [ngClass]="{ 'disabled-icon': !customer.aadhbarImageBackData }"
-            [style.cursor]="customer.aadhbarImageBackData ? 'pointer' : 'not-allowed'"
-            [attr.aria-disabled]="!customer.aadhbarImageBackData"
-            [attr.tabindex]="customer.aadhbarImageBackData ? '0' : '-1'" style="cursor: pointer;"></i>
-          <i class="pi pi-image view-icon" (click)="imageClick(customer.panImageData,'Pancard', customer.id)"
-            title="Pancard" [ngClass]="{ 'disabled-icon': !customer.panImageData }"
-            [style.cursor]="customer.panImageData ? 'pointer' : 'not-allowed'"
-            [attr.aria-disabled]="!customer.panImageData" [attr.tabindex]="customer.panImageData ? '0' : '-1'"
             style="cursor: pointer;"></i>
+          <i class="pi pi-image view-icon" (click)="imageClick(customer.panImageData,'Pancard', customer.id)"
+            title="Pancard" style="cursor: pointer;"></i>
           <i class="pi pi-image view-icon" (click)="imageClick(customer.signatureImageData,'Signature', customer.id)"
-            title="Signature" [ngClass]="{ 'disabled-icon': !customer.signatureImageData }"
-            [style.cursor]="customer.signatureImageData ? 'pointer' : 'not-allowed'"
-            [attr.aria-disabled]="!customer.signatureImageData"
-            [attr.tabindex]="customer.signatureImageData ? '0' : '-1'" style="cursor: pointer;"></i>
+            title="Signature" style="cursor: pointer;"></i>
         </div>
       </div>
       <div>
@@ -550,7 +538,7 @@
   </div>
 </div> -->
 
-<p-dialog header="Image" [(visible)]="isImageVisible" [modal]="true" [responsive]="true" (onHide)="onDialogClose()">
+<p-dialog header="{{imageDetails}}" [(visible)]="isImageVisible" [modal]="true" [responsive]="true" (onHide)="onDialogClose()">
   <img *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image" style="max-width: 300px; max-height: 300px;" />
 
   <ng-template pTemplate="footer">

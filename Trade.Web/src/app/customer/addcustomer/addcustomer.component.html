@@ -63,8 +63,7 @@
                                 <td class="half-width">
                                     <label for="email">Email</label>
                                     <input id="email" pInputText type="email" class="form-control" name="CustomerEmail"
-                                        [(ngModel)]="customerDetails.emailId" required #email="ngModel"
-                                        [ngClass]="{'is-invalid': email.touched && email.invalid}" 
+                                        [(ngModel)]="customerDetails.emailId" #email="ngModel"
                                         pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"/>
                                 </td>
                             </tr>
